@@ -9,6 +9,10 @@ class Text(Element):
         elem.clear()
         elem.send_keys(val)
 
+    def __get__(self, obj, type=None):
+        elem = obj.find(self.locator)
+        return elem.get_attribute("value")
+
 
 class Select(Element):
     def __set__(self, obj, val):
