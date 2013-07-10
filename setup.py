@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.support.wait import WebDriverWait
 import ConfigParser
 
 
@@ -24,6 +25,8 @@ def loginGMAS(driver, env):
     HUID = config.get("Credentials", "HUID")
     PIN = config.get("Credentials", "PIN")
     driver.get("https://%s.harvard.edu/gmas/" % (env))
+    w = WebDriverWait(driver, 60)
+    w.until(lambda e: e.find_element_by_id("authenId"))
     driver.find_element_by_id("authenId").send_keys(HUID)
     driver.find_element_by_id("authenPassword").send_keys(PIN)
     driver.find_element_by_css_selector("input.login-button[type=submit][value=Login]").click()
