@@ -1,10 +1,11 @@
 from pages.Page import Page
 from pages.elements import Text
 
+# @todo: switch "recently viewed projects" dropdown to a Select element
 locators = {
     "create proposal": "css=a[href*=HomePageCreateProposalEvent]",
     "recently viewed dropdown": "css=#s option[value='REPLACE']",
-    "recently viewed projects": "sizzle=tr:has(a[href*='ProjectListSegmentHomeEvent']):not(tr:has(table))",
+    "recently viewed projects": "xpath=//tr[td[a[contains(@href,'ProjectListSegmentHomeEvent')]]]",
     "search": "name=projectSegmentSearchText"
 }
 
