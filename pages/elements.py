@@ -1,6 +1,7 @@
 class Element(object):
-    def __init__(self, locator):
+    def __init__(self, locator, doc="No documentation"):
         self.locator = locator
+        self.__doc__ = doc
 
 
 class Text(Element):
