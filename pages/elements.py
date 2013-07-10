@@ -20,6 +20,11 @@ class Select(Element):
         elem = WDSelect(obj.find(self.locator))
         elem.select_by_visible_text(val)
 
+    def __get__(self, obj, type=None):
+        from selenium.webdriver.support.select import Select as WDSelect
+        elem = WDSelect(obj.find(self.locator))
+        return elem.first_selected_option.text
+
 
 class Radio(Element):
     def __set__(self, obj, val):
