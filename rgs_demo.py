@@ -1,5 +1,5 @@
-import helpers
-from scripts.rgsdev import rgs
+import setup
+from scripts.rgs import rgs
 
 f = {
     # SCR_0088
@@ -48,7 +48,7 @@ f = {
     "appt_exp": "false"
 }
 
-d = helpers.init("Firefox", "gmasdev.cadm")
+d = setup.init("Firefox", "gmasdev.cadm")
 p = rgs(d, f)
 
 #f["title"] = "S2S Automation Demo 2"
