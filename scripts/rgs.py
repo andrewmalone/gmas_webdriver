@@ -4,7 +4,7 @@
 #d = helpers.init("Chrome", "gmasdev.cadm")
 
 
-def rgs(d, f=None):
+def rgs(p, f=None):
     if f is None:
         f = {
             # SCR_0088
@@ -67,8 +67,8 @@ def rgs(d, f=None):
             "appt_exp": "false"
         }
 
-    from pages.SCR0270 import SCR0270
-    p = SCR0270(d).nav_to()
+    #from pages.SCR0270 import SCR0270
+    #p = SCR0270(d).nav_to()
     p = p.create_proposal()
 
     # SCR_0088

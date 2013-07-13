@@ -48,8 +48,8 @@ f = {
     "appt_exp": "false"
 }
 
-d = setup.init("Firefox", "gmasdev.cadm")
-p = rgs(d, f)
+p = setup.init("Firefox", "gmasdev.cadm")
+p = rgs(p, f)
 
 #f["title"] = "S2S Automation Demo 2"
 #f["pi"] = "03750002"
