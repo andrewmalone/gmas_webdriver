@@ -1,4 +1,4 @@
-import setup
+import scripts.setup as setup
 from scripts.rgs import rgs
 
 f = {
@@ -7,10 +7,9 @@ f = {
     "project_type": "Basic research and all other",
     "retro": "false",
     # SCR_0089
-    "title": "S2S Automation Demo 1",
+    "title": "Automation Demo",
     "sponsor": "nih",
     "pi": "03750001",
-    "pi_effort": 10,
     "prime_sponsor": "",
     "prime_pi": "",
     "a21": "A02-Organized Research",
@@ -51,6 +50,3 @@ f = {
 p = setup.init("Firefox", "gmasdev.cadm")
 p = rgs(p, f)
 
-#f["title"] = "S2S Automation Demo 2"
-#f["pi"] = "03750002"
-#p = rgs(d, f)
