@@ -43,7 +43,7 @@ def get_method_list(class_name):
     for meth in inspect.getmembers(cls, inspect.ismethod):
         m_lookup = {}
         m = meth[1]
-        if get_class(m) != "Page":
+        if get_class(m) != "Page" and m.__name__[0] != "_":
             name = m.__name__
             args = inspect.formatargspec(*inspect.getargspec(m))
             args = args.replace("self, ", "").replace("self", "")
@@ -63,5 +63,5 @@ def get_method_list(class_name):
 
     print template.format(**lookup)
 
-get_method_list("SCR0270")
+get_method_list("SCR0088")
 
