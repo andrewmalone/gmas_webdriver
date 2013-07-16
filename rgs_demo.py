@@ -7,7 +7,7 @@ f = {
     "project_type": "Basic research and all other",
     "retro": "false",
     # SCR_0089
-    "title": "Automation Demo",
+    "title": "Basic request for testing SCR_0650 (2)",
     "sponsor": "nih",
     "pi": "03750001",
     "prime_sponsor": "",
@@ -35,7 +35,15 @@ f = {
     "on_campus": "true",
     # SCR_0098
     "pi_hs": "false",
-    "research team": [],
+    "research team": [
+    {
+        "huid": "03750010",
+        "role": "Analyst",
+        "key": "true",
+        "investigator": "true",
+        "hs": "false"
+    }
+    ],
     # SCR_0097
     "human_subjects": "false",
     "animals": "false",

@@ -1,6 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 import ConfigParser
+import os
+import sys
 
 
 def startBrowser(browser, os="win"):
@@ -20,8 +22,10 @@ def startBrowser(browser, os="win"):
 
 
 def loginGMAS(driver, env):
+    dir = os.path.dirname(os.path.abspath(__file__))
+    cfg = dir + "\config.ini"
     config = ConfigParser.RawConfigParser()
-    config.read("config.ini")
+    config.read(cfg)
     HUID = config.get("Credentials", "HUID")
     PIN = config.get("Credentials", "PIN")
     driver.get("https://%s.harvard.edu/gmas/" % (env))
@@ -33,6 +37,8 @@ def loginGMAS(driver, env):
 
 
 def init(browser, env):
+    # this is so that imports will work (there's probably a better way)
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
     d = startBrowser(browser)
     d.env = env
     loginGMAS(d, d.env)
