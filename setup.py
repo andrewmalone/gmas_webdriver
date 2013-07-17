@@ -30,9 +30,9 @@ def loginGMAS(driver, env):
     PIN = config.get("Credentials", "PIN")
     driver.get("https://%s.harvard.edu/gmas/" % (env))
     w = WebDriverWait(driver, 60)
-    w.until(lambda e: e.find_element_by_id("authenId"))
-    driver.find_element_by_id("authenId").send_keys(HUID)
-    driver.find_element_by_id("authenPassword").send_keys(PIN)
+    w.until(lambda e: e.find_element_by_id("username"))
+    driver.find_element_by_id("username").send_keys(HUID)
+    driver.find_element_by_id("password").send_keys(PIN)
     driver.find_element_by_css_selector("input.login-button[type=submit][value=Login]").click()
 
 
