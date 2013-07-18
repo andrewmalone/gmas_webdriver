@@ -1,5 +1,6 @@
 import inspect
 import importlib
+import re
 
 template = """
 h1. {classname}
@@ -49,7 +50,9 @@ def get_method_list(class_name):
             args = args.replace("self, ", "").replace("self", "")
             #print "%s%s" % (name, args)
             m_lookup["methodname"] = name + args
-            m_lookup["methoddoc"] = inspect.getdoc(m)
+            find = r'SCR_([0-9]{4}[a-z]?)'
+            repl = r'[SCR_\1|SCR\1 Page Object]'
+            m_lookup["methoddoc"] = re.sub(find, repl, inspect.getdoc(m))
             lookup["methods"] += method_template.format(**m_lookup)
 
     # list of descriptors
@@ -63,5 +66,5 @@ def get_method_list(class_name):
 
     print template.format(**lookup)
 
-get_method_list("SCR0088")
+get_method_list("SCR0231")
 
