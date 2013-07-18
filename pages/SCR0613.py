@@ -9,16 +9,25 @@ locators = {
 
 
 class Lookup_opportunity(object):
+    """
+    Performs an opportunity search (opens popup and presses <ok>)
+    """
     def __set__(self, obj, val):
-        obj.lookup_opportunity(val)
+        obj._lookup_opportunity(val)
+
+    def __get__(self, obj, type=None):
+        pass
 
 
 class SCR0613(Page):
+    """
+    SCR_0613 Opportunity search
+    """
     locators = locators
-    opportunity_text = Text("opportunity")
+    opportunity_text = Text("opportunity", "opportunity number text box")
     opportunity = Lookup_opportunity()
 
-    def lookup_opportunity(self, opportunity):
+    def _lookup_opportunity(self, opportunity):
         self.opportunity_text = opportunity
         self.find("validate").click()
         self.switch_to_popup()
@@ -28,5 +37,9 @@ class SCR0613(Page):
         return self
 
     def ok(self):
+        """
+        Clicks <Next>
+        Goes to SCR_0231 or SCR_0231b
+        """
         self.find("next").click()
         return self.load_page()
