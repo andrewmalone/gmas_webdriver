@@ -125,6 +125,7 @@ class SCR0089(Page):
     def ok(self):
         """
         Clicks the <Ok> button
+        Goes to SCR_0613 or SCR_0231
         """
         self.find("next").click()
         return self.load_page()

@@ -10,13 +10,21 @@ locators = {
 
 
 class SCR0231(Page):
+    """
+    SCR_0231 Submission Details
+    """
     locators = locators
-    due_date = Text("due date")
-    due_date_type = Radio("due date type")  # vals = 2401/2402
-    copies = Text("copies")
+    due_date = Text("due date", "Due date text input")
+    due_date_type = Radio("due date type", "Due date type radio button\n\
+        * 2401 = Receipt date\n\
+        * 2402 = Postmark date")  # vals = 2401/2402
+    copies = Text("copies", "Number of copies text input")
 
     def ok(self):
+        """
+        Click the <Next> button.
+        Goes to SCR_0090
+        """
         self.find("next").click()
-        from pages.SCR0090 import SCR0090
-        return SCR0090(self.driver)
+        return self.load_page()
 

@@ -32,7 +32,7 @@ class SCR0088(Page):
     project_type = Select("select project type", "Project type dropdown")
     org_text = Text("org input", "Text box for org lookup")
     org = Lookup_org()
-    retro = Radio("retro", "Retroactive yes/no question")
+    retro = Radio("retro", "Retroactive yes/no question - set to true/false")
 
     def _lookup_org(self, val):
         """Lookup an org
@@ -50,7 +50,7 @@ class SCR0088(Page):
     def ok(self):
         """
         Clicks the <Next> button
-        Goes to SCR_0089abc
+        Goes to SCR_0089
         """
         self.find("next").click()
         from pages.SCR0089 import SCR0089
