@@ -12,6 +12,8 @@ locators = {
     "PHS": "css=[name='isMemberPHSInvestigator'][value='REPLACE']",
     "effort": "css=input[name$='__effort']",
     "key": "css=input[name$='__keyPersonFlag']",
+    "salary": "css=input[name$='__requestedSalary']",
+    "fringe": "css=input[name$='__fringeAmount']",
     "ok": "name=EditResearchPersonnelOkEvent"
 }
 
@@ -19,6 +21,20 @@ locators = {
 class SCR0252(Page):
     locators = locators
     role = Select("role")
+
+    def _set_budget_field(self, val, elems):
+        l = []
+        if type(val) is int:
+            l = [val for i in range(len(elems))]
+        elif type(val) is list:
+            l = val
+            # TODO: pad the length here, if there aren't enough
+        for i, elem in enumerate(elems):
+            elem.clear()
+            elem.send_keys(str(l[i]))
+            # fire the page's javascript event to update the autocalc
+            # TODO: investigate a cleaner way to handle this
+            self.driver.execute_script("notifyField(arguments[0])", elem.get_attribute("name"))
 
     def select_role(self, role):
         self.find_element(locators["role selection"].replace("REPLACE", role)).click()
@@ -44,17 +60,13 @@ class SCR0252(Page):
         self.find_element(locators["PHS"].replace("REPLACE", val)).click()
 
     def set_effort(self, val):
-        elems = self.finds("effort")
-        l = []
-        if type(val) is int:
-            l = [val for i in range(len(elems))]
-        elif type(val) is list:
-            l = val
-            # TODO: pad the length here, if there aren't enough
-        for i, elem in enumerate(elems):
-            elem.clear()
-            elem.send_keys(str(l[i]))
+        self._set_budget_field(val, self.finds("effort"))
 
+    def set_salary(self, val):
+        self._set_budget_field(val, self.finds("salary"))
+
+    def set_fringe(self, val):
+        self._set_budget_field(val, self.finds("fringe"))
 
     def set_key(self, val):
         if val == "true":
