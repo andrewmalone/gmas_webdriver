@@ -3,6 +3,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 import ConfigParser
 import os
 import sys
+import base64
 
 
 def startBrowser(browser, os="win"):
@@ -26,8 +27,8 @@ def loginGMAS(driver, env):
     cfg = dir + "\config.ini"
     config = ConfigParser.RawConfigParser()
     config.read(cfg)
-    HUID = config.get("Credentials", "HUID")
-    PIN = config.get("Credentials", "PIN")
+    HUID = base64.b64decode(config.get("setup", "a"))
+    PIN = base64.b64decode(config.get("setup", "b"))
     driver.get("https://%s.harvard.edu/gmas/" % (env))
     w = WebDriverWait(driver, 60)
     w.until(lambda e: e.find_element_by_id("username"))
