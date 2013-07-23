@@ -112,7 +112,7 @@ def rgs(p, f=None):
     p.periods = f["periods"]
     p = p.ok()
 
-    # SCR_0221
+    # SCR_0227
     p.calc_periods(f["start"], f["periods"])
     p = p.ok()
 
