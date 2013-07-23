@@ -2,7 +2,11 @@ import inspect
 import importlib
 import re
 
+scr = "227"
+
 template = """
+{classname} Page Object
+
 h1. {classname}
 {classdoc}
 
@@ -26,6 +30,8 @@ h4. {descriptor_name}
 {descriptor_doc}
 {{indent}}
 """
+
+
 def get_class(meth):
     for cls in inspect.getmro(meth.im_class):
         if meth.__name__ in cls.__dict__:
@@ -66,5 +72,5 @@ def get_method_list(class_name):
 
     print template.format(**lookup)
 
-get_method_list("SCR0090")
+get_method_list("SCR0" + scr)
 
