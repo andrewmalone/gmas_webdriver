@@ -2,7 +2,7 @@ import inspect
 import importlib
 import re
 
-scr = "227"
+scr = str(input("Screen: "))
 
 template = """
 {classname} Page Object
@@ -72,5 +72,5 @@ def get_method_list(class_name):
 
     print template.format(**lookup)
 
-get_method_list("SCR0" + scr)
+get_method_list("SCR" + scr)
 
