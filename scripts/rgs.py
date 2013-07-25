@@ -140,7 +140,6 @@ def rgs(p, f=None):
     p.on_campus = f["on_campus"]
     if p.admin_salary is True:
         p.admin_salary = f["admin_salary"]
-    return p
     p = p.ok()
 
     # SCR_0102
