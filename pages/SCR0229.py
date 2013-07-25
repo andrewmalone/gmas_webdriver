@@ -1,5 +1,5 @@
 from pages.Page import Page
-from pages.elements import Radio
+from pages.elements import Radio, Text
 
 
 class SCR0229(Page):
@@ -12,7 +12,8 @@ class SCR0229(Page):
         "matching": "css=[name='sponsorMatchingFund']",
         "program_income": "css=[name='programIncomeFlag']",
         "on_campus": "css=[name='onOffCampusCode']",
-        "admin salary": "css=[name='administrativeSalary']"
+        "admin salary": "css=[name='administrativeSalary']",
+        "estimated_cost": "name=totalEstimatedCost"
     }
 
     cost_share = Radio("cost_share", "Cost share radio button (true/false)")
@@ -20,6 +21,7 @@ class SCR0229(Page):
     program_income = Radio("program_income", "Program income radio button (true/false)")
     on_campus = Radio("on_campus", "On/off campus radio button (true/false)")
     admin_salary = Radio("admin salary", "Admin salaries radio button (true/false)")
+    estimated_cost = Text("estimated_cost", "Total estimated cost text box")
 
     def set_all_radios(self, value):
         """

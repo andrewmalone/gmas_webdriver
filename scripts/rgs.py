@@ -132,12 +132,15 @@ def rgs(p, f=None):
     p = p.ok()
 
     # SCR_0229
+    if "estimated_cost" in f:
+        p.estimated_cost = f["estimated_cost"]
     p.cost_share = f["cost_share"]
     p.matching = f["matching"]
     p.program_income = f["program_income"]
     p.on_campus = f["on_campus"]
     if p.admin_salary is True:
         p.admin_salary = f["admin_salary"]
+    return p
     p = p.ok()
 
     # SCR_0102
