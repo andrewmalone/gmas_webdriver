@@ -29,10 +29,12 @@ def rgs(p, f=None):
             "due_date": "1/1/08",
             "due_date_type": "2401",
             "copies": "1",
+            "mailing": "Mailing instructions",  # optional
             # SCR_0090
             "start": "1/15/08",
             "periods": "1",
             # SCR_0229
+            "estimated_cost": "50000",  # optional
             "cost_share": "false",
             "matching": "false",
             "admin_salary": "false",
@@ -115,6 +117,8 @@ def rgs(p, f=None):
     if p.get_current_page() == "SCR0231RequestSubmissionDetails" or f["s2s"] == "false":
         p.due_date_type = f["due_date_type"]
         p.copies = f["copies"]
+        if "mailing" in f:
+            p.mailing = f["mailing"]
     p = p.ok()
 
     # SCR_0090

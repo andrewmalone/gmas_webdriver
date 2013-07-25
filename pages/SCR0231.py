@@ -5,6 +5,7 @@ locators = {
     "due date": "name=dueToSponsorDate",
     "due date type": "css=[name='dueDateType'][value='REPLACE']",
     "copies": "name=numberOfRequiredCopies",
+    "mailing": "name=mailingInstructions",
     "next": "name=RequestSubmissionDetailsNextEvent"
 }
 
@@ -19,6 +20,7 @@ class SCR0231(Page):
         * 2401 = Receipt date\n\
         * 2402 = Postmark date")  # vals = 2401/2402
     copies = Text("copies", "Number of copies text input")
+    mailing = Text("mailing", "Mailing instructions")
 
     def ok(self):
         """

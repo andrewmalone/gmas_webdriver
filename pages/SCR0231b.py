@@ -6,6 +6,7 @@ locators = {
     "due date type": "css=[name='dueDateType'][value='REPLACE']",
     "s2s": "css=[name='electronicSubmission'][value='REPLACE']",
     "copies": "name=numberOfRequiredCopies",
+    "mailing": "name=mailingInstructions",
     "next": "name=EnterSubmissionDetailsNextEvent"
 }
 
@@ -21,6 +22,7 @@ class SCR0231b(Page):
         * 2402 = Postmark date")  # vals = 2401/2402
     s2s = Radio_refresh("s2s", "S2S radio button (true/false)")
     copies = Text("copies", "text box for number of copied")
+    mailing = Text("mailing", "Mailing instructions")
 
     def ok(self):
         """
