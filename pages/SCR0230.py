@@ -32,4 +32,8 @@ class SCR0230(Page):
     name = Lookup_person()
 
     def ok(self):
+        """
+        Click <Ok>
+        Goes to SCR_0099
+        """
         return self.go("ok")
