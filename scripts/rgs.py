@@ -56,6 +56,17 @@ def rgs(p, f=None):
                 #     "hs": "false"
                 # }
             ],
+            # SCR_0099
+            "admin_team": [
+                # {
+                #     "huid": "03750002",
+                #     "role": "Department Administrator"
+                # },
+                # {
+                #     "huid": "03750003",
+                #     "role": "Central Administrator"
+                # }
+            ],
             # SCR_0097
             "human_subjects": "false",
             "animals": "false",
@@ -147,6 +158,13 @@ def rgs(p, f=None):
     p = p.ok()
 
     # SCR_0099
+    if "admin_team" in f:
+        for person in f["admin_team"]:
+            p = p.add_member()
+            # SCR_0230
+            p.role = person["role"]
+            p.name = person["huid"]
+            p = p.ok()
     p = p.ok()
 
     # SCR_0097
