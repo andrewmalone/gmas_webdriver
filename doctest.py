@@ -2,7 +2,10 @@ import inspect
 import importlib
 import re
 
-scr = str(input("Screen: "))
+scr = raw_input("Screen: ")
+padding = '000'
+num = re.match(r'[0-9]{1,3}', scr).group(0)
+scr = "SCR%s%s" % (padding[:4 - len(num)], scr)
 
 template = """
 {classname} Page Object
