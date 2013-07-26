@@ -4,7 +4,8 @@ from pages.Page import Page
 locators = {
     "make revision": 'css=a[href*=SegmentHomeMakeRevisionEvent]',
     "continue revision": "css=a[href*='SegmentHomeEditRevisionEvent']",
-    "sponsor notices": "link=Sponsor notices"
+    "sponsor notices": "link=Sponsor notices",
+    "confirm research team": "css=img[alt='Confirm research team']"
 }
 
 
@@ -30,3 +31,6 @@ class SCR0104b(Page):
     def goto_notices(self):
         self.find("sponsor notices").click()
         return self.load_page()
+
+    def confirm_research_team(self):
+        return self.go("confirm research team")

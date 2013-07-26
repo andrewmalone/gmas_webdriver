@@ -3,11 +3,15 @@ from pages.elements import Text
 
 
 class SCR0006(Page):
+    """
+    SCR_0006 Edit initial/competing budget
+    """
     locators = {
         "total_direct": "name=totalDirectCost",
         "total_indirect": "name=totalIndirectCost",
         "edit indirect": "name=EditProposedBudgetEditIndirectCostEvent",
         "editbox": "css=input[name$='__budgetEntryAmount']",
+        "next period": "css=input[title='Next period']",
         "ok": "name=EditProposedBudgetOKEvent"
     }
 
@@ -20,6 +24,9 @@ class SCR0006(Page):
             if elem.is_displayed() is True:
                 elem.send_keys(str)
                 break
+
+    def next(self):
+        return self.go("next period")
 
     def edit_indirect(self):
         # to SCR_0018
