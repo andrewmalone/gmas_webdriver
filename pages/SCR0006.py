@@ -18,19 +18,33 @@ class SCR0006(Page):
     total_direct = Text("total_direct", "Total direct cost")
     total_indirect = Text("total_indirect", "Total indirect cost")
 
-    def enter_first(self, str):
+    def enter_first(self, amount):
+        """
+        Enters a budget amount in the first available edit box
+        (only works with category/line item budgets)
+        """
         elems = self.finds("editbox")
         for elem in elems:
             if elem.is_displayed() is True:
-                elem.send_keys(str)
+                elem.send_keys(amount)
                 break
 
     def next(self):
+        """
+        Click the next period arrow
+        """
         return self.go("next period")
 
     def edit_indirect(self):
-        # to SCR_0018
+        """
+        Click <Edit indirect costs>
+        Goes to SCR_0018
+        """
         return self.go("edit indirect")
 
     def ok(self):
+        """
+        Click <Ok>
+        Goes to SCR_0031 or SCR_0104b
+        """
         return self.go("ok")
