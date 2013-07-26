@@ -75,5 +75,5 @@ def get_method_list(class_name):
 
     print template.format(**lookup)
 
-get_method_list("SCR" + scr)
+get_method_list(scr)
 
