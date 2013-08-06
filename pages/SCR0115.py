@@ -11,7 +11,9 @@ class SCR0115(Page):
         "initiate review": "css=a[href*='InitiateInternalReviewEvent'] img",
         "submit": "css=a[href*='SubmitToSponsorEvent'] img",
         "log notice": "css=img[alt='Log notice']",
-        "edit budget": "css=a[href*='EditProposedDollarsSummaryBudgetEvent'] img"
+        "edit budget": "css=a[href*='EditProposedDollarsSummaryBudgetEvent'] img",
+        "edit ggov questions": "css=a[href*='EditGrantsGovQuestionsEvent'] img",
+        "edit ggov attachments": "css=a[href*='EditGrantsGovAttachmentsEvent'] img"
     }
 
     def nav_to(self, segment_id, request_id):
@@ -67,3 +69,17 @@ class SCR0115(Page):
         Goes to SCR_0006, SCR_0493, SCR_0499, or SCR_0437
         """
         return self.go("edit budget")
+
+    def edit_attachments(self):
+        """
+        Click <edit> in the ggov attachements component
+        Goes to SCR_0610b
+        """
+        return self.go("edit ggov attachments")
+
+    def edit_questions(self):
+        """
+        Click <edit> in the ggov questions component
+        Goes to SCR_0612b
+        """
+        return self.go("edit ggov questions")
