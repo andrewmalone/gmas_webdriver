@@ -1,7 +1,7 @@
 from pages.Page import Page
 
 
-class PS_Element(object):
+class Q_Element(object):
     def __init__(self, label, doc):
         self.label = label
         self.__doc__ = doc
@@ -14,7 +14,7 @@ class PS_Element(object):
         return obj.find_element(locator)
 
 
-class PS_Text(PS_Element):
+class Q_Text(Q_Element):
     def __set__(self, obj, val):
         elem = self.find(obj)
         elem.clear()
@@ -24,11 +24,30 @@ class PS_Text(PS_Element):
         pass
 
 
-class PS_Select(PS_Element):
+class Q_Select(Q_Element):
     def __set__(self, obj, val):
         from selenium.webdriver.support.select import Select as WDSelect
         elem = WDSelect(self.find(obj))
         elem.select_by_visible_text(val)
+
+    def __get__(self, obj, type=None):
+        pass
+
+class Q_Radio(object):
+    def __init__(self, label, doc):
+        self.label = label
+        self.__doc__ = doc
+
+    def __set__(self, obj, val):
+        locator = "css=[name$='__questionDescription'][value='%s']" % self.label
+        elem = obj.find_element(locator)
+        name = elem.get_attribute("name").replace("__questionDescription", "__questionId")
+        locator = "name=%s" % name
+        q_id = obj.find_element(locator).get_attribute("value")
+        locator = "css=input[parent='radioResponse_%s']" % q_id
+        radios = obj.find_elements(locator)
+        radios[val].click()
+
 
     def __get__(self, obj, type=None):
         pass
@@ -48,17 +67,22 @@ class SCR0612b(Page):
         "add ps": "css=input[onclick*='sendAdditionalGroupId(\\'1\\')']"
     }
 
-    ps_organization_name = PS_Text("Organization Name:", "Performance site organization name (text)")
-    ps_duns = PS_Text("DUNS Number:", "Performance site DUNS (text)")
-    ps_street1 = PS_Text("Street 1:", "Performance site Street 1 (text)")
-    ps_street2 = PS_Text("Street 2:", "Performance site Street 2 (text)")
-    ps_city = PS_Text("City:", "Performance site City (text entry)")
-    ps_county = PS_Text("County:", "Performance site County (text entry)")
-    ps_state = PS_Select("State:", "Performance site State (dropdown)")
-    ps_province = PS_Text("Province:", "Performance site Province (text)")
-    ps_zip = PS_Text("Zip Code:", "Performance site zip code (text)")
-    ps_country = PS_Select("Country:", "Performance site country (dropdown)")
-    ps_district = PS_Text("Site Congressional District:", "Performance site congressional district (text)")
+    sf424_revision = Q_Radio("3. Is this a revision application?", "test")
+    sf424_other = Q_Radio("4. Is this application being submitted to other agencies/sponsors?", "test")
+    sf424_nonfed = Q_Text("5b.  Total non-federal funds", "test")
+    sf424_exec = Q_Radio("6. Is the application subject to review by state executive order 12372 process?", "test")
+
+    ps_organization_name = Q_Text("Organization Name:", "Performance site organization name (text)")
+    ps_duns = Q_Text("DUNS Number:", "Performance site DUNS (text)")
+    ps_street1 = Q_Text("Street 1:", "Performance site Street 1 (text)")
+    ps_street2 = Q_Text("Street 2:", "Performance site Street 2 (text)")
+    ps_city = Q_Text("City:", "Performance site City (text entry)")
+    ps_county = Q_Text("County:", "Performance site County (text entry)")
+    ps_state = Q_Select("State:", "Performance site State (dropdown)")
+    ps_province = Q_Text("Province:", "Performance site Province (text)")
+    ps_zip = Q_Text("Zip Code:", "Performance site zip code (text)")
+    ps_country = Q_Select("Country:", "Performance site country (dropdown)")
+    ps_district = Q_Text("Site Congressional District:", "Performance site congressional district (text)")
 
     def add_ps(self):
         """
