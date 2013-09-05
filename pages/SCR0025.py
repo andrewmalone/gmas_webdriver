@@ -12,7 +12,8 @@ class SCR0025(Page):
         "add address": "css=a[href*='PersonProfileAddAddressEvent'] img",
         "phones": "css=#phoneNumbersCCBODY tr:not(.bg3)",
         "addresses": "css=#addressesCCBODY tr:not(.bg3)",
-        "emails": "css=#emailAddressesCCBODY tr:not(.bg3)"
+        "emails": "css=#emailAddressesCCBODY tr:not(.bg3)",
+        "documents": "link=Documents"
     }
 
     def count_phones(self):
@@ -56,3 +57,10 @@ class SCR0025(Page):
         Goes to SCR_0411
         """
         return self.go("add address")
+
+    def goto_documents(self):
+        """
+        Click the "documents" link
+        Goes to SCR_0433
+        """
+        return self.go("documents")
