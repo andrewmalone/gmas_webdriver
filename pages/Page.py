@@ -4,7 +4,7 @@ Base class for Page objects
 
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
-from pages.modules import COM0500
+from pages.modules import COM0500, GMAS_Header
 
 import re
 
@@ -39,6 +39,7 @@ class Page(object):
         # set up some includes
         #TODO: There must be a better way to do this!
         self.project_snapshot = COM0500(self)
+        self.global_header = GMAS_Header(self)
 
     def find(self, locator, replace=False):
         """ Find an element """
