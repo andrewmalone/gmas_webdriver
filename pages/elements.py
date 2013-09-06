@@ -53,3 +53,26 @@ class Radio_refresh(Radio):
     def __set__(self, obj, val):
         super(Radio_refresh, self).__set__(obj, val)
         return obj
+
+
+class Checkbox(Element):
+    def __set__(self, obj, val):
+        elem = obj.find(self.locator)
+        if val == True:
+            if elem.get_attribute("checked") != "true":
+                elem.click()
+        if val == False:
+            if elem.get_attribute("checked") == "true":
+                elem.click()
+
+    def __get__(self, obj, cls=None):
+        pass
+
+
+class File(Element):
+    def __set__(self, obj, val):
+        elem = obj.find(self.locator)
+        elem.send_keys(val)
+
+    def __get__(self, obj, cls=None):
+        pass
