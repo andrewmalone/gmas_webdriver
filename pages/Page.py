@@ -128,3 +128,8 @@ class Page(object):
     def go(self, locator):
         self.find(locator).click()
         return self.load_page()
+
+    def goto_segment(self, segment_id):
+        url = "https://%s.harvard.edu/gmas/project/SCR0104SegmentHome.jsp?segmentId=%s" % (self.env, segment_id)
+        self.driver.get(url)
+        return self.load_page()
