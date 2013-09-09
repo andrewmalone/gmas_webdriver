@@ -14,7 +14,7 @@ class SCR0141a(Page):
 
     filename = File("file", """
         File path to upload (full local path with double backslashes)
-        example: p.file = "C:\\Users\\apm228\\Documents\\test.pdf"
+        example: p.file = "C:\\\\Users\\\\apm228\\\\Documents\\\\test.pdf"
         """)
     description = Text("description", "Textarea for description")
     readonly = Checkbox("readonly", "Readonly checkbox (set to True or False)")
