@@ -6,6 +6,7 @@ scr = raw_input("Screen: ")
 padding = '000'
 num = re.match(r'[0-9]{1,3}', scr).group(0)
 scr = "SCR%s%s" % (padding[:4 - len(num)], scr)
+print scr
 
 template = """
 {classname} Page Object
@@ -53,13 +54,15 @@ def get_method_list(class_name):
     for meth in inspect.getmembers(cls, inspect.ismethod):
         m_lookup = {}
         m = meth[1]
-        if get_class(m) != "Page" and m.__name__[0] != "_":
+        if get_class(m) != "Page" and get_class(m) != "GMWebElement" and m.__name__[0] != "_":
             name = m.__name__
+            #print name
             args = inspect.formatargspec(*inspect.getargspec(m))
             args = args.replace("self, ", "").replace("self", "")
             #print "%s%s" % (name, args)
             m_lookup["methodname"] = name + args
             find = r'SCR_([0-9]{4}[a-z]?)'
+
             repl = r'[SCR_\1|SCR\1 Page Object]'
             m_lookup["methoddoc"] = re.sub(find, repl, inspect.getdoc(m))
             lookup["methods"] += method_template.format(**m_lookup)
