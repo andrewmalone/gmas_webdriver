@@ -20,29 +20,8 @@ locator_map = {
 #TODO: Remove all sizzles!
 #TODO: Use composition for global nav (think about this...)
 
-
-class Page(object):
-    """
-    Page object class
-    """
-
-    def __init__(self, driver):
-        """
-        Parameters: webdriver object
-        """
-        self.env = driver.env
-        self.driver = driver
-        self.wait = 60
-        self.w = WebDriverWait(self.driver, self.wait)
-        self.w.until(lambda d: d.find_element_by_css_selector("td.footer"))
-
-        # set up some includes
-        #TODO: There must be a better way to do this!
-        self.project_snapshot = COM0500(self)
-        self.global_header = GMAS_Header(self)
-
+class GMWebElement(object):
     def find(self, locator, replace=False):
-        """ Find an element """
         locator = self.locators[locator]
         if replace:
             locator = locator.replace("REPLACE", str(replace))
@@ -75,6 +54,27 @@ class Page(object):
             return elements
         else:
             return self.driver.find_elements(locator_map[locator_type], locator_value)
+
+
+class Page(GMWebElement):
+    """
+    Page object class
+    """
+
+    def __init__(self, driver):
+        """
+        Parameters: webdriver object
+        """
+        self.env = driver.env
+        self.driver = driver
+        self.wait = 60
+        self.w = WebDriverWait(self.driver, self.wait)
+        self.w.until(lambda d: d.find_element_by_css_selector("td.footer"))
+
+        # set up some includes
+        #TODO: There must be a better way to do this!
+        self.project_snapshot = COM0500(self)
+        self.global_header = GMAS_Header(self)
 
     def get_current_page(self):
         elems = self.find_elements("css=td.footer")
