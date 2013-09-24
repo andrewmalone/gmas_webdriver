@@ -1,17 +1,24 @@
 from pages.Page import Page
+from pages.elements import Text, Select, Radio
 
-locators = {
-	"ok" : "name=EditSegmentRevisionAwardInformationDoneEvent",
-	"funding instrument" : "sizzle=select[name='fundingInstrument'] option:contains('REPLACE')"
-}
 
-class SCR0328(Page):		
+class SCR0328(Page):
+	locators = {
+		"ok" : "name=EditSegmentRevisionAwardInformationDoneEvent",
+		"funding instrument" : "name=fundingInstrument",
+		"payment method": "name=paymentMethodId",
+		"loc": "name=agencyLOCNumber",
+		"cfda": "name=cfdaNumber",
+		"arra": "css=input[name='arraFundingFlag']"
+	}
+
+	funding_instrument = Select("funding instrument")
+	payment_method = Select("payment method")
+	loc_number = Text("loc")
+	cfda = Text("cfda")
+	arra = Radio("arra")
+
+
 	def ok(self):
-		self.find_element(locators["ok"]).click()
-		# wait screen is here!
-		self.w.until(lambda d: d.find_element_by_css_selector("input[name=ref][value*=SCR0105]"))
-		from pages.SCR0105 import SCR0105
-		return SCR0105(self.driver)
+		return self.go("ok")
 		
-	def set_funding_instrument(self,fi):
-		self.find_element(locators["funding instrument"].replace("REPLACE",fi)).click()
