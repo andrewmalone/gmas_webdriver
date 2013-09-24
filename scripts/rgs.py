@@ -1,10 +1,4 @@
-#import helpers
-#d = helpers.init("Firefox", "gmastraining")
-#import helpers
-#d = helpers.init("Chrome", "gmasdev.cadm")
-
-
-def rgs(p, f=None):
+def rgs(p, f=None, finish="request"):
     if f is None:
         f = {
             # SCR_0088
@@ -80,8 +74,6 @@ def rgs(p, f=None):
             "appt_exp": "false"
         }
 
-    #from pages.SCR0270 import SCR0270
-    #p = SCR0270(d).nav_to()
     p = p.create_proposal()
 
     # SCR_0088
@@ -197,5 +189,9 @@ def rgs(p, f=None):
         p = p.ok()
 
     # SCR_0332
-    p = p.go_req()
+    if finish == "budget":
+        p = p.goto_budget()
+    else:
+        p = p.goto_request()
+
     return p
