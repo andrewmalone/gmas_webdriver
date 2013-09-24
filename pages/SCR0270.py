@@ -5,7 +5,8 @@ locators = {
     "create proposal": "css=a[href*=HomePageCreateProposalEvent]",
     "recent project dropdown": "id=s",
     "recently viewed projects": "xpath=//tr[td[a[contains(@href,'ProjectListSegmentHomeEvent')]]]",
-    "search": "name=projectSegmentSearchText"
+    "search box": "name=projectSegmentSearchText",
+    "search": "name=ProjectSearchEvent"
 }
 
 
@@ -28,7 +29,7 @@ class SCR0270(Page):
     SCR_0270 GMAS Home
     """
     locators = locators
-    search = Text("search", "Fund/project search box")
+    search_text = Text("search box", "Fund/project search box")
     recent_project_dropdown = Select("recent project dropdown", "Dropdown for recently viewed project")
 
     def nav_to(self):
@@ -63,3 +64,10 @@ class SCR0270(Page):
             if row.is_displayed():
                 tmp.append(recent_project(row))
         return tmp
+
+    def search(self):
+        """
+        Click the <Search> button
+        Goes to SCR_0001 or SCR_0104b
+        """
+        return self.go("search")
