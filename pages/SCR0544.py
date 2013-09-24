@@ -6,7 +6,8 @@ class SCR0544(Page):
     SCR_0544 School specific questions
     """
     locators = {
-        "next": "name=SchoolSpecificInformationNextEvent"
+        "next": "name=SchoolSpecificInformationNextEvent",
+        "save": "name=SchoolSpecificInformationSaveContinueLaterEvent"
     }
 
     def set_all_radios(self, value):
@@ -20,7 +21,14 @@ class SCR0544(Page):
     def ok(self):
         """
         Click <Next>
-        Goes to SCR_0612b or SCR_0322
+        Goes to SCR_0612b or SCR_0332
         """
         self.find("next").click()
         return self.load_page()
+
+    def save(self):
+        """
+        Click <Save and continue later>
+        Goes to SCR_0270
+        """
+        return self.go("save")
