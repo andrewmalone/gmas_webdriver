@@ -6,11 +6,12 @@ locators = {
     "organization type": "sizzle=select[name='organizationTypeString'] option:contains('REPLACE')",
     "search": "name=OrganizationLookupxEvent",
     "first result": "name=concatenatedOrganization",
-    "ok": "sizzle=a:has(img[name='OrganizationSearchOkEvent'])"
+    "ok": "name=OrganizationSearchOkEvent"
 }
 
 
 class SCR0536x(Page):
+    locators = locators
     def set_name(self, name):
         e = self.find_element(locators["organization"])
         e.clear()
@@ -43,7 +44,7 @@ class SCR0536x(Page):
 
     def ok(self):
         #self.find_element(locators["ok"]).click()
-        self.driver.execute_script("objectSelected()")
+        self.find("ok").click()
         # return to the main window
         self.driver.switch_to_window(self.driver.window_handles[0])
         # how do I know where I came from, and where I'm going back to? (maybe it doesn't matter)
