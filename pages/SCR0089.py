@@ -11,6 +11,9 @@ locators = {
     "pi": "name=piName",
     "pi lookup": "css=a[href*='piImage'] img",
     "pi lookup match": "css=img[name='piImage'][src$='i_match.gif']",
+    "mentor": "name=mentorInvestigatorName",
+    "mentor lookup": "css=a[href*='mentorValidatedImage'] img",
+    "mentor lookup match": "css=img[name='mentorValidatedImage'][src$='i_match.gif']",
     "prime pi": "name=primePiName",
     "prime pi lookup": "css=a[href*='primePiImage'] img",
     "prime pi lookup match": "css=img[name='primePiImage'][src$='i_match.gif']",
@@ -36,6 +39,16 @@ class Lookup_pi(object):
     def __get__(self, obj, type=None):
         pass
 
+
+class Lookup_mentor(object):
+    """
+    Performs the Mentor lookup - needs an HUID
+    """
+    def __set__(self, obj, val):
+        obj._lookup_mentor(val)
+
+    def __get__(self, obj, type=None):
+        pass
 
 class Lookup_sponsor(object):
     """
@@ -82,6 +95,8 @@ class SCR0089(Page):
     prime_sponsor = Lookup_prime_sponsor()
     pi_text = Text("pi", "PI name text input box")
     pi = Lookup_pi()
+    mentor_text = Text("mentor", "Mentor name text input box")
+    mentor = Lookup_mentor()
     prime_pi_text = Text("prime pi", "Prime PI name text input box")
     prime_pi = Lookup_prime_pi()
     a21 = Select("A21", "A21 dropdown")
@@ -114,6 +129,12 @@ class SCR0089(Page):
         self.pi_text = pi
         self.find("pi lookup").click()
         self.w.until(lambda e: self.find("pi lookup match"))
+        return self
+
+    def _lookup_mentor(self, mentor):
+        self.mentor_text = mentor
+        self.find("mentor lookup").click()
+        self.w.until(lambda e: self.find("mentor lookup match"))
         return self
 
     def _lookup_prime_pi(self, pi):

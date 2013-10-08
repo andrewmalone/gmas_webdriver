@@ -8,7 +8,8 @@ class SCR0098(Page):
     locators = {
         "PI link": "link=Principal Investigator",
         "add member": "name=RequestAddResearchTeamMemberEvent",
-        "next": "name=CreateResearchTeamNextEvent"
+        "next": "name=CreateResearchTeamNextEvent",
+        "mentor link": "link=Mentor"
     }
 
     def add_member(self):
@@ -26,6 +27,13 @@ class SCR0098(Page):
         """
         self.find("PI link").click()
         return self.load_page()
+
+    def edit_mentor(self):
+        """
+        Click the Mentor link
+        Goes to SCR_0365
+        """
+        return self.go("mentor link")
 
     def ok(self):
         """
