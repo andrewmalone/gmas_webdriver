@@ -3,6 +3,9 @@ from pages.elements import Text
 
 
 class SCR0465(Page):
+    """
+    SCR_0465 Edit request justification
+    """
     locators = {
         "justification": "name=requestJustification",
         "ok": "name=EditJustificationOKEvent"
