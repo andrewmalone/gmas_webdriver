@@ -6,7 +6,8 @@ locators = {
     "continue revision": "css=a[href*='SegmentHomeEditRevisionEvent']",
     "sponsor notices": "link=Sponsor notices",
     "confirm research team": "css=img[alt='Confirm research team']",
-    "documents": "link=Documents"
+    "documents": "link=Documents",
+    "create request": "css=a[href*='SegmentHomeCreateRequestEvent']"
 }
 
 
@@ -34,6 +35,13 @@ class SCR0104b(Page):
         self.w.until(lambda d: d.find_element_by_css_selector("input[name=ref][value*=SCR0105]"))
         from pages.SCR0105 import SCR0105
         return SCR0105(self.driver)
+
+    def create_request(self):
+        """
+        Clicks the <Create request> button
+        Goes to SCR_0472
+        """
+        return self.go("create request")
 
     def continue_revision(self):
         """
