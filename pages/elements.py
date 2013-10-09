@@ -1,7 +1,8 @@
 class Element(object):
-    def __init__(self, locator, doc="No documentation"):
+    def __init__(self, locator, doc="No documentation", mapping=None):
         self.locator = locator
         self.__doc__ = doc
+        self.mapping = mapping
 
 
 class Text(Element):
@@ -31,6 +32,8 @@ class Radio(Element):
     def __set__(self, obj, val):
         if "[value='REPLACE']" not in obj.locators[self.locator]:
             obj.locators[self.locator] += "[value='REPLACE']"  # this is kind of a hack?
+        if self.mapping != None:
+            val = self.mapping[val]
         elem = obj.find(self.locator, val)
         elem.click()
 
