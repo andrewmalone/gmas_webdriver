@@ -7,7 +7,8 @@ locators = {
     "sponsor notices": "link=Sponsor notices",
     "confirm research team": "css=img[alt='Confirm research team']",
     "documents": "link=Documents",
-    "create request": "css=a[href*='SegmentHomeCreateRequestEvent']"
+    "create request": "css=a[href*='SegmentHomeCreateRequestEvent']",
+    "research team": "link=Research staff"
 }
 
 
@@ -72,3 +73,10 @@ class SCR0104b(Page):
         Goes to SCR_0433
         """
         return self.go("documents")
+
+    def goto_research_team(self):
+        """
+        Clicks the "Research staff" link
+        Goes to SCR_0015
+        """
+        return self.go("research team")

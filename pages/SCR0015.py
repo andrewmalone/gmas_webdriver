@@ -2,7 +2,8 @@ from pages.Page import Page
 
 locators = {
     "add team member": "name=AddTeamMemberEvent",
-    "PI link": "link=Principal Investigator"
+    "PI link": "link=Principal Investigator",
+    "edit team": "name=EditResearchTeamButton"
 }
 
 
@@ -41,3 +42,10 @@ class SCR0015(Page):
         elems = self.find_elements("css=a[href*='ResearchTeamMemberViewEvent']")
         elems[num].click()
         return self.load_page()
+
+    def edit_team(self):
+        """
+        Click the <Edit research team button>
+        Goes to SCR_0649
+        """
+        return self.go("edit team")
