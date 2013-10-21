@@ -37,13 +37,21 @@ def loginGMAS(driver, env):
     driver.find_element_by_css_selector("input.login-button[type=submit][value=Login]").click()
 
 
-def init(browser, env, splitscreen=False):
+def init(browser, env, splitscreen=False, position="full"):
     # this is so that imports will work (there's probably a better way)
     sys.path.append(os.path.dirname(os.path.abspath(__file__)))
     d = startBrowser(browser)
     if splitscreen is True:
         d.set_window_position(1500,0)
-        d.maximize_window()
+        if position == "full":
+            d.maximize_window()
+        if position == "left" or position == "right":
+            d.maximize_window()
+            size = d.get_window_size()
+            pos = d.get_window_position()
+            d.set_window_size(size["width"]/2, size["height"])
+            x = pos["x"] if position == "left" else pos["x"] + size["width"]/2
+            d.set_window_position(x, pos["y"])
     d.env = env
     loginGMAS(d, d.env)
     from pages.SCR0270 import SCR0270
