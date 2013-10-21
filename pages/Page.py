@@ -113,6 +113,18 @@ class Page(GMWebElement):
         cls = getattr(importlib.import_module("pages.%s" % (page)), page)
         return cls(self.driver)
 
+    def refresh(self):
+        """
+        Reloads the current page object from disk (for debugging)
+        """
+        import sys
+        import importlib
+        page = self.__class__.__name__
+        module = "pages.%s" % self.__class__.__name__
+        reload(sys.modules[module])
+        cls = getattr(importlib.import_module("pages.%s" % (page)), page)
+        return cls(self.driver)
+
     def get_id(self, id_name):
         # This will only work if the ID is in a hidden input field
         locator = "css=input[type='hidden'][name='%sId']" % (id_name)
