@@ -17,3 +17,7 @@ class SCR0001(Page):
         elem = self.finds("result")[0]
         elem.click()
         return self.load_page()
+
+    def new(self):
+        # testing conflict resolution
+        pass
