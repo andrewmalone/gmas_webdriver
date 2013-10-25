@@ -110,6 +110,7 @@ class Page(GMWebElement):
                 page = "SCR0104b"
             elif self.get_current_page() == "SCR0104ProjectHome":
                 page = "SCR0104a"
+        if page == "SCR0089a": page = "SCR0089"
         cls = getattr(importlib.import_module("pages.%s" % (page)), page)
         return cls(self.driver)
 
