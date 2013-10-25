@@ -24,14 +24,14 @@ class Lookup_basic(Lookup):
 
 class Lookup_org(Lookup_basic):
     """
-    Org lookup excepts a 5 digit org value
+    Org lookup expects a 5 digit org value
     """
     pass
 
 
 class Lookup_person(Lookup_basic):
     """
-    Person lookup excepts an 8 digit HUID
+    Person lookup expects an 8 digit HUID
     """
     pass
 
