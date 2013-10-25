@@ -43,15 +43,15 @@ def init(browser, env, splitscreen=False, position="full"):
     d = startBrowser(browser)
     if splitscreen is True:
         d.set_window_position(1500,0)
-        if position == "full":
-            d.maximize_window()
-        if position == "left" or position == "right":
-            d.maximize_window()
-            size = d.get_window_size()
-            pos = d.get_window_position()
-            d.set_window_size(size["width"]/2, size["height"])
-            x = pos["x"] if position == "left" else pos["x"] + size["width"]/2
-            d.set_window_position(x, pos["y"])
+    if position == "full":
+        d.maximize_window()
+    if position == "left" or position == "right":
+        d.maximize_window()
+        size = d.get_window_size()
+        pos = d.get_window_position()
+        d.set_window_size(size["width"]/2, size["height"])
+        x = pos["x"] if position == "left" else pos["x"] + size["width"]/2
+        d.set_window_position(x, pos["y"])
     d.env = env
     loginGMAS(d, d.env)
     from pages.SCR0270 import SCR0270
