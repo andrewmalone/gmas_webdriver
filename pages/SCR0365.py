@@ -1,5 +1,6 @@
 from pages.Page import Page
 from pages.elements import Select, Radio, Text
+from pages.lookups import Lookup_person
 
 
 class SCR0365(Page):
@@ -10,8 +11,6 @@ class SCR0365(Page):
         "hs": "css=input[name='isHumanSubjectInvolved']",
         "role": "name=roleId",
         "person input": "name=personName",
-        "person lookup": "css=a[href*='researchTeamMemberImage'] img",
-        "person lookup match": "css=img[name='researchTeamMemberImage'][src*='i_match.gif']",
         "key": "css=[name='KeyPersonnel']",
         "investigator": "css=[name='phsInvestigationFlag']",
         "ok": "name=ResearchTeamMemberOKEvent"
@@ -21,21 +20,12 @@ class SCR0365(Page):
     human_subjects = Radio("hs", "Human subjects radio button (true/false)")
     key = Radio("key", "Key person radio button (true/false)")
     person_text = Text("person input", "Text box for person name/HUID")
+    person = Lookup_person(person_text, "researchTeamMemberImage", "Research team member lookup")
     investigator = Radio("investigator", "Investigator radio button (true/false)")
-
-    def lookup_person(self, huid):
-        """
-        Enters and HUID and does the person lookup (will only work with HUID)
-        """
-        self.person_text = huid
-        self.find("person lookup").click()
-        self.w.until(lambda e: self.find("person lookup match"))
-        return self
 
     def ok(self):
         """
         Click <Ok>
         Goes to SCR_0098
         """
-        self.find("ok").click()
-        return self.load_page()
+        return self.go("ok")
