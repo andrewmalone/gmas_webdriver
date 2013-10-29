@@ -22,7 +22,8 @@ class SCR0089(Page):
         "comment": None,
         "cancel": None,
         "back": None,
-        "next": "name=CreateInitialRequestNextEvent"
+        "next": "name=CreateInitialRequestNextEvent",
+        "nothing": None
     }
     title = Text("title", "Project title")
     sponsor_text = Text("sponsor", "Sponsor name text input")
