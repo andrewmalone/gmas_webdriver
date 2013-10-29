@@ -47,3 +47,6 @@ class Lookup_organization(Lookup):
         popup = obj.load_page()
         popup.select_first_result()
         popup.ok()
+
+
+# TODO: implement opportunity lookup

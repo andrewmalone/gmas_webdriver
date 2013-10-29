@@ -1,8 +1,12 @@
 from pages.Page import Page
 from pages.elements import Text, Select
+from pages.lookups import Lookup_person
 
 
 class SCR0401(Page):
+    """
+    SCR_0401 Request submission
+    """
     locators = {
         "date received": "name=dateReceivedByCentral",
         "date submitted": "name=requestSentDate",
@@ -13,21 +17,15 @@ class SCR0401(Page):
         "ok": "name=EditSubmittedOKEvent"
     }
 
-    class Lookup_person(object):
-        def __set__(self, obj, val):
-            obj.lookup_person(val)
-
-    person_text = Text("person")
-    method = Select("method")
-    date_received = Text("date received")
-    date_submitted = Text("date submitted")
-    submitted_by = Lookup_person()
-
-    def lookup_person(self, huid):
-        self.person_text = huid
-        self.find("person lookup").click()
-        self.w.until(lambda e: self.find("person lookup match"))
-        return self
+    person_text = Text("person", "Text input for submitted by person")
+    method = Select("method", "Method sent dropdown")
+    date_received = Text("date received", "Date received (text)")
+    date_submitted = Text("date submitted", "Date submitted (text)")
+    submitted_by = Lookup_person(person_text, "personLookupImage", "Submitted by person lookup")
 
     def ok(self):
+        """
+        Click <Ok>
+        Goes to SCR_0115
+        """
         return self.go("ok")

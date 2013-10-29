@@ -11,7 +11,6 @@ class SCR0089(Page):
         "title": "name=requestTitle",
         "sponsor": "name=sponsor",
         "prime sponsor": "name=primeSponsor",
-        "prime sponsor lookup": "css=a[href*='primeSponsorValidatedImage'] img",
         "pi": "name=piName",
         "mentor": "name=mentorInvestigatorName",
         "prime pi": "name=primePiName",

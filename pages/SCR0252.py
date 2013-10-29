@@ -1,13 +1,12 @@
+# TODO: Add doc strings
 from pages.Page import Page
-from pages.elements import Select
+from pages.elements import Select, Text, Radio
+from pages.lookups import Lookup_person
 
 locators = {
-    "role selection": "css=select[name='role'] option:contains('REPLACE')",
     "role": "name=role",
-    "appt selection": "sizzle=select[name='appointment'] option:contains('REPLACE')",
+    "appt": "name=appointment",
     "name input": "name=personName",
-    "name lookup": "css=img[title='Lookup']",
-    "name match": "css=img[name='personLookupImage'][src*='i_match.gif']",
     "human subjects": "css=[name='isMemberInvolvedWithHumanSubjects'][value='REPLACE']",
     "PHS": "css=[name='isMemberPHSInvestigator'][value='REPLACE']",
     "effort": "css=input[name$='__effort']",
@@ -21,6 +20,11 @@ locators = {
 class SCR0252(Page):
     locators = locators
     role = Select("role")
+    appt = Select("appt")
+    name_text = Text("name input", "Text entry field for person name")
+    name = Lookup_person(name_text, 'personLookupImage', "Research team person lookup")
+    human_subjects = Radio("human subjects", "Human subjects radio button")
+    phs = Radio("PHS", "PHS investigator radio button")
 
     def _set_budget_field(self, val, elems):
         l = []
@@ -36,29 +40,13 @@ class SCR0252(Page):
             # TODO: investigate a cleaner way to handle this
             self.driver.execute_script("notifyField(arguments[0])", elem.get_attribute("name"))
 
-    def select_role(self, role):
-        self.find_element(locators["role selection"].replace("REPLACE", role)).click()
-
-    def lookup_huid(self, huid):
-        elem = self.find_element(locators["name input"])
-        elem.clear()
-        elem.send_keys(huid)
-        self.find_element(locators["name lookup"]).click()
-        self.w.until(lambda e: self.find_element(locators["name match"]))
-        # try to account for page load?
-        return SCR0252(self.driver)
-
-    def select_appt(self, appt):
-        self.find_element(locators["appt selection"].replace("REPLACE", appt)).click()
-        # try to account for page load...
-        return SCR0252(self.driver)
-
     def set_human_subjects(self, val):
         self.find_element(locators["human subjects"].replace("REPLACE", val)).click()
 
     def set_phs(self, val):
         self.find_element(locators["PHS"].replace("REPLACE", val)).click()
 
+    # TODO: make this cleaner (make into a descriptor?)
     def set_effort(self, val):
         self._set_budget_field(val, self.finds("effort"))
 
@@ -78,6 +66,4 @@ class SCR0252(Page):
                 elem.click()
 
     def ok(self):
-        self.find_element(locators["ok"]).click()
-        from pages.SCR0015 import SCR0015
-        return SCR0015(self.driver)
+        return self.go("ok")
