@@ -1,9 +1,14 @@
+#TODO - refactor to move return objects to more common methods
 class Element(object):
     def __init__(self, locator, doc="No documentation", mapping=None):
         self.locator = locator
         self.__doc__ = doc
         self.mapping = mapping
+        # self.r = self.returnObj("")
 
+    class returnObj(str):
+        def is_displayed(self):
+            return self.element.is_displayed()
 
 class Text(Element):
     def __set__(self, obj, val):
@@ -13,7 +18,9 @@ class Text(Element):
 
     def __get__(self, obj, type=None):
         elem = obj.find(self.locator)
-        return elem.get_attribute("value")
+        r = self.returnObj(elem.get_attribute("value"))
+        r.element = elem
+        return r
 
 
 class Select(Element):
@@ -25,8 +32,11 @@ class Select(Element):
     def __get__(self, obj, type=None):
         from selenium.webdriver.support.select import Select as WDSelect
         elem = WDSelect(obj.find(self.locator))
-        return elem.first_selected_option.text
-
+        r = self.returnObj(elem.first_selected_option.text)
+        r.element = obj.find(self.locator)
+        r.p = self
+        return r
+ 
 
 class Radio(Element):
     def __set__(self, obj, val):

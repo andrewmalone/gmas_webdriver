@@ -76,6 +76,8 @@ def get_method_list(class_name):
             d_lookup["descriptor_doc"] = inspect.getdoc(o)
             lookup["descriptors"] += descriptor_template.format(**d_lookup)
 
+    # TODO: add in getting doc strings from internal classes
+
     print template.format(**lookup)
 
 get_method_list(scr)
