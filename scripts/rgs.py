@@ -86,7 +86,6 @@ def rgs(p, f=None, finish="request"):
                 #     "huid": "03750003",
                 #     "role": "Other",
                 #     "other_role_description": "school bus driver",
-                #     "other_role_description": "school bus driver",
                 #     "key": "false",
                 #     "investigator": "true",
                 #     "hs": "false"
