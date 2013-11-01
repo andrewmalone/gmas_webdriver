@@ -84,7 +84,8 @@ def rgs(p, f=None, finish="request"):
                 # },
                 # {
                 #     "huid": "03750003",
-                #     "role": "Analyst",
+                #     "role": "Other",
+                #     "other_role_description": "school bus driver",
                 #     "key": "false",
                 #     "investigator": "true",
                 #     "hs": "false"
@@ -228,7 +229,8 @@ def rgs(p, f=None, finish="request"):
         for person in f["research team"]:
             p = p.add_member()
             p.role = person["role"]
-            p.other_role_description = person["other_role_description"]
+            if person["role"] == "Other":
+                p.other_role_description = person["other_role_description"]
             p.lookup_person(person["huid"])
             p.key = person["key"]
             p.human_subjects = person["hs"]
