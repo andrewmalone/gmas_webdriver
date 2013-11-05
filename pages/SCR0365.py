@@ -10,6 +10,7 @@ class SCR0365(Page):
     locators = {
         "hs": "css=input[name='isHumanSubjectInvolved']",
         "role": "name=roleId",
+        "other role description": "name=otherRoleDescription",
         "person input": "name=personName",
         "key": "css=[name='KeyPersonnel']",
         "investigator": "css=[name='phsInvestigationFlag']",
@@ -17,6 +18,7 @@ class SCR0365(Page):
     }
 
     role = Select("role", "Role dropdown")
+    other_role_description = Text("other role description", "Text box for other role description")
     human_subjects = Radio("hs", "Human subjects radio button (true/false)")
     key = Radio("key", "Key person radio button (true/false)")
     person_text = Text("person input", "Text box for person name/HUID")
