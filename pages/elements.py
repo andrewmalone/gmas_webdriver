@@ -10,11 +10,16 @@ class Element(object):
         def is_displayed(self):
             return self.element.is_displayed()
 
+        def is_enabled(self):
+            return self.element.is_enabled()
+
 class Text(Element):
     def __set__(self, obj, val):
         elem = obj.find(self.locator)
         elem.clear()
         elem.send_keys(val)
+        # fire the onchange!
+        elem.parent.execute_script("arguments[0].onchange()", elem)
 
     def __get__(self, obj, type=None):
         elem = obj.find(self.locator)
