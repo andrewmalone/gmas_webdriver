@@ -6,7 +6,10 @@ locators = {
     "recent project dropdown": "id=s",
     "recently viewed projects": "xpath=//tr[td[a[contains(@href,'ProjectListSegmentHomeEvent')]]]",
     "search box": "name=projectSegmentSearchText",
-    "search": "name=ProjectSearchEvent"
+    "search": "name=ProjectSearchEvent",
+    "loc": "link=Letter of Credit",
+    "documents": "name=g_documentsoff",
+    "organizations": "name=g_organizations"
 }
 
 
@@ -71,3 +74,24 @@ class SCR0270(Page):
         Goes to SCR_0001 or SCR_0104b
         """
         return self.go("search")
+
+    def goto_loc(self):
+        """
+        Clicks the "Letter of Credit" link
+        Goes to SCR_0630
+        """
+        return self.go("loc")
+
+    def goto_doc_clipboard(self):
+        """
+        Clicks the "Documents" link
+        Goes to SCR_0139
+        """
+        return self.go("documents")  
+
+    def goto_organizations(self):
+        """
+        Clicks the "organizations" link
+        Goes to SCR_0067
+        """
+        return self.go("organizations")  
