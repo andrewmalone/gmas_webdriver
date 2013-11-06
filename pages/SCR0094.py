@@ -19,7 +19,7 @@ class SCR0094(Page):
     start = Text("start", "IFI start date")
     end = Text("end", "IFI end date")
     org = Lookup_org(org_text, "picture", "IFI Org")
-    pi = Lookup_person(pi_text, "piImage" "IFI PI")
+    pi = Lookup_person(pi_text, "piImage", "IFI PI")
 
     def ok(self):
         """
