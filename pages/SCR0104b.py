@@ -6,8 +6,11 @@ locators = {
     "continue revision": "css=a[href*='SegmentHomeEditRevisionEvent']",
     "sponsor notices": "link=Sponsor notices",
     "confirm research team": "css=img[alt='Confirm research team']",
-    "documents": "link=Documents",
     "create request": "css=a[href*='SegmentHomeCreateRequestEvent']",
+    "documents": "link=Documents",
+    "approvals": "link=Approvals",
+    "notices": "link=Sponsor notices",
+    "subagreements": "link=Subagreements",
     "research team": "link=Research staff"
 }
 
@@ -73,6 +76,27 @@ class SCR0104b(Page):
         Goes to SCR_0433
         """
         return self.go("documents")
+	
+    def goto_approvals(self):
+        """
+        Clicks the "Approvals" link
+        Goes to SCR_0080
+        """
+        return self.go("approvals")
+
+    def goto_notices(self):
+        """
+        Clicks the "Sponsor notices" link
+        Goes to SCR_0308
+        """
+        return self.go("notices")
+
+    def goto_subagreements(self):
+        """
+        Clicks the "Subagreements" link
+        Goes to SCR_0232
+        """
+        return self.go("subagreements")
 
     def goto_research_team(self):
         """
