@@ -7,6 +7,7 @@ class SCR0115(Page):
     """
     locators = {
         "document count": "xpath=//div[@id='DocRepositoryComponentCCBODY']/preceding-sibling::*[1]//tr[1]/td[4]",
+        "documents": "link=Documents",
         "research staff": "link=Research staff",
         "initiate review": "css=a[href*='InitiateInternalReviewEvent'] img",
         "submit": "css=a[href*='SubmitToSponsorEvent'] img",
@@ -30,6 +31,13 @@ class SCR0115(Page):
         """
         count = self.find("document count").text
         return count[:count.find(" ")]
+
+    def goto_documents(self):
+        """
+        Click the "Documents" link
+        Goes to SCR_0433
+        """
+        return self.go("documents")
 
     def goto_research_team(self):
         """
