@@ -231,7 +231,7 @@ def rgs(p, f=None, finish="request"):
             p.role = person["role"]
             if person["role"] == "Other":
                 p.other_role_description = person["other_role_description"]
-            p.lookup_person(person["huid"])
+            p.person = person["huid"]
             p.key = person["key"]
             p.human_subjects = person["hs"]
             if person["key"] == "false" and p.investigator is True:
