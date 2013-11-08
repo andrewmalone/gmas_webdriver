@@ -57,3 +57,18 @@ def init(browser, env, splitscreen=False, position="full"):
     from pages.SCR0270 import SCR0270
     p = SCR0270(d).nav_to()
     return p
+
+
+def highlight(element):
+    """Highlights (blinks) a Webdriver element.
+    In pure javascript, as suggested by https://github.com/alp82.
+    """
+    driver = element.parent
+    driver.execute_script("""
+        element = arguments[0];
+        original_style = element.getAttribute('style');
+        element.setAttribute('style', original_style + "; background: yellow; border: 2px solid red;");
+        setTimeout(function(){
+            element.setAttribute('style', original_style);
+        }, 500);
+    """, element)

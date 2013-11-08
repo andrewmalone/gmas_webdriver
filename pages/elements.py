@@ -18,8 +18,9 @@ class Text(Element):
         elem = obj.find(self.locator)
         elem.clear()
         elem.send_keys(val)
-        # fire the onchange!
-        elem.parent.execute_script("arguments[0].onchange()", elem)
+        # fire the onchange! 
+        # TODO - figure out if there's a non-javascript webdriver native way to do this...
+        elem.parent.execute_script("if (arguments[0].onchange) arguments[0].onchange();", elem)
 
     def __get__(self, obj, type=None):
         elem = obj.find(self.locator)

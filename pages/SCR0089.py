@@ -1,5 +1,3 @@
-#testing git workflows
-
 from pages.Page import Page
 from pages.elements import Text, Select, Radio
 from pages.lookups import Lookup_person, Lookup_organization
@@ -24,8 +22,7 @@ class SCR0089(Page):
         "comment": None,
         "cancel": None,
         "back": None,
-        "next": "name=CreateInitialRequestNextEvent",
-        "nothing": None
+        "next": "name=CreateInitialRequestNextEvent"
     }
     title = Text("title", "Project title")
     sponsor_text = Text("sponsor", "Sponsor name text input")
