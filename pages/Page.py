@@ -16,8 +16,6 @@ locator_map = {
     "xpath": By.XPATH
 }
 
-#TODO: Move "wait for screen" behavior to a common page method
-#TODO: Remove all sizzles!
 #TODO: Use composition for global nav (think about this...)
 
 class GMWebElement(object):
@@ -84,9 +82,8 @@ class Page(GMWebElement):
 
     def load_page(self):
         import importlib
-        # from pages.pagenames import names
         #TODO: this method assumes we can match based on the footer names. Need to account for any exceptions
-        # except ImportError
+
         # make sure we aren't on the wait screen
         self.w.until(lambda e: len(e.find_elements_by_css_selector("script[src$='waitScreen.js']")) == 0)
         self.w.until(lambda d: d.find_element_by_css_selector("td.footer"))
