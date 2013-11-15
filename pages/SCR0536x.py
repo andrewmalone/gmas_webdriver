@@ -1,50 +1,36 @@
 # POPUP screen!
 from pages.Page import Page
-
-locators = {
-    "organization": "name=organizationSearchString",
-    "organization type": "sizzle=select[name='organizationTypeString'] option:contains('REPLACE')",
-    "search": "name=OrganizationLookupxEvent",
-    "first result": "name=concatenatedOrganization",
-    "ok": "name=OrganizationSearchOkEvent"
-}
+from pages.elements import Select, Text
 
 
 class SCR0536x(Page):
-    locators = locators
-    def set_name(self, name):
-        e = self.find_element(locators["organization"])
-        e.clear()
-        e.send_keys(name)
+    """
+    SCR_0536x Organization search popup
+    """
+    locators = {
+        "organization": "name=organizationSearchString",
+        "organization type": "name=organizationTypeString",
+        "search": "name=OrganizationLookupxEvent",
+        "first result": "name=concatenatedOrganization",
+        "ok": "name=OrganizationSearchOkEvent"
+    }
 
-    def select_type(self, type):
-        # This is a hack...
-        #helpers.ss(self.driver,"x")
-        #self.w.until(lambda d: d.find_element_by_css_selector("select[name='organizationTypeString']"))
-        #helpers.ss(self.driver,"y")
-        self.find_element(locators["organization type"].replace("REPLACE", type)).click()
+    organization_type = Select("organization type", "Dropdown for organization type")
+    name = Text("organization", "Text entry for organization name")
 
     def search(self):
-        from selenium.common.exceptions import WebDriverException
-        try:
-            self.find_element(locators["search"]).click()
-        except WebDriverException:
-            # Getting some errors in Ghostdriver - trying to work around them
-            self.find_element(locators["search"]).click()
-        return self
-        #return SCR0536x(self.driver)
+        return self.go("search")
 
     def select_first_result(self):
+        # why is this here? I don't remember!
         from selenium.common.exceptions import NoSuchElementException
         try:
-            self.find_element(locators["first result"]).click()
+            self.find("first result").click()
         except NoSuchElementException:
             print "error!"
-            self.find_element(locators["first result"]).click()
+            self.find("first result").click()
 
     def ok(self):
-        #self.find_element(locators["ok"]).click()
         self.find("ok").click()
         # return to the main window
         self.driver.switch_to_window(self.driver.window_handles[0])
-        # how do I know where I came from, and where I'm going back to? (maybe it doesn't matter)
