@@ -14,4 +14,4 @@ class SCR0509(Page):
         Click <Next>
         Goes to SCR_0487
         """
-        self.go("next")
+        return self.go("next")
