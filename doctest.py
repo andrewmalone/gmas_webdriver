@@ -68,7 +68,8 @@ def get_method_list(class_name):
             lookup["methods"] += method_template.format(**m_lookup)
 
     # list of descriptors
-    for obj in cls.__dict__:
+    for obj in sorted(cls.__dict__):
+        print obj, type(obj)
         d_lookup = {}
         if inspect.isdatadescriptor(cls.__dict__[obj]):
             o = cls.__dict__[obj]
