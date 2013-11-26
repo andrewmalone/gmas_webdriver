@@ -6,7 +6,6 @@ scr = raw_input("Screen: ")
 padding = '000'
 num = re.match(r'[0-9]{1,3}', scr).group(0)
 scr = "SCR%s%s" % (padding[:4 - len(num)], scr)
-print scr
 
 template = """
 {classname} Page Object
@@ -69,7 +68,6 @@ def get_method_list(class_name):
 
     # list of descriptors
     for obj in sorted(cls.__dict__):
-        print obj, type(obj)
         d_lookup = {}
         if inspect.isdatadescriptor(cls.__dict__[obj]):
             o = cls.__dict__[obj]
