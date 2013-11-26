@@ -14,7 +14,8 @@ class SCR0115(Page):
         "log notice": "css=img[alt='Log notice']",
         "edit budget": "css=a[href*='EditProposedDollarsSummaryBudgetEvent'] img",
         "edit ggov questions": "css=a[href*='EditGrantsGovQuestionsEvent'] img",
-        "edit ggov attachments": "css=a[href*='EditGrantsGovAttachmentsEvent'] img"
+        "edit ggov attachments": "css=a[href*='EditGrantsGovAttachmentsEvent'] img",
+        "prepare ggov submission": "css=a[href*='PrepareGrantsGovSubmissionEvent'] img"
     }
 
     def nav_to(self, segment_id, request_id):
@@ -91,3 +92,10 @@ class SCR0115(Page):
         Goes to SCR_0612b
         """
         return self.go("edit ggov questions")
+
+    def prepare_ggov_submission(self):
+        """
+        Click <Prepare Grants.gov submission>
+        Goes to SCR_0609
+        """
+        return self.go("prepare ggov submission")
