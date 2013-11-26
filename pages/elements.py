@@ -20,7 +20,9 @@ class Text(Element):
         elem.send_keys(val)
         # fire the onchange! 
         # TODO - figure out if there's a non-javascript webdriver native way to do this...
-        elem.parent.execute_script("if (arguments[0].onchange) arguments[0].onchange();", elem)
+        # There's a bug on SCR_0617 that throws a javascript error in the onchange event.
+        if ("SCR0617" not in obj.get_current_page()):
+            elem.parent.execute_script("if (arguments[0].onchange) arguments[0].onchange();", elem)
 
     def __get__(self, obj, type=None):
         elem = obj.find(self.locator)
