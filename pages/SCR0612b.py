@@ -39,7 +39,7 @@ class Q_Radio(object):
         self.__doc__ = doc
 
     def __set__(self, obj, val):
-        locator = "css=input[parent='radioResponse_%s']" % self.id
+        locator = "css=input[name='radioResponse_%s']" % self.id
         radios = obj.find_elements(locator)
         radios[val - 1].click()
 
@@ -60,14 +60,25 @@ class SCR0612b(Page):
         "add ps": "css=input[onclick*='sendAdditionalGroupId(\\'1\\')']"
     }
 
-    sf424_1 = Q_Text(3287353,"Federal Identifier (text)")
-    sf424_2 = Q_Text(3287354,"Agency Routing number (text)")
-    sf424_3 = Q_Radio(3287355,"Revision application (radio)")
-    sf424_4 = Q_Radio(3287359,"Other agencies? (radio)")
-    sf424_4a = Q_Text(3287361,"Other agency (text)")
-    sf424_5b = Q_Text(3287366,"Total non-federal funds (text)")
-    sf424_6 = Q_Radio(3287368,"State executive order (radio)")
-    sf424_6a = Q_Text(3287370,"Review date (text)")
+    sf424_1 = Q_Text(3287353, "Federal Identifier (text)")
+    sf424_2 = Q_Text(3287354, "Agency Routing number (text)")
+    sf424_3 = Q_Radio(3287356, "Revision application (radio)")
+    sf424_4 = Q_Radio(3287359, "Other agencies? (radio)")
+    sf424_4a = Q_Text(3287361, "Other agency (text)")
+    sf424_5b = Q_Text(3287366, "Total non-federal funds (text)")
+    sf424_6 = Q_Radio(3287368, "State executive order (radio)")
+    sf424_6a = Q_Text(3287370, "Review date (text)")
+
+    rr_other_1 = Q_Radio(3158590, "Proprietary/priveleged info (radio)")
+    rr_other_2 = Q_Radio(3158593, "Environmental imact (radio")
+    rr_other_2a = Q_Text(3158595, "Environmental explanation (text)")
+    rr_other_2b = Q_Radio(3158596, "Environmental exception (radio)")
+    rr_other_2c = Q_Text(3158598, "Environmental exception explanation (text)")
+    rr_other_3 = Q_Radio(3158601, "Historic site (radio)")
+    rr_other_3a = Q_Text(3158603, "Historic site explanation (text)")
+    rr_other_4 = Q_Radio(3158605, "International activities (radio)")
+    rr_other_4a = Q_Text(3158607, "Identify countries (text)")
+    rr_other_4b = Q_Text(3158608, "International explanation (text)")
 
     ps_organization = Q_Text(3300710,"Performance site organization name (text)")
     ps_duns = Q_Text(3300711, "Performance site DUNS (text)")
