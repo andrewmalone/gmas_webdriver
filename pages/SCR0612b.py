@@ -92,6 +92,22 @@ class SCR0612b(Page):
     ps_country = Q_Select(3300719,"Performance site country (dropdown)")
     ps_district = Q_Text(3300720, "Performance site congressional district (text)")
 
+    phs_cover_1a1 = Q_Radio(3301625, "Clinical trial (radio)")
+    phs_cover_1a2 = Q_Radio(3301628, "Phase III Clinical trial (radio)")
+    phs_cover_2 = Q_Radio(3301663, "Disclosure permission (radio)")
+    phs_cover_cell_line = Q_Text(3301640, "Cell line (text)")
+    # TODO - add checkbox!
+    phs_cover_4 = Q_Radio(3301668, "Inventions and Patents (radio)")
+    phs_cover_4a = Q_Radio(3301670, "Inventions previously reported (radio)")
+    phs_cover_5 = Q_Radio(3301648, "Change of investigator (radio)")
+    phs_cover_5a_prefix = Q_Select(3301650, "Prefix (dropdown)")
+    phs_cover_5a_firstname = Q_Text(3301651, "First name (text)")
+    phs_cover_5a_middlename = Q_Text(3301652, "Middle name (text)")
+    phs_cover_5a_lastname = Q_Text(3301653, "Last name (text)")
+    phs_cover_5a_suffix = Q_Select(3301654, "Suffix (dropdown)")
+    phs_cover_6 = Q_Radio(3301655, "Change of institution (radio)")
+    phs_cover_6a = Q_Text(3301656, "Institution name (text)")
+
     def add_ps(self):
         """
         Click the <Add> button for performance site (returns a new page object)
