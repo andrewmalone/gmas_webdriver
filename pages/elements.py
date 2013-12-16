@@ -21,7 +21,11 @@ class Text(Element):
         # fire the onchange! 
         # TODO - figure out if there's a non-javascript webdriver native way to do this...
         # There's a bug on SCR_0617 that throws a javascript error in the onchange event.
-        if ("SCR0617" not in obj.get_current_page()):
+        try:
+            screen = obj.get_current_page()
+        except AttributeError:
+            screen = ""
+        if "SCR0617" not in screen:
             elem.parent.execute_script("if (arguments[0].onchange) arguments[0].onchange();", elem)
 
     def __get__(self, obj, type=None):
