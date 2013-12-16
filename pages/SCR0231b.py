@@ -1,5 +1,6 @@
 from pages.Page import Page
 from pages.elements import Text, Radio, Radio_refresh
+# TODO - add mapping for due dates, next screen for continuation
 
 locators = {
     "due date": "name=dueToSponsorDate",

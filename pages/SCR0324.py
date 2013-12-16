@@ -10,6 +10,7 @@ locators = {
 	"sponsor" : "name=sponsorName",
 	"prime sponsor" : "name=primeSponsorName",
 	"ok" : "name=EditSponsorInfoDoneEvent",
+	"next": "name=EditSponsorInfoNextEvent",
 	"prime pi" : "name=primePiName",
 	"prime pi lookup" : "css=a[href*='primePiImage'] img[alt='Lookup']",
 	"add other sponsor" : "name=AddOtherSponsorEvent",
@@ -18,6 +19,8 @@ locators = {
 }
 
 class SCR0324(Page):
+	locators = locators
+
 	def add_other_sponsor_by_type(self,type,role):
 		# refactor?
 		if len(self.driver.find_elements_by_css_selector("input[name*='otherSponsorName']")) > 0:
@@ -83,4 +86,7 @@ class SCR0324(Page):
 		self.find_element(locators["ok"]).click()
 		from pages.SCR0105 import SCR0105
 		return SCR0105(self.driver)
+
+	def next(self):
+		return self.go("next")
 		
