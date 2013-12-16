@@ -10,10 +10,12 @@ locators = {
     "edit accounts" : "name=EditAccountsEvent",
     "edit id info" : "name=EditAwardIdentifyingInformationEvent",
     "delete revision" : "name=DeleteThisRevisionEvent",
-    "revision id" : "name=segmentRevisionId"
+    "revision id" : "name=segmentRevisionId",
+    "edit all": "name=EditAllEvent"
 }
 
-class SCR0105(Page):        
+class SCR0105(Page): 
+    locators = locators      
     def nav_to(self,segment_id,revision_id):
         url = "https://%s.harvard.edu/gmas/dispatch?segmentId=%s&SegmentHomeEditRevisionEvent=&formName=SegmentHomeForm&segmentRevisionId=%s" %(self.env,segment_id,revision_id)
         self.driver.get(url)
@@ -56,3 +58,6 @@ class SCR0105(Page):
     
     def get_revision_id(self):
         return self.find_element(locators["revision id"]).get_attribute("value")
+
+    def edit_all(self):
+        return self.go("edit all")
