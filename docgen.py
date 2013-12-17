@@ -82,7 +82,7 @@ def escape(string):
     return string.replace("<", "\<").replace("\n\n","\n>\n").replace("\n", "  \n")
 
 path = "pages/"
-savepath = "x/"
+savepath = "../gmas_webdriver_wiki/"
 
 for f in os.listdir(path):
 	if "SCR" in f and f[-2:] == "py":
