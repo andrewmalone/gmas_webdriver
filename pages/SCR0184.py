@@ -1,18 +1,21 @@
 from pages.Page import Page
 
 locators = {
-	"cancel" : "name=CreateFundCancelEvent"
+	"cancel" : "name=CreateFundCancelEvent",
+	"ok": "CreateFundOKEvent"
 }
 
 class fund_type():
 	pass
 		
 class SCR0184(Page):
+	locators = locators
 	def __init__(self,d):
 		Page.__init__(self,d)
 		
 		# set the fund type attributes from the page...
 		# Is the fund type editable?
+		# TODO: move this to it's own class or methods (shouldn't be in init)
 		if self.get_current_page()[:7] == "SCR0184":
 			e = self.find_element("name=fundType")
 			if e.tag_name == "input":
@@ -39,6 +42,8 @@ class SCR0184(Page):
 			self.fund_type.editable = editable
 			self.fund_type.options = options
 	
+	
+
 	def nav_to(self,segment_id,revision_id):
 		url = "https://%s.harvard.edu/gmas/dispatch?segmentId=%s&segmentRevisionId=%s&formName=AccountRevisionDetailsForm&screenName=%%2Faccount%%2Frevision%%2FSCR0474AddAccountRevision.jsp&accountType=10101&accountStatus=10051&CreateNewFundEvent.x=48&CreateNewFundEvent.y=0&ref=%%2Faccount%%2Frevision%%2FSCR0474AddAccountRevision.jsp&formName=AccountRevisionDetailsForm" %(self.env,segment_id,revision_id)
 		self.driver.get(url)
@@ -48,5 +53,12 @@ class SCR0184(Page):
 		self.find_element(locators["cancel"]).click()
 		from pages.SCR0474 import SCR0474
 		return SCR0474(self.driver)
+
+	def ok(self):
+		"""
+		Click <Ok>
+		Goes to SCR_0474
+		"""
+		return self.go("ok")
 				
 		
