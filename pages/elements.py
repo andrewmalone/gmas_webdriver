@@ -1,10 +1,15 @@
 #TODO - refactor to move return objects to more common methods
 class Element(object):
-    def __init__(self, locator, doc="No documentation", mapping=None):
+    def __init__(self, locator, doc=None, mapping=None):
         self.locator = locator
-        self.__doc__ = doc
+        if doc != None:
+            self.__doc__ = "%s%s" % (doc, self.__doc__)
         self.mapping = mapping
-        # self.r = self.returnObj("")
+        # Add mapping info to docstring
+        if mapping != None:
+            self.__doc__ += "\nMapping:\n"
+            for mapper in mapping:
+                self.__doc__ += "* %s => %s\n" % (mapper, mapping[mapper])
 
     class returnObj(str):
         def is_displayed(self):
@@ -14,6 +19,7 @@ class Element(object):
             return self.element.is_enabled()
 
 class Text(Element):
+    """ (Text) """
     def __set__(self, obj, val):
         elem = obj.find(self.locator)
         elem.clear()
@@ -36,6 +42,7 @@ class Text(Element):
 
 
 class Select(Element):
+    """ (Select dropdown) """
     def __set__(self, obj, val):
         from selenium.webdriver.support.select import Select as WDSelect
         method = "text"
@@ -59,6 +66,7 @@ class Select(Element):
  
 
 class Radio(Element):
+    """ (Radio button) """
     def __set__(self, obj, val):
         if "[value='REPLACE']" not in obj.locators[self.locator]:
             obj.locators[self.locator] += "[value='REPLACE']"  # this is kind of a hack?
@@ -89,6 +97,7 @@ class Radio_refresh(Radio):
 
 
 class Checkbox(Element):
+    """ (Checkbox) """
     def __set__(self, obj, val):
         elem = obj.find(self.locator)
         if val == True:
@@ -103,6 +112,7 @@ class Checkbox(Element):
 
 
 class File(Element):
+    """ (File) """
     def __set__(self, obj, val):
         elem = obj.find(self.locator)
         elem.send_keys(val)
