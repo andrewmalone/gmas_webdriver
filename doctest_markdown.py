@@ -80,10 +80,10 @@ def get_method_list(class_name):
     if lookup["descriptors"] != "":
         lookup["descriptors"] = descriptor_header + lookup["descriptors"]
 
-    print template.format(**lookup)
+    return template.format(**lookup)
 
 def escape(string):
     return string.replace("<", "\<").replace("\n\n","\n>\n").replace("\n", "  \n")
 
-get_method_list(scr)
+print get_method_list(scr)
 
