@@ -30,13 +30,21 @@ class GMWebElement(object):
         return self.find_elements(locator)
 
     def find_element(self, locator):
-        locator_type = locator[:locator.find("=")]
-        locator_value = locator[locator.find("=") + 1:]
+        if locator.find("=") == -1:
+            locator_type = "name"
+            locator_value = locator
+        else:
+            locator_type = locator[:locator.find("=")]
+            locator_value = locator[locator.find("=") + 1:]
         return self.driver.find_element(locator_map[locator_type], locator_value)
 
     def find_elements(self, locator):
-        locator_type = locator[:locator.find("=")]
-        locator_value = locator[locator.find("=") + 1:]
+        if locator.find("=") == -1:
+            locator_type = "name"
+            locator_value = locator
+        else:
+            locator_type = locator[:locator.find("=")]
+            locator_value = locator[locator.find("=") + 1:]
         return self.driver.find_elements(locator_map[locator_type], locator_value)
 
 
@@ -94,6 +102,7 @@ class Page(GMWebElement):
             elif self.get_current_page() == "SCR0104ProjectHome":
                 page = "SCR0104a"
         if page == "SCR0089a": page = "SCR0089"
+        if page == "SCR0474b": page = "SCR0474"
         cls = getattr(importlib.import_module("pages.%s" % (page)), page)
         return cls(self.driver)
 
