@@ -38,8 +38,16 @@ class Text(Element):
 class Select(Element):
     def __set__(self, obj, val):
         from selenium.webdriver.support.select import Select as WDSelect
+        method = "text"
         elem = WDSelect(obj.find(self.locator))
-        elem.select_by_visible_text(val)
+        if self.mapping != None:
+            val = self.mapping[val]
+            if "_method" in self.mapping:
+                method = self.mapping["_method"]
+        if method == "text":
+            elem.select_by_visible_text(val)
+        elif method == "value":
+            elem.select_by_value(val)
 
     def __get__(self, obj, type=None):
         from selenium.webdriver.support.select import Select as WDSelect
