@@ -32,7 +32,11 @@ class Text(Element):
         except AttributeError:
             screen = ""
         if "SCR0617" not in screen:
-            elem.parent.execute_script("if (arguments[0].onchange) arguments[0].onchange();", elem)
+            script = """
+                if (arguments[0].onchange) arguments[0].onchange();
+                if (arguments[0].onblur) arguments[0].onblur();
+            """
+            elem.parent.execute_script(script, elem)
 
     def __get__(self, obj, type=None):
         elem = obj.find(self.locator)
