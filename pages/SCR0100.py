@@ -7,13 +7,16 @@ locators = {
 }
 
 class SCR0100(Page):
+	locators = locators
+
 	def check_all(self):
 		self.find_element(locators["check all"]).click()
 		
 	def ok(self):
-		self.find_element(locators["ok"]).click()
-		self.w.until(lambda d: d.find_element_by_css_selector("input[name=ref][value*=SCR0104S]"))
-		return self.load_page()
+		return self.go("ok")
+		# self.find_element(locators["ok"]).click()
+		# self.w.until(lambda d: d.find_element_by_css_selector("input[name=ref][value*=SCR0104S]"))
+		# return self.load_page()
 		
 #d.find_element_by_id("paradigmAll").click()
 #d.find_element_by_name("EditNotificationOkEvent").click()

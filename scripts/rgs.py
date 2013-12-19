@@ -19,18 +19,18 @@ def rgs(p, f=None, finish="request"):
             "title": "Title",
             "sponsor": "nih",
             "pi": "03750001",
-            "mentor": "",
-            "prime_sponsor": "",
-            "prime_pi": "",
+            "mentor": "", # optional
+            "prime_sponsor": "", # optional
+            "prime_pi": "", # optional
             "a21": "A02-Organized Research",
             "discipline": "Arts",
             "rfp": "false",
-            "subs": "true",
-            "ifi": "true",
+            "subs": "false",
+            "ifi": "false",
             # SCR_0613
-            "opportunity": "",
+            "opportunity": "PA-C-R01", # optional
             #SCR_0231 and SCR_0231b
-            "s2s": "false",
+            "s2s": "true", # optional
             "due_date": "1/1/08",
             "due_date_type": "2401",
             "copies": "1",
@@ -45,7 +45,7 @@ def rgs(p, f=None, finish="request"):
             "admin_salary": "false",
             "program_income": "false",
             "on_campus": "true",
-            # Adding subs
+            # SCR_0091, #SCR_0092
             "subagreements": [ # optional
                 {
                     "name": "egg",
@@ -58,6 +58,7 @@ def rgs(p, f=None, finish="request"):
                     "end": "3/15/08" # optional
                 }
             ],
+            # SCR_0228, #SCR_0094
             "ifi_list": [ # optional
                 {
                     "org": "31240",
@@ -72,35 +73,35 @@ def rgs(p, f=None, finish="request"):
             ],
             # SCR_0098
             "pi_hs": "false",
-            "mentor_hs": "false",
-            "mentor_key": "false",
+            "mentor_hs": "false", # optional (required if fellowship)
+            "mentor_key": "false", # optional (required  if fellowship)
             "research team": [ # optional
-                # {
-                #     "huid": "03750002",
-                #     "role": "Analyst",
-                #     "key": "true",
-                #     "investigator": "true",
-                #     "hs": "false"
-                # },
-                # {
-                #     "huid": "03750003",
-                #     "role": "Other",
-                #     "other_role_description": "school bus driver",
-                #     "key": "false",
-                #     "investigator": "true",
-                #     "hs": "false"
-                # }
+                {
+                    "huid": "03750002",
+                    "role": "Analyst",
+                    "key": "true",
+                    "investigator": "true",
+                    "hs": "false"
+                },
+                {
+                    "huid": "03750003",
+                    "role": "Other",
+                    "other_role_description": "school bus driver",
+                    "key": "false",
+                    "investigator": "true",
+                    "hs": "false"
+                }
             ],
             # SCR_0099
             "admin_team": [ # optional
-                # {
-                #     "huid": "03750002",
-                #     "role": "Department Administrator"
-                # },
-                # {
-                #     "huid": "03750003",
-                #     "role": "Central Administrator"
-                # }
+                {
+                    "huid": "03750002",
+                    "role": "Department Administrator"
+                },
+                {
+                    "huid": "03750003",
+                    "role": "Central Administrator"
+                }
             ],
             # SCR_0097
             "human_subjects": "false",
@@ -110,7 +111,15 @@ def rgs(p, f=None, finish="request"):
             "foreign": "false",
             "add_staff": "false",
             "use_of_name": "false",
-            "appt_exp": "false"
+            "appt_exp": "false",
+            # SCR_0612b
+            "ggov_questions": { # optional
+                "sf424_3": 2,
+                "sf424_4": 1,
+                "sf424_4a": "Other agency",
+                "sf424_5b": "0",
+                "sf424_6": 2
+            }
         }
 
     p = p.create_proposal()
@@ -145,6 +154,8 @@ def rgs(p, f=None, finish="request"):
 
     # SCR_0231 or SCR_0231b
     p.due_date = f["due_date"]
+    if "s2s" not in f:
+        f["s2s"] = "false"
     if p.get_current_page() == "SCR0231bRequestSubmissionDetails":
         p.s2s = f["s2s"]
     if p.get_current_page() == "SCR0231RequestSubmissionDetails" or f["s2s"] == "false":
@@ -269,6 +280,9 @@ def rgs(p, f=None, finish="request"):
     # S2S screens go here...
     if f["s2s"] == "true":
         # SCR_0612b
+        if "ggov_questions" in f:
+            for question in sorted(f["ggov_questions"].keys()):
+                setattr(p, question, f["ggov_questions"][question])
         p = p.ok()
         # SCR_0610b
         p = p.ok()
@@ -283,5 +297,5 @@ def rgs(p, f=None, finish="request"):
 
 if __name__ == "__main__":
     from gmas_webdriver.setup import init
-    p = init("Firefox", "gmasdev.cadm", True)
+    p = init("Firefox", "gmasdev.cadm", False)
     p = rgs(p)

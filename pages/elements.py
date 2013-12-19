@@ -1,10 +1,15 @@
 #TODO - refactor to move return objects to more common methods
 class Element(object):
-    def __init__(self, locator, doc="No documentation", mapping=None):
+    def __init__(self, locator, doc=None, mapping=None):
         self.locator = locator
-        self.__doc__ = doc
+        if doc != None:
+            self.__doc__ = "%s%s" % (doc, self.__doc__)
         self.mapping = mapping
-        # self.r = self.returnObj("")
+        # Add mapping info to docstring
+        if mapping != None:
+            self.__doc__ += "\nMapping:\n"
+            for mapper in mapping:
+                self.__doc__ += "* %s => %s\n" % (mapper, mapping[mapper])
 
     class returnObj(str):
         def is_displayed(self):
@@ -14,13 +19,20 @@ class Element(object):
             return self.element.is_enabled()
 
 class Text(Element):
+    """ (Text) """
     def __set__(self, obj, val):
         elem = obj.find(self.locator)
         elem.clear()
         elem.send_keys(val)
         # fire the onchange! 
         # TODO - figure out if there's a non-javascript webdriver native way to do this...
-        elem.parent.execute_script("if (arguments[0].onchange) arguments[0].onchange();", elem)
+        # There's a bug on SCR_0617 that throws a javascript error in the onchange event.
+        try:
+            screen = obj.get_current_page()
+        except AttributeError:
+            screen = ""
+        if "SCR0617" not in screen:
+            elem.parent.execute_script("if (arguments[0].onchange) arguments[0].onchange();", elem)
 
     def __get__(self, obj, type=None):
         elem = obj.find(self.locator)
@@ -30,10 +42,19 @@ class Text(Element):
 
 
 class Select(Element):
+    """ (Select dropdown) """
     def __set__(self, obj, val):
         from selenium.webdriver.support.select import Select as WDSelect
+        method = "text"
         elem = WDSelect(obj.find(self.locator))
-        elem.select_by_visible_text(val)
+        if self.mapping != None:
+            val = self.mapping[val]
+            if "_method" in self.mapping:
+                method = self.mapping["_method"]
+        if method == "text":
+            elem.select_by_visible_text(val)
+        elif method == "value":
+            elem.select_by_value(val)
 
     def __get__(self, obj, type=None):
         from selenium.webdriver.support.select import Select as WDSelect
@@ -45,6 +66,7 @@ class Select(Element):
  
 
 class Radio(Element):
+    """ (Radio button) """
     def __set__(self, obj, val):
         if "[value='REPLACE']" not in obj.locators[self.locator]:
             obj.locators[self.locator] += "[value='REPLACE']"  # this is kind of a hack?
@@ -75,6 +97,7 @@ class Radio_refresh(Radio):
 
 
 class Checkbox(Element):
+    """ (Checkbox) """
     def __set__(self, obj, val):
         elem = obj.find(self.locator)
         if val == True:
@@ -89,6 +112,7 @@ class Checkbox(Element):
 
 
 class File(Element):
+    """ (File) """
     def __set__(self, obj, val):
         elem = obj.find(self.locator)
         elem.send_keys(val)

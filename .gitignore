@@ -1,3 +1,5 @@
 /config.ini
 *.pyc
 /tmp.py
+
+chromedriver.log
