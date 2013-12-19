@@ -24,7 +24,7 @@ def startBrowser(browser, os="win"):
 
 def loginGMAS(driver, env):
     dir = os.path.dirname(os.path.abspath(__file__))
-    cfg = dir + "\config.ini"
+    cfg = dir + "/config.ini"
     config = ConfigParser.RawConfigParser()
     config.read(cfg)
     HUID = base64.b64decode(config.get("setup", "a"))
