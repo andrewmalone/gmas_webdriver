@@ -3,6 +3,9 @@ from pages.elements import Text
 
 
 class SCR0083(Page):
+    """
+    SCR_0083 Enter notice attributes
+    """
     locators = {
         "date issued": "name=dateIssued",
         "date received": "name=dateReceivedByHarvard",
@@ -10,10 +13,13 @@ class SCR0083(Page):
         "next": "name=EnterNoticeAttributesNextEvent"
     }
 
-    date_issued = Text("date issued")
-    date_received = Text("date received")
-    award_number = Text("award number")
+    date_issued = Text("date issued", "Date issued")
+    date_received = Text("date received", "Date received")
+    award_number = Text("award number", "Award number")
 
     def ok(self):
-        self.find("next").click()
-        return self.load_page()
+        """
+        Click <Ok>
+        Goes to SCR_0377
+        """
+        return self.go("next")
