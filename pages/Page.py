@@ -131,12 +131,17 @@ class Page(GMWebElement):
         locator = "css=input[type='hidden'][name='%sId']" % (id_name)
         return self.find_element(locator).get_attribute("value")
 
-    def breadcrumb(self, text):
+    def goto_breadcrumb(self, text):
         crumbs = self.find_elements("css=a.bread")
         for crumb in crumbs:
             if crumb.text == text:
                 crumb.click()
                 return self.load_page()
+
+    def goto_last_breadcrumb(self):
+        crumbs = self.find_elements("css=a.bread")
+        crumbs[-1].click()
+        return self.load_page()
 
     def go(self, locator):
         self.find(locator).click()
@@ -144,5 +149,10 @@ class Page(GMWebElement):
 
     def goto_segment(self, segment_id):
         url = "https://%s.harvard.edu/gmas/project/SCR0104SegmentHome.jsp?segmentId=%s" % (self.env, segment_id)
+        self.driver.get(url)
+        return self.load_page()
+
+    def goto_gmashome(self):
+        url = "https://%s.harvard.edu/gmas/user/SCR0270GMASHomePage.jsp" % (self.env)
         self.driver.get(url)
         return self.load_page()
