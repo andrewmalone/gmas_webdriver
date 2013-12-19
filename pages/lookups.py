@@ -48,5 +48,11 @@ class Lookup_organization(Lookup):
         popup.select_first_result()
         popup.ok()
 
+class Lookup_root(Lookup_basic):
+    """
+    Root lookup
+    """
+    pass
+
 
 # TODO: implement opportunity lookup

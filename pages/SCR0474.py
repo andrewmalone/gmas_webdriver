@@ -1,5 +1,6 @@
 from pages.Page import Page
 from pages.elements import Select, Text
+from pages.lookups import Lookup_root
 
 idc_mapping = {
 	"TDC": "Total Direct Costs",
@@ -12,14 +13,16 @@ class SCR0474(Page):
 	"""
 	locators = {
 		"account type" : "name=accountType",
-		"year": "name=year",
-		"start": "name=startDate",
-		"end": "name=endDate",
-		"idc": "name=idcBasis",
-		"edit rates": "name=EditIDCRatesForEditAccountRevisionEvent",
-		"create fund" : "name=CreateNewFundEvent",
+		"year": "year",
+		"start": "startDate",
+		"end": "endDate",
+		"idc": "idcBasis",
+		"edit rates": "EditIDCRatesForEditAccountRevisionEvent",
+		"create fund" : "CreateNewFundEvent",
 		"select activity": "activityLookupImage",
-		"cancel" : "name=AddAccountRevisionCancelEvent"
+		"root text": "rootValue",
+		"cancel" : "AddAccountRevisionCancelEvent",
+		"ok": "EditAccountWithValidationForRevisionOkEvent"
 	}
 
 	account_type = Select("account type", "Account type dropdown")
@@ -27,8 +30,8 @@ class SCR0474(Page):
 	start = Text("start", "Account start date")
 	end = Text("end", "Account end date")
 	idc_basis = Select("idc", "IDC Basis", idc_mapping)
-
-
+	root_text = Text("root text")
+	root = Lookup_root(root_text, "rootLookupImage")
 		
 	def create_fund(self):
 		"""
@@ -58,4 +61,11 @@ class SCR0474(Page):
 		Click <Cancel>
 		Goes to SCR_0196
 		"""
-		return self.go("cancel")	
+		return self.go("cancel")
+
+	def ok(self):
+		"""
+		Click <Ok>
+		Goes to SCR_0196
+		"""
+		return self.go("ok")
