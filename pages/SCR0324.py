@@ -1,92 +1,37 @@
 from pages.Page import Page
+from pages.elements import Text
+from pages.lookups import Lookup_organization, Lookup_person
 
-#TODO add other sponsor lookup
-#TODO add methods for lookup by name
-#TODO move all popup handling to separate function (possibly into the Page object)
-
-locators = {
-	"sponsor lookup" : "css=a[href*='sponsorLookupImage'] img[title='Lookup']",
-	"prime sponsor lookup" : "css=a[href*='primeSponsorLookupImage'] img[title='Lookup']",
-	"sponsor" : "name=sponsorName",
-	"prime sponsor" : "name=primeSponsorName",
-	"ok" : "name=EditSponsorInfoDoneEvent",
-	"next": "name=EditSponsorInfoNextEvent",
-	"prime pi" : "name=primePiName",
-	"prime pi lookup" : "css=a[href*='primePiImage'] img[alt='Lookup']",
-	"add other sponsor" : "name=AddOtherSponsorEvent",
-	"other sponsor lookup" : "css=a[href*='otherSponsorLookupImage'] img[title='Lookup']",
-	"other sponsor role" : "css=input[name*='otherSponsorRole'][value='REPLACE']",
-}
 
 class SCR0324(Page):
-	locators = locators
+	"""
+	SCR_0324 Edit sponsor information
+	"""
+	locators = {
+		"sponsor" : "name=sponsorName",
+		"prime sponsor" : "name=primeSponsorName",
+		"ok" : "name=EditSponsorInfoDoneEvent",
+		"next": "name=EditSponsorInfoNextEvent",
+		"prime pi" : "name=primePiName"
+	}
 
-	def add_other_sponsor_by_type(self,type,role):
-		# refactor?
-		if len(self.driver.find_elements_by_css_selector("input[name*='otherSponsorName']")) > 0:
-			self.remove_other_sponsor()
-		else:
-			self.find_element(locators["add other sponsor"]).click()
-			self.w.until(lambda d: d.find_element_by_css_selector("td.footer"))
-		self.find_element(locators["other sponsor lookup"]).click()
-		self.w.until(lambda d: len(d.window_handles)==2)
-		popup_win = self.driver.window_handles[1]
-		self.driver.switch_to_window(popup_win)
-		from pages.SCR0536x import SCR0536x
-		popup = SCR0536x(self.driver)
-		popup.select_type(type)
-		popup.search()
-		popup.select_first_result()
-		popup.ok()
-		self.find_element(locators["other sponsor role"].replace("REPLACE",role)).click()
-	
-	def remove_other_sponsor(self):
-		#self.driver.implicitly_wait(0)
-		if len(self.driver.find_elements_by_css_selector("input[name*='otherSponsorName']")) > 0:
-			self.driver.find_element_by_css_selector("input[name*='otherSponsorName']").clear()
-		#self.driver.implicitly_wait(5)
-	
-	def set_sponsor(self,sponsor=""):
-		sponsor_edit = self.find_element(locators["sponsor"])
-		sponsor_edit.clear()
-		sponsor_edit.send_keys(sponsor)
-
-	def set_prime_sponsor(self,sponsor=""):
-		p_sponsor_edit = self.find_element(locators["prime sponsor"])
-		p_sponsor_edit.clear()
-		p_sponsor_edit.send_keys(sponsor)
-		
-	def lookup_sponsor(self,sponsor=""):
-		self.set_sponsor(sponsor)
-		self.find_element(locators["sponsor lookup"]).click()
-		# switch to the popup window
-		# self.driver.switch_to_window("GMAS_LookupPopup")
-		self.w.until(lambda d: len(d.window_handles)==2)
-		popup = self.driver.window_handles[1]
-		self.driver.switch_to_window(popup)
-		from pages.SCR0536x import SCR0536x
-		return SCR0536x(self.driver)
-		
-	def lookup_prime_sponsor(self,sponsor=""):
-		self.set_prime_sponsor(sponsor)
-		self.find_element(locators["prime sponsor lookup"]).click()
-		self.w.until(lambda d: len(d.window_handles)==2)
-		popup_win = self.driver.window_handles[1]
-		self.driver.switch_to_window(popup_win)
-		from pages.SCR0536x import SCR0536x
-		return SCR0536x(self.driver)
-		
-	def lookup_prime_pi_huid(self,huid):
-		self.find_element(locators["prime pi"]).clear()
-		self.find_element(locators["prime pi"]).send_keys(huid)
-		self.find_element(locators["prime pi lookup"]).click()
-		self.w.until(lambda d: d.find_element_by_css_selector("img[name='primePiImage'][src*='i_match.gif']"))
+	sponsor_text = Text("sponsor", "Sponsor")
+	sponsor = Lookup_organization(sponsor_text, "sponsorLookupImage", "Sponsor")
+	prime_sponsor_text = Text("prime sponsor", "Prime sponsor")
+	prime_sponsor = Lookup_organization(prime_sponsor_text, "primeSponsorLookupImage", "Prime sponsor")
+	prime_pi_text = Text("prime pi", "Prime PI")
+	prime_pi = Lookup_person(prime_pi_text, "primePiImage", "Prime PI")
 		
 	def ok(self):
-		self.find_element(locators["ok"]).click()
-		from pages.SCR0105 import SCR0105
-		return SCR0105(self.driver)
+		"""
+		Click <Done making revisions to this section>
+		Goes to SCR_0105
+		"""
+		return self.go("ok")
 
 	def next(self):
+		"""
+		Click <Next>
+		Goes to SCR_0403b
+		"""
 		return self.go("next")
-		
