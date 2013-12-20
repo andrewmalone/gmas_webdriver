@@ -1,6 +1,6 @@
 #TODO - refactor to move return objects to more common methods
 class Element(object):
-    def __init__(self, locator, doc=None, mapping=None):
+    def __init__(self, locator, doc=None, mapping=None, docextra=None):
         self.locator = locator
         if doc != None:
             self.__doc__ = "%s%s" % (doc, self.__doc__)
@@ -10,6 +10,8 @@ class Element(object):
             self.__doc__ += "\nMapping:\n"
             for mapper in mapping:
                 self.__doc__ += "* %s => %s\n" % (mapper, mapping[mapper])
+        if docextra != None:
+            self.__doc__ += docextra
 
     class returnObj(str):
         def is_displayed(self):
