@@ -135,8 +135,8 @@ class Page(GMWebElement):
         crumbs[-1].click()
         return self.load_page()
 
-    def go(self, locator):
-        self.find(locator).click()
+    def go(self, locator, replace=False):
+        self.find(locator, replace).click()
         return self.load_page()
 
     def goto_segment(self, segment_id):
