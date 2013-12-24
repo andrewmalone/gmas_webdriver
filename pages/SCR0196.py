@@ -1,5 +1,5 @@
 from pages.Page import Page, GMWebElement
-from pages.elements import Checkbox
+from pages.elements import Checkbox, Row
 
 class SCR0196(Page):
     """
@@ -13,29 +13,6 @@ class SCR0196(Page):
         "account row": "xpath=//a[contains(@href,'viewDescription')]/../..",
         "next": "EditAccountsNextEvent"
     }
-
-    class account_row(GMWebElement):
-        """
-        Subclass for an individual account row on SCR_0196
-        """
-        locators = {
-            "checkbox": "css=input[type=checkbox]",
-            "link": "css=a[href*=viewDescription]"
-        }
-
-        checkbox = Checkbox("checkbox", "Checkbox to send a validated account to the GL")
-
-        def __init__(self, row, page):
-            self.driver = row
-            self.page = page
-
-        def go(self):
-            """
-            Click the account's link
-            Goes to SCR_0474
-            """
-            self.find("link").click()
-            return self.page.load_page()
 
     def account(self, n):
         """
@@ -80,4 +57,23 @@ class SCR0196(Page):
         if type(account) is int and account > 0:
             self.finds("account")[account - 1].click()
             return self.load_page()
+
+    class account_row(Row):
+        """
+        Subclass for an individual account row on SCR_0196
+        """
+        locators = {
+            "checkbox": "css=input[type=checkbox]",
+            "link": "css=a[href*=viewDescription]"
+        }
+
+        checkbox = Checkbox("checkbox", "Checkbox to send a validated account to the GL")
+
+        def go(self):
+            """
+            Click the account's link
+            Goes to SCR_0474
+            """
+            self.find("link").click()
+            return self.page.load_page()
 

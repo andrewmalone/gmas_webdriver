@@ -1,3 +1,5 @@
+from pages.Page import GMWebElement
+
 #TODO - refactor to move return objects to more common methods
 class Element(object):
     def __init__(self, locator, doc=None, mapping=None, docextra=None):
@@ -15,7 +17,9 @@ class Element(object):
 
     class returnObj(str):
         def is_displayed(self):
-            return self.element.is_displayed()
+            if hasattr(self, "element"):
+                return self.element.is_displayed()
+            return False
 
         def is_enabled(self):
             return self.element.is_enabled()
@@ -114,7 +118,17 @@ class Checkbox(Element):
                 elem.click()
 
     def __get__(self, obj, cls=None):
-        pass
+        try:
+            elem = obj.find(self.locator)
+        except:
+            # TODO: figure out what to return here - also, think about refactoring everything in the same way
+            return self.returnObj(None)
+        attr = elem.get_attribute("checked")
+        if attr == None:
+            attr = "false"
+        r = self.returnObj(attr)
+        r.element = elem
+        return r
 
 
 class File(Element):
@@ -125,3 +139,23 @@ class File(Element):
 
     def __get__(self, obj, cls=None):
         pass
+
+
+class Row(GMWebElement):
+    def __init__(self, row, page):
+        self.driver = row
+        self.page = page
+
+    def _go(self, locator):
+        self.find(locator).click()
+        return self.page.load_page()
+
+
+class RText(Element):
+    """ (readonly text) """
+    def __set__(self, obj, val):
+        pass
+
+    def __get__(self, obj, cls=None):
+        elem = obj.find(self.locator)
+        return elem.text
