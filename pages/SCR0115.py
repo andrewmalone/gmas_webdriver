@@ -15,7 +15,8 @@ class SCR0115(Page):
         "edit budget": "css=a[href*='EditProposedDollarsSummaryBudgetEvent'] img",
         "edit ggov questions": "css=a[href*='EditGrantsGovQuestionsEvent'] img",
         "edit ggov attachments": "css=a[href*='EditGrantsGovAttachmentsEvent'] img",
-        "prepare ggov submission": "css=a[href*='PrepareGrantsGovSubmissionEvent'] img"
+        "prepare ggov submission": "css=a[href*='PrepareGrantsGovSubmissionEvent'] img",
+        "edit atrisk": "css=a[href*='AtRiskAccountEditEvent'] img"
     }
 
     def nav_to(self, segment_id, request_id):
@@ -99,3 +100,10 @@ class SCR0115(Page):
         Goes to SCR_0609
         """
         return self.go("prepare ggov submission")
+
+    def edit_atrisk(self):
+        """
+        Click <edit> for at-risk
+        Goes to SCR_0378
+        """
+        return self.go("edit atrisk")
