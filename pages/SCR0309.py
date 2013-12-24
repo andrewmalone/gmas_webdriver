@@ -12,9 +12,17 @@ class SCR0309(Page):
     }
 
     def review_completed(self):
+        """
+        Click <Review completed>
+        Stays on SCR_0309
+        """
         return self.go("review completed")
 
     def revise_project(self):
+        """
+        Click <Revise project based on this notice>
+        Goes to SCR_0328
+        """
         return self.go("revise project")
 
     def goto_documents(self):

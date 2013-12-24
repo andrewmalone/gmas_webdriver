@@ -20,7 +20,7 @@ class SCR0190(Page):
 		"""
 		Click <Add rate>
 		"""
-		self.find("add").click()
+		return self.go("add")
 
 	def ok(self):
 		"""

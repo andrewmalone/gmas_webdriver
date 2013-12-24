@@ -10,6 +10,7 @@ idc_mapping = {
 class SCR0474(Page):
 	"""
 	SCR_0474 Add/edit account
+	**NOTE:** SCR_0474 and SCR_0474b are implemented in the same page object
 	"""
 	locators = {
 		"account type" : "name=accountType",

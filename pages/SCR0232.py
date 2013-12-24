@@ -10,6 +10,10 @@ class SCR0232(Page):
     }
 
     def goto_first_subagreement(self):
+        """
+        Clicks the first subagreement link on the page
+        Goes to SCR_0450 or SCR_0233
+        """
         return self.go("subagreement link")
 
     
