@@ -54,5 +54,14 @@ class Lookup_root(Lookup_basic):
     """
     pass
 
-
-# TODO: implement opportunity lookup
+class Lookup_opportunity(Lookup):
+    """
+    Opportunity lookup (does not support multiple competition IDs)
+    """
+    def __set__(self, obj, val):
+        self.input.__set__(obj, val)
+        obj.find_element(self.lookup_locator).click()
+        obj.switch_to_popup()
+        popup = obj.load_page()
+        popup.ok()
+        obj.w.until(lambda e: obj.find_element(self.match_locator))
