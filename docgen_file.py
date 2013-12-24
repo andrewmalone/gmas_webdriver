@@ -2,25 +2,14 @@ import inspect
 import importlib
 import re
 
-scr = raw_input("Screen: ")
-padding = '000'
-num = re.match(r'[0-9]{1,3}', scr).group(0)
-scr = "SCR%s%s" % (padding[:4 - len(num)], scr)
-
 template = """
-{classname} Page Object
-
 {classdoc}
 
 {descriptors}
-{methods}
-{subclasses}
-"""
+{methods}"""
 
-subclass_template = """
-{descriptors}
-{methods}
-"""
+subclass_template = """{descriptors}
+{methods}"""
 
 method_header = "### Methods"
 descriptor_header = "### Descriptors"
@@ -37,6 +26,18 @@ descriptor_template = """
 >{descriptor_doc}
 """
 
+method_subtemplate = """
+**{methodname}**{methodargs}
+
+>>{methoddoc}
+"""
+
+descriptor_subtemplate = """
+**{descriptor_name}**
+
+>>{descriptor_doc}
+"""
+
 classname = ""
 
 def get_class(meth):
@@ -45,21 +46,18 @@ def get_class(meth):
             return cls.__name__
     return None
 
-
 def get_method_list(class_name):
     cls = getattr(importlib.import_module("pages.%s" % (class_name)), class_name)
-    #print cls.__dict__
-    #return
     global classname
     classname = cls
-    print classname
     return get_methods(cls)
 
 def get_methods(cls, subclass=False):
     # cls = getattr(importlib.import_module("pages.%s" % (class_name)), class_name)
     lookup = {}
     lookup["classname"] = cls.__name__
-    lookup["classdoc"] = escape(inspect.getdoc(cls))
+    if subclass is False:
+        lookup["classdoc"] = escape(inspect.getdoc(cls))
     lookup["methods"] = ""
     lookup["descriptors"] = ""
     lookup["subclasses"] = ""
@@ -78,7 +76,9 @@ def get_methods(cls, subclass=False):
             doc = replace_subclass(doc)
 
             m_lookup["methoddoc"] = doc
-            lookup["methods"] += method_template.format(**m_lookup)
+            if subclass is True:
+                lookup["methods"] += method_subtemplate.format(**m_lookup)
+            else: lookup["methods"] += method_template.format(**m_lookup)
 
     # list of descriptors
     for obj in sorted(cls.__dict__):
@@ -87,7 +87,9 @@ def get_methods(cls, subclass=False):
             o = cls.__dict__[obj]
             d_lookup["descriptor_name"] = obj
             d_lookup["descriptor_doc"] = escape(inspect.getdoc(o))
-            lookup["descriptors"] += descriptor_template.format(**d_lookup)
+            if subclass is True:
+                lookup["descriptors"] += descriptor_subtemplate.format(**d_lookup)
+            else: lookup["descriptors"] += descriptor_template.format(**d_lookup)
 
     # Add some headers
     if lookup["methods"] != "":
@@ -108,11 +110,16 @@ def replace_screen(string):
     return re.sub(find, repl, string)
 
 def replace_subclass(string):
-    find = re.compile(r'^//(.*)$', re.MULTILINE)
+    find = re.compile(r'^//([^\s]*).*$', re.MULTILINE)
     def repl(matchobj):
         cls = matchobj.group(1)
-        return escape(get_methods(classname.__dict__[cls], True)).replace("\n>  \n","\n>>  \n")
+        return escape(get_methods(classname.__dict__[cls], True))
     return re.sub(find, repl, string)
 
-print get_method_list(scr)
+if __name__ == "__main__":
+    scr = raw_input("Screen: ")
+    padding = '000'
+    num = re.match(r'[0-9]{1,3}', scr).group(0)
+    scr = "SCR%s%s" % (padding[:4 - len(num)], scr)
+    print get_method_list(scr)
 
