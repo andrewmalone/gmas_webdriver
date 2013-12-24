@@ -19,8 +19,8 @@ class SCR0401(Page):
 
     person_text = Text("person", "Text input for submitted by person")
     method = Select("method", "Method sent dropdown")
-    date_received = Text("date received", "Date received (text)")
-    date_submitted = Text("date submitted", "Date submitted (text)")
+    date_received = Text("date received", "Date received")
+    date_submitted = Text("date submitted", "Date submitted")
     submitted_by = Lookup_person(person_text, "personLookupImage", "Submitted by person lookup")
 
     def ok(self):
