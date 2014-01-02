@@ -40,7 +40,7 @@ class Text(Element):
         if "SCR0617" not in screen:
             script = """
                 if (arguments[0].onchange) arguments[0].onchange();
-                else if (arguments[0].onblur) arguments[0].onblur();
+                if (arguments[0].onblur) arguments[0].onblur();
             """
             elem.parent.execute_script(script, elem)
 

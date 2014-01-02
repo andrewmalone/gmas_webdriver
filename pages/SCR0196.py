@@ -1,4 +1,4 @@
-from pages.Page import Page, GMWebElement
+from pages.Page import Page
 from pages.elements import Checkbox, Row
 
 class SCR0196(Page):

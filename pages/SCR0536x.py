@@ -19,9 +19,15 @@ class SCR0536x(Page):
     name = Text("organization", "Text entry for organization name")
 
     def search(self):
+        """
+        Click the <Search> button
+        """
         return self.go("search")
 
     def select_first_result(self):
+        """
+        Select the first result in the list
+        """
         # why is this here? I don't remember!
         from selenium.common.exceptions import NoSuchElementException
         try:
@@ -31,6 +37,10 @@ class SCR0536x(Page):
             self.find("first result").click()
 
     def ok(self):
+        """
+        Click <Ok>
+        Closes the popup and returns to the main window
+        """
         self.find("ok").click()
         # return to the main window
         self.driver.switch_to_window(self.driver.window_handles[0])
