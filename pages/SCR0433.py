@@ -39,6 +39,7 @@ class SCR0433(Page):
         If a string is passed, it returns the row with that document name (exact match). 
         If a number is passed, it returns that number row from the list. For example, `p.document(2)` will return the second document on the page.
         //Document_row
+
         **Example:** To check the box next to the third document on the page, do `p.document(3).check()`
         """
         if type(identifier) is int:
@@ -55,6 +56,7 @@ class SCR0433(Page):
         If a string is passed, it returns the row with that folder name (exact match). 
         If a number is passed, it returns that number row from the list.
         //Folder_row
+        
         For example, `p.folder(2)` will return the second folder on the page.
         """
         if type(identifier) is int:
