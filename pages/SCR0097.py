@@ -1,11 +1,10 @@
 from pages.Page import Page
-from pages.elements import Radio
+from pages.elements import Radio, Text
 
 
 class SCR0097(Page):
     """
     SCR_0097 Request Approvals (RGS)
-    *Note*: All radio button values are true/false
     """
     locators = {
         "next": "name=ApprovalQuestionsNextEvent",
@@ -16,7 +15,9 @@ class SCR0097(Page):
         "foreign": "css=input[value='1706'] + tr input[type='radio']",
         "add staff": "css=input[value='1701'] + tr input[type='radio']",
         "use of name": "css=input[value='1710'] + tr input[type='radio']",
-        "appointment expiration": "css=input[value='1709'] + tr input[type='radio']"
+        "appointment expiration": "css=input[value='1709'] + tr input[type='radio']",
+        "appt option": "css=input[name=transferOptionId]",
+        "appt comment": "terminationAttributeComments"
     }
 
     human_subjects = Radio("human subjects", "Human subjects radio button")
@@ -27,6 +28,16 @@ class SCR0097(Page):
     add_staff = Radio("add staff", "Additional staff/space radio button")
     use_of_name = Radio("use of name", "Use of Harvard name radio button")
     appt_exp = Radio("appointment expiration", "Appointment expiration radio button")
+    appt_exp_option = Radio("appt option", "Appointment expiration option",
+        mapping = {
+            "_method": "value",
+            "transfer institution": "4201",
+            "transfer PI": "4202",
+            "unknown": "4204",
+            "other": "4203"
+        }
+    )
+    appt_exp_comment = Text("appt comment", "Appointment expiration comment")
 
     def set_all_radios(self, value):
         """
