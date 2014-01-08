@@ -42,7 +42,11 @@ class Text(Element):
                 if (arguments[0].onchange) arguments[0].onchange();
                 if (arguments[0].onblur) arguments[0].onblur();
             """
-            elem.parent.execute_script(script, elem)
+            from selenium.common.exceptions import WebDriverException
+            try:
+                elem.parent.execute_script(script, elem)
+            except WebDriverException:
+                pass
 
     def __get__(self, obj, type=None):
         elem = obj.find(self.locator)
