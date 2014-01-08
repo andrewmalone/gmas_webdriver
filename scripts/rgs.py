@@ -112,6 +112,8 @@ def rgs(p, f=None, finish="request"):
             "add_staff": "false",
             "use_of_name": "false",
             "appt_exp": "false",
+            "appt_exp_option": "transfer institution", # only required if appt_exp is true
+            "attp_exp_comment": "Other", # only required if appt_exp_option is "other"
             # SCR_0612b
             "ggov_questions": { # optional
                 "sf424_3": 2,
@@ -271,6 +273,10 @@ def rgs(p, f=None, finish="request"):
     p.add_staff = f["add_staff"]
     p.use_of_name = f["use_of_name"]
     p.appt_exp = f["appt_exp"]
+    if f["appt_exp"] == "true":
+        p.appt_exp_option = f["appt_exp_option"]
+        if f["appt_exp_option"] == "other":
+            p.appt_exp_comment = f["appt_exp_comment"]
     p = p.ok()
 
     # SCR_0544
