@@ -32,21 +32,15 @@ class Text(Element):
         elem.send_keys(val)
         # fire the onchange! 
         # TODO - figure out if there's a non-javascript webdriver native way to do this...
-        # There's a bug on SCR_0617 that throws a javascript error in the onchange event.
+        script = """
+            if (arguments[0].onchange) arguments[0].onchange();
+            if (arguments[0].onblur) arguments[0].onblur();
+        """
+        from selenium.common.exceptions import WebDriverException
         try:
-            screen = obj.get_current_page()
-        except AttributeError:
-            screen = ""
-        if "SCR0617" not in screen:
-            script = """
-                if (arguments[0].onchange) arguments[0].onchange();
-                if (arguments[0].onblur) arguments[0].onblur();
-            """
-            from selenium.common.exceptions import WebDriverException
-            try:
-                elem.parent.execute_script(script, elem)
-            except WebDriverException:
-                pass
+            elem.parent.execute_script(script, elem)
+        except WebDriverException:
+            pass
 
     def __get__(self, obj, type=None):
         elem = obj.find(self.locator)
