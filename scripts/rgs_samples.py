@@ -1,4 +1,8 @@
-import copy
+import copy, datetime
+
+def add_ts(string):
+    # adds a timestamp to the end of a string
+    return "%s %s" % (string, datetime.datetime.now().strftime("%Y%m%d%I%M%S"))
 
 minimal = {
     # SCR_0088
@@ -6,7 +10,7 @@ minimal = {
     "project_type": "Basic research and all other",
     "retro": "false",
     # SCR_0089
-    "title": "Minimal RGS automation",
+    "title": add_ts("Minimal RGS automation"),
     "sponsor": "nih",
     "pi": "03750001",
     "a21": "A02-Organized Research",
@@ -41,7 +45,7 @@ minimal = {
 }
 
 basic_s2s = copy.deepcopy(minimal)
-basic_s2s["title"] = "Minimal S2S submission (SF424 only)"
+basic_s2s["title"] = add_ts("Minimal S2S submission (SF424 only)")
 basic_s2s["opportunity"] = "NIH-UBER-4-1-2013"
 basic_s2s["s2s"] = "true"
 basic_s2s["ggov_questions"] = {
@@ -53,8 +57,29 @@ basic_s2s["ggov_questions"] = {
 
 standard_s2s = copy.deepcopy(basic_s2s)
 standard_s2s.update({
-    "title": "Basic R01 S2S submission",
+    "title": add_ts("Basic R01 S2S submission"),
     "opportunity": "PA-C-R01",
+    "ggov_attachments": {
+        "Research & Related Other Project Info":
+            {
+                "Project Summary/Abstract": "Project_Summary_Abstract.pdf",
+                "Project Narrative": "Project_Narrative.pdf",
+                "Bibliography & References Cited": "Bibliography.pdf"
+            },
+        "Research & Related Budget":
+            {
+                "Budget Justification": "Budget_Justification.pdf"
+            },
+        "Research & Related Key Person Expanded":
+            {
+                "Biographical Sketch": "Biosketch_PI.pdf"
+            },
+        "PHS398 ResearchPlan":
+            {
+                "Specific Aims": "Specific_Aims.pdf",
+                "Research Strategy": "Research_Strategy.pdf"
+            }
+    }
 })
 standard_s2s["ggov_questions"].update({
     "rr_other_1": 2,
@@ -73,4 +98,34 @@ standard_s2s["ggov_questions"].update({
     "phs_cover_4": 2,
     "phs_cover_5": 2,
     "phs_cover_6": 2,
+})
+
+all_approvals = copy.deepcopy(minimal)
+all_approvals.update({
+    "title": add_ts("RGS All approvals"),
+    "org": "16715",
+    "sponsor": "bank of america",
+    "prime_sponsor": "nih",
+    "prime_pi": "03750002",
+    "project_type": "Training grant",
+    "subs": "true",
+    "cost_share": "true",
+    "matching": "true",
+    "admin_salary": "true",
+    "pi_hs": "true",
+    "human_subjects": "true",
+    "animals": "true",
+    "biohazards": "true",
+    "stem_cells": "true",
+    "foreign": "true",
+    "add_staff": "true",
+    "use_of_name": "true",
+    "appt_exp": "true",
+    "appt_exp_option": "transfer institution",
+    "subagreements": [
+        {
+            "name": "egg",
+            "pi": "03750001"
+        }
+    ],
 })
