@@ -1,3 +1,6 @@
+import os
+import rgs_samples as samples
+
 def calc_end(start_date, num_periods):
     """
     helper method - sets the end date field based on the start date and the number of periods (assumes 1 year period)
@@ -121,6 +124,28 @@ def rgs(p, f=None, finish="request"):
                 "sf424_4a": "Other agency",
                 "sf424_5b": "0",
                 "sf424_6": 2
+            },
+            "ggov_attachments": {
+                "directory": "%s\\s2s\\" % os.path.dirname(os.path.abspath(__file__)),
+                "Research & Related Other Project Info":
+                    {
+                        "Project Summary/Abstract": "Project_Summary_Abstract.pdf",
+                        "Project Narrative": "Project_Narrative.pdf",
+                        "Bibliography & References Cited": "Bibliography.pdf"
+                    },
+                "Research & Related Budget":
+                    {
+                        "Budget Justification": "Budget_Justification.pdf"
+                    },
+                "Research & Related Key Person Expanded":
+                    {
+                        "Biographical Sketch": "Biosketch_PI.pdf"
+                    },
+                "PHS398 ResearchPlan":
+                    {
+                        "Specific Aims": "Specific_Aims.pdf",
+                        "Research Strategy": "Research_Strategy.pdf"
+                    }
             }
         }
 
@@ -287,10 +312,24 @@ def rgs(p, f=None, finish="request"):
     if f["s2s"] == "true":
         # SCR_0612b
         if "ggov_questions" in f:
+            # @todo - add support for multiple performance sites
             for question in sorted(f["ggov_questions"].keys()):
                 setattr(p, question, f["ggov_questions"][question])
         p = p.ok()
         # SCR_0610b
+        if "ggov_attachments" in f:
+            if "directory" in f["ggov_attachments"]:
+                base_dir = f["ggov_attachments"]["directory"]
+            else:
+                base_dir = "%s\\s2s\\" % os.path.dirname(os.path.abspath(__file__))
+            for form in f["ggov_attachments"]:
+                if form == "directory":
+                    continue
+                for attachment in f["ggov_attachments"][form]:
+                    p = p.locate(p.locate_buttons(form, attachment)[0])
+                    p.set_file("%s%s" % (base_dir, f["ggov_attachments"][form][attachment]))
+                    p = p.ok()
+
         p = p.ok()
 
     # SCR_0332
@@ -303,5 +342,5 @@ def rgs(p, f=None, finish="request"):
 
 if __name__ == "__main__":
     from gmas_webdriver.setup import init
-    p = init("Firefox", "gmasdev.cadm", False)
+    p = init("Firefox", "gmastest.cadm", False)
     p = rgs(p)
