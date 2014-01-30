@@ -321,7 +321,7 @@ def rgs(p, f=None, finish="request"):
             if "directory" in f["ggov_attachments"]:
                 base_dir = f["ggov_attachments"]["directory"]
             else:
-                base_dir = "%s\\s2s\\" % os.path.dirname(os.path.abspath(__file__))
+                base_dir = "%s\\s2s_attachments\\" % os.path.dirname(os.path.abspath(__file__))
             for form in f["ggov_attachments"]:
                 if form == "directory":
                     continue
