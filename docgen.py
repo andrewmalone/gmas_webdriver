@@ -1,7 +1,13 @@
+"""
+docgen.py
+Creates wiki documentation pages for all page object files
+"""
 import os
 import docgen_file as docgen
 
+# path to page object files
 path = "pages/"
+# path to save wiki pages
 savepath = "../gmas_webdriver_wiki/"
 
 for f in os.listdir(path):
@@ -16,3 +22,5 @@ for f in os.listdir(path):
 		if doc != "":
 			with open("%s%s.md" % (savepath, f[:-3]), "w") as file:
 				file.write(doc)
+
+# @todo - generate index page for page objects...
