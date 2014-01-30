@@ -13,6 +13,8 @@ class SCR0025(Page):
         "phones": "css=#phoneNumbersCCBODY tr:not(.bg3)",
         "addresses": "css=#addressesCCBODY tr:not(.bg3)",
         "emails": "css=#emailAddressesCCBODY tr:not(.bg3)",
+        "credentials": "css=#agencyCredentialsCCBODY tr:not(.bg3)",
+        "add credential": "css=a[href*='PersonProfileAddCredentialEvent'] img",
         "documents": "link=Documents"
     }
 
@@ -36,6 +38,20 @@ class SCR0025(Page):
         """
         addresses = self.finds("addresses")
         return len(addresses) - 1
+
+    def count_credentials(self):
+        """
+        Returns the number of agency credentials for a person
+        """
+        credentials = self.finds("credentials")
+        return len(credentials) - 2
+
+    def add_credential(self):
+        """
+        Click the <add> button for agency credentials
+        Goes to SCR_0629
+        """
+        return self.go("add credential")
 
     def add_phone(self):
         """
