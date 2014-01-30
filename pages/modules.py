@@ -1,3 +1,5 @@
+from pages.webelement import GMWebElement
+
 class COM0500(object):
     def __init__(self, page):
         self.page = page
@@ -6,10 +8,22 @@ class COM0500(object):
         self.page.find_element("css=a[href*='ProjectSnapShotSegmentHomeEvent']").click()
         return self.page.load_page()
 
-class GMAS_Header(object):
+class GMAS_Header(GMWebElement):
+    locators = {
+        "person link": "css=a[href*='GoMyProfileEvent']",
+        "people": "g_people"
+    }
+
     def __init__(self, page):
         self.page = page
+        self.driver = page.driver
+
+    def _go(self, locator):
+        self.find(locator).click()
+        return self.page.load_page()
 
     def goto_person_link(self):
-        self.page.find_element("css=a[href*='GoMyProfileEvent']").click()
-        return self.page.load_page()
+        return self._go("person_link")
+
+    def goto_people(self):
+        return self._go("people")

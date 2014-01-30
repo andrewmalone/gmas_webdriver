@@ -3,49 +3,17 @@ Base class for Page objects
 """
 
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.by import By
+
 from pages.modules import COM0500, GMAS_Header
+from pages.webelement import GMWebElement
 
 import re
 
-locator_map = {
-    "css": By.CSS_SELECTOR,
-    "id": By.ID,
-    "name": By.NAME,
-    "link": By.LINK_TEXT,
-    "xpath": By.XPATH
-}
+
 
 #TODO: Use composition for global nav (think about this...)
 
-class GMWebElement(object):
-    def find(self, locator, replace=False):
-        locator = self.locators[locator]
-        if replace:
-            locator = locator.replace("REPLACE", str(replace))
-        return self.find_element(locator)
 
-    def finds(self, locator):
-        locator = self.locators[locator]
-        return self.find_elements(locator)
-
-    def find_element(self, locator):
-        if locator.find("=") == -1:
-            locator_type = "name"
-            locator_value = locator
-        else:
-            locator_type = locator[:locator.find("=")]
-            locator_value = locator[locator.find("=") + 1:]
-        return self.driver.find_element(locator_map[locator_type], locator_value)
-
-    def find_elements(self, locator):
-        if locator.find("=") == -1:
-            locator_type = "name"
-            locator_value = locator
-        else:
-            locator_type = locator[:locator.find("=")]
-            locator_value = locator[locator.find("=") + 1:]
-        return self.driver.find_elements(locator_map[locator_type], locator_value)
 
 
 class Page(GMWebElement):

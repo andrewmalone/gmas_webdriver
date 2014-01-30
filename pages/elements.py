@@ -1,4 +1,4 @@
-from pages.Page import GMWebElement
+from pages.webelement import GMWebElement
 
 #TODO - refactor to move return objects to more common methods
 class Element(object):
