@@ -1,4 +1,6 @@
 from pages.Page import Page
+import utilities.xpath as xpath
+from pages.elements import RText
 
 
 class SCR0025(Page):
@@ -15,8 +17,16 @@ class SCR0025(Page):
         "emails": "css=#emailAddressesCCBODY tr:not(.bg3)",
         "credentials": "css=#agencyCredentialsCCBODY tr:not(.bg3)",
         "add credential": "css=a[href*='PersonProfileAddCredentialEvent'] img",
-        "documents": "link=Documents"
+        "documents": "link=Documents",
+        "edit": "css=a[href*='PersonProfileEditEvent'] img",
+        "user_flag": xpath.text_sibling("td", "GMAS user", 2),
+        "huid": xpath.text_sibling("td", "University ID", 4),
+        "name": xpath.text_sibling("td", "Full name", 4)
     }
+
+    huid = RText("huid", "HUID")
+    user_flag = RText("user_flag", "GMAS User Flag")
+    full_name = RText("name", "Full name (last, first middle)")
 
     def count_phones(self):
         """
@@ -80,3 +90,19 @@ class SCR0025(Page):
         Goes to SCR_0433
         """
         return self.go("documents")
+
+    def edit_user(self):
+        """
+        Click the <edit> button for person information
+        Goes to SCR_0026
+        """
+        return self.go("edit")
+
+    def get_person_id(self):
+        """
+        Gets the person id
+        """
+        import urlparse
+        url = urlparse.urlparse(self.driver.current_url)
+        query = urlparse.parse_qs(url.query)
+        return query["personId"][0]
