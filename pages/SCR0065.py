@@ -9,7 +9,8 @@ class SCR0065(Page):
     locators = {
         "name": "name=fullName",
         "search": "name=PeopleSearchEvent",
-        "result": "css=a[href*='PersonNameLinkEvent']"
+        "result": "css=a[href*='PersonNameLinkEvent']",
+        "teams": "link=GMAS Teams"
     }
 
     name = Text("name", "Edit box for name/HUID")
@@ -36,3 +37,10 @@ class SCR0065(Page):
         Goes to SCR_0025
         """
         return self.go("result")
+
+    def goto_teams(self):
+        """
+        Click the "GMAS Teams" link
+        Goes to SCR_0066
+        """
+        return self.go("teams")
