@@ -11,6 +11,8 @@ def startBrowser(browser, os="win"):
         return webdriver.Firefox()
     if browser == "Chrome":
         return webdriver.Chrome()
+    if browser == "IE":
+        return webdriver.Ie()
     if browser == "Phantom":
         a = ["--ignore-ssl-errors=yes", "--proxy-type=none"]
         str = ""
