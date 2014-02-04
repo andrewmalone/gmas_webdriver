@@ -1,19 +1,10 @@
 """
 Base class for Page objects
 """
-
 from selenium.webdriver.support.wait import WebDriverWait
-
 from pages.modules import COM0500, GMAS_Header
 from pages.webelement import GMWebElement
-
 import re
-
-
-
-#TODO: Use composition for global nav (think about this...)
-
-
 
 
 class Page(GMWebElement):
@@ -114,5 +105,10 @@ class Page(GMWebElement):
 
     def goto_gmashome(self):
         url = "https://%s.harvard.edu/gmas/user/SCR0270GMASHomePage.jsp" % (self.env)
+        self.driver.get(url)
+        return self.load_page()
+
+    def test_login(self, huid):
+        url = "https://%s.harvard.edu/gmas/testLoginServlet?HUID=%s" % (self.env, huid)
         self.driver.get(url)
         return self.load_page()
