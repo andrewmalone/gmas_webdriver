@@ -21,7 +21,9 @@ class SCR0025(Page):
         "edit": "css=a[href*='PersonProfileEditEvent'] img",
         "user_flag": xpath.text_sibling("td", "GMAS user", 2),
         "huid": xpath.text_sibling("td", "University ID", 4),
-        "name": xpath.text_sibling("td", "Full name", 4)
+        "name": xpath.text_sibling("td", "Full name", 4),
+        "standing team": "xpath=//a[contains(@href,'PersonProfileViewTeamEvent')][contains(text(),'REPLACE')]",
+        "open all": "link=open all"
     }
 
     huid = RText("huid", "HUID")
@@ -106,3 +108,17 @@ class SCR0025(Page):
         url = urlparse.urlparse(self.driver.current_url)
         query = urlparse.parse_qs(url.query)
         return query["personId"][0]
+
+    def open_all(self):
+        """
+        Clicks "Open all"
+        """
+        self.find("open all").click()
+
+
+    def goto_standing_team(self, team):
+        """
+        Clicks on a standing team link (based on the team name)
+        Goes to SCR_0050
+        """
+        return self.go("standing team", team)
