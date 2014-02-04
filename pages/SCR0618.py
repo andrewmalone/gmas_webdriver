@@ -8,8 +8,8 @@ class SCR0618(Page):
     """
     locators = {
         "update": "GrantsGovSubmissionHistoryGetUpdateEvent",
-        "tracking": "xpath=%s" % xpath.xpath_text_sibling("td", "Grants.gov tracking no.", 2),
-        "status": "xpath=%s" % xpath.xpath_text_sibling("td", "Submission status", 2)
+        "tracking": xpath.text_sibling("td", "Grants.gov tracking no.", 2),
+        "status": xpath.text_sibling("td", "Submission status", 2)
     }
 
     tracking = RText("tracking", "Grants.gov tracking number")
