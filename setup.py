@@ -14,6 +14,7 @@ def startBrowser(browser, os="win"):
     if browser == "IE":
         return webdriver.Ie()
     if browser == "Phantom":
+        return webdriver.PhantomJS()
         a = ["--ignore-ssl-errors=yes", "--proxy-type=none"]
         str = ""
         if os == "win":
@@ -23,6 +24,16 @@ def startBrowser(browser, os="win"):
             return webdriver.PhantomJS(service_args=a)
         #return webdriver.PhantomJS(executable_path="/phantomjs%s" %(str))
 
+def init_db(database):
+    import cx_Oracle
+    dir = os.path.dirname(os.path.abspath(__file__))
+    cfg = dir + "/config.ini"
+    config = ConfigParser.RawConfigParser()
+    config.read(cfg)
+    user = base64.b64decode(config.get("setup", "c"))
+    passwd = base64.b64decode(config.get("setup", "d"))
+    con = cx_Oracle.connect("%s/%s@%s" % (user, passwd, database))
+    return con.cursor()
 
 def loginGMAS(driver, env):
     dir = os.path.dirname(os.path.abspath(__file__))
