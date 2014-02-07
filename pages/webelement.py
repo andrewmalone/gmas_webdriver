@@ -5,6 +5,7 @@ locator_map = {
     "id": By.ID,
     "name": By.NAME,
     "link": By.LINK_TEXT,
+    "partial": By.PARTIAL_LINK_TEXT,
     "xpath": By.XPATH
 }
 
@@ -15,8 +16,10 @@ class GMWebElement(object):
             locator = locator.replace("REPLACE", str(replace))
         return self.find_element(locator)
 
-    def finds(self, locator):
+    def finds(self, locator, replace=False):
         locator = self.locators[locator]
+        if replace:
+            locator = locator.replace("REPLACE", str(replace))
         return self.find_elements(locator)
 
     def find_element(self, locator):
