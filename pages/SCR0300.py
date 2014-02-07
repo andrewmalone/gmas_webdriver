@@ -20,6 +20,10 @@ class SCR0300(Page):
         return self.go("role", role)
 
     def role_rows(self, role):
+        """
+        Returns a list of rows matching the role specified
+        //role_row
+        """
         elements = self.finds("row by role", role)
         rows = []
         for el in elements:
@@ -27,6 +31,10 @@ class SCR0300(Page):
         return rows
 
     def person_rows(self, person_id):
+        """
+        Returns a list of rows matching the person specified (by person id)
+        //role_row
+        """
         elements = self.finds("row by person", person_id)
         rows = []
         for el in elements:
@@ -48,13 +56,20 @@ class SCR0300(Page):
             "name link": "css=a[href*=ProjectAdminTeamPersonProfileEvent]"
         }
 
-        role = RText("role")
-        name = RText("name")
+        role = RText("role", "Role name")
+        name = RText("name", "Person name")
 
         def goto_role(self):
+            """
+            Click the role link
+            Goes to SCR_0301
+            """
             return self._go("role link")
 
         def person_id(self):
+            """
+            returns the person id for the current row
+            """
             import urlparse
             element = self.find("name link")
             url = urlparse.urlparse(element.get_attribute("href"))
