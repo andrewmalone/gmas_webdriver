@@ -49,4 +49,46 @@ def remove_from_standing_team(p, huid, team):
     p = p.remove_member()
     return p
 
+def add_to_project_team(p, huid, segment_id, role):
+    """
+    Adds a user to a project admin team
+    Flags the user as "Yes" if not already flagged
+    Starts from: Any global screen
+    Ends on: SCR_0300
+    """
+    p = flag_user(p, huid, "Yes")
+    p = p.goto_segment(segment_id).goto_admin_team()
+    if len(p.role_rows(role)) == 0:
+        import admin_team
+        p = admin_team.add_role(p, role)
+    p = p.goto_role(role).add()
+    p.name = huid
+    p = p.search()
+    p.select_first()
+    p = p.ok().goto_last_breadcrumb()
+    return p
 
+def remove_from_project_team(p, huid, segment_id, role=None):
+    """
+    Removes a user from a project admin team
+    If role is specified, only that role is removed - otherwise the user is removed from all roles
+    Starts from: Any global screen
+    Ends on: SCR_0300
+    """
+    p = search_by_huid(p, huid)
+    person_id = p.get_person_id()
+    name = p.full_name
+    p = p.goto_segment(segment_id).goto_admin_team()
+    rows = p.person_rows(person_id)
+    if len(rows) > 0:
+        if role:
+            p = p.goto_role(role)
+            p.select_name(name)
+            p = p.remove().goto_last_breadcrumb()
+        else:
+            while len(rows) > 0:
+                p = rows[0].goto_role()
+                p.select_name(name)
+                p = p.remove().goto_last_breadcrumb()
+                rows = p.person_rows(person_id)
+    return p
