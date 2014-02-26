@@ -40,7 +40,7 @@ class SCR0270(Page):
         Direct navigation to GMAS Home
         """
         if self.get_current_page() != "SCR0270GMASHomePage":
-            self.driver.get("https:%s.harvard.edu/gmas/user/SCR0270GMASHomePage.jsp" % (self.env))
+            self.driver.get("%s/gmas/user/SCR0270GMASHomePage.jsp" % (self.env_url))
             return SCR0270(self.driver)
         else:
             return self
