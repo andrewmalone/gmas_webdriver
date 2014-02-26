@@ -23,7 +23,8 @@ class SCR0025(Page):
         "huid": xpath.text_sibling("td", "University ID", 4),
         "name": xpath.text_sibling("td", "Full name", 4),
         "standing team": "xpath=//a[contains(@href,'PersonProfileViewTeamEvent')][contains(text(),'REPLACE')]",
-        "open all": "link=open all"
+        "open all": "link=open all",
+        "PI dashboard": "event=ViewPIDashboardEvent"
     }
 
     huid = RText("huid", "HUID")
@@ -122,3 +123,10 @@ class SCR0025(Page):
         Goes to SCR_0050
         """
         return self.go("standing team", team)
+
+    def goto_pi_dashboard(self):
+        """
+        Clicks the "PI Dashboard" link
+        Goes to SCR_0646]
+        """
+        return self.go("PI dashboard")
