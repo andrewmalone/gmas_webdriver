@@ -11,7 +11,8 @@ class COM0500(object):
 class GMAS_Header(GMWebElement):
     locators = {
         "person link": "css=a[href*='GoMyProfileEvent']",
-        "people": "g_people"
+        "people": "g_people",
+        "home": "css=a[href*=GoHomeEvent] img"
     }
 
     def __init__(self, page):
@@ -27,3 +28,7 @@ class GMAS_Header(GMWebElement):
 
     def goto_people(self):
         return self._go("people")
+
+    def goto_home(self):
+        return self._go("home")
+
