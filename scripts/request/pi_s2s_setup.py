@@ -26,9 +26,9 @@ def pi_s2s_setup(p, data):
 
     if p.count_credentials() == 0:
         p = p.add_credential()
-        p.agency = "eRACommons"
+        p.agency = "NIH"
         p.credential = "abcdefg"
         p = p.ok()
 
-    p = p.goto_gmashome()
+    p = p.global_header.goto_home()
     return p
