@@ -10,8 +10,11 @@ locators = {
     "approvals": "link=Approvals",
     "notices": "link=Sponsor notices",
     "subagreements": "link=Subagreements",
-    "research team": "link=Research staff",
-    "admin team": "link=Administrative team"
+    "research team": "event=ResearchStaffLinkEvent",
+    "admin team": "css=a[href*=SegmentSummaryAdministrativeTeamLinkEvent]",
+    "requests": "css=a[href*=RequestListEvent]",
+    "accounts": "event=AccountsLinkEvent",
+    "segment documents": "event=SegmentDocumentsLinkEvent"
 }
 
 
@@ -103,3 +106,24 @@ class SCR0104b(Page):
         Goes to SCR_0300
         """
         return self.go("admin team")
+
+    def goto_requests(self):
+        """
+        Clicks the "Requests" link
+        Goes to SCR_0344
+        """
+        return self.go("requests")
+
+    def goto_accounts(self):
+        """
+        Clicks the "Accounts" link
+        Goes to SCR_0360
+        """
+        return self.go("accounts")
+
+    def goto_segment_documents(self):
+        """
+        Clicks the "Segment documents" link
+        Goes to SCR_0634
+        """
+        return self.go("segment documents")
