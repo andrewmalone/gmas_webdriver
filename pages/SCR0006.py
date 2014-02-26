@@ -12,7 +12,8 @@ class SCR0006(Page):
         "edit indirect": "name=EditProposedBudgetEditIndirectCostEvent",
         "editbox": "css=input[name$='__budgetEntryAmount']",
         "next period": "css=input[title='Next period']",
-        "ok": "name=EditProposedBudgetOKEvent"
+        "ok": "name=EditProposedBudgetOKEvent",
+        "cancel": "EditProposedBudgetCancelEvent"
     }
 
     total_direct = Text("total_direct", "Total direct cost")
@@ -45,6 +46,14 @@ class SCR0006(Page):
     def ok(self):
         """
         Click <Ok>
-        Goes to SCR_0031 or SCR_0104b
+        Goes to SCR_0031 or SCR_0115
         """
         return self.go("ok")
+
+    def cancel(self):
+        """
+        Click <Cancel>
+        Goes to SCR_0115
+        """
+        return self.go("cancel")
+
