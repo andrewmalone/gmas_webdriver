@@ -1,47 +1,79 @@
+"""
+compenv.py
+
+implements a wrapper class that can be used to compare two different GMAS environments
+"""
+from pages.Page import Page
+import os
+import csv
+
 class wrapper(object):
-    # @todo - add log file locations
-    # @todo - add performance profile on page load
-    def __init__(self, a, b):
+    def __init__(self, a, b, log_folder=""):
         self._a = a
         self._b = b
+
+        # internal var for error tracking
         self._e = 0
 
+        # log file header
+        self._log = [['Match', 'Page1', 'Page2', 'Pageload1', 'Pageload2']]
+
+        # set up the log folder, adding trailing slash if necessary
+        if log_folder != "":
+                if log_folder[-1] != "/":
+                    log_folder = log_folder + "/"
+                os.makedirs(log_folder)
+        self._log_folder = log_folder
+
     def __getattr__(self, attr):
-        def empty():
-            return None
+        """
+        overrides the default getter. Used for getting page object attributes or calling
+        page object methods
+        """
+        # get the desired attributes from each page object
         a = getattr(self._a, attr)
         b = getattr(self._b, attr)
+
         if callable(a) and callable(b):
+            # attr is a method, so we need to call it and return the result
             self._attr = attr
             return self.call
 
-        # check if this is a builtin type
+        # check if this is a builtin type, if so return the attribute directly
         if a.__class__.__module__ == '__builtin__' and b.__class__.__module__ == '__builtin__':
             if a == b:
                 return a
             else: return 0
 
         # need to return a wrapper object if not a builtin
+        # this is used for any sub objects that are GMWebElements or 
+        # something else(like rows within a page object)
         return wrapper(a, b)
-        # need to return the actual attribute if this is getting data (not sure how yet)
-        # example: project snapshot, documents, etc...
+
         
     def __setattr__(self, attr, value):
+        """
+        overrides the default setter
+        """
         if attr[0] == '_':
+            # underscore prefixed attributes are internal to the wrapper object, not the
+            # wrapped objects, so we can set them directly
             self.__dict__[attr] = value
         else:
-            # print "set %s to %s" % (attr, value)
+            # set the attributes in the wrapped objects
             if hasattr(self._a, attr):
                 self._a.__setattr__(attr, value)
-            if hasattr(self._a, attr):
+            if hasattr(self._b, attr):
                 self._b.__setattr__(attr, value)
 
     def call(self, *args):
+        """
+        call function calls methods on each wrapped page object
+        """
         a = getattr(self._a, self._attr)(*args)
         b = getattr(self._b, self._attr)(*args)
 
         # check if we are getting a page object
-        from pages.Page import Page
         if isinstance(a, Page) and isinstance(b, Page):
             self._a = a
             self._b = b
@@ -49,18 +81,21 @@ class wrapper(object):
             source1 = self.clean_source(self._a.driver.page_source)
             source2 = self.clean_source(self._b.driver.page_source)
 
+            match = "True";
+
             # compare the source
             if source1 != source2:
                 # increment the error count
                 self._e += 1
+                match = "False E%s" % self._e
 
                 # save the full page sources
                 self.save_file("E%s-S1.txt" % self._e, self._a.driver.page_source.encode('utf-8'))
                 self.save_file("E%s-S2.txt" % self._e, self._b.driver.page_source.encode('utf-8'))
 
                 # save screenshots
-                self._a.driver.save_screenshot("E%s-S1.png" % self._e)
-                self._b.driver.save_screenshot("E%s-S2.png" % self._e)
+                self._a.driver.save_screenshot("%sE%s-S1.png" % (self._log_folder, self._e))
+                self._b.driver.save_screenshot("%sE%s-S2.png" % (self._log_folder, self._e))
 
                 # do the diff and save to a file
                 import difflib
@@ -69,7 +104,15 @@ class wrapper(object):
                 result = list(difflib.unified_diff(source1.splitlines(1),source2.splitlines(1), fromfile=fromfile, tofile=tofile))
                 self.save_file("E%s-D.txt" % self._e, result)
 
-            print source1 == source2
+
+            log_line = [
+                match,
+                self._a.get_current_page(),
+                self._b.get_current_page(),
+                self._a.get_page_load_time(),
+                self._b.get_page_load_time()
+            ]
+            self._log.append(log_line)
             return self
 
         # check if this is a builtin type
@@ -91,13 +134,14 @@ class wrapper(object):
         return source
 
     def save_file(self, file, s):
-        f = open(file, "w")
+        f = open("%s%s" % (self._log_folder, file), "w")
         if type(s) is list:
             for line in s:
-                f.write(line)
+                f.write(line.encode('utf-8'))
         else:
             f.write(s)
         f.close()
+
 
     def get_context(self, p):
         """
@@ -123,4 +167,7 @@ class wrapper(object):
 
         return '\n'.join(s)
 
-
+    def write_log(self):
+        with open("%slog.csv" % self._log_folder, "wb") as f:
+            writer = csv.writer(f)
+            writer.writerows(self._log)
