@@ -17,6 +17,7 @@ class Page(GMWebElement):
         Parameters: webdriver object
         """
         self.env = driver.env
+        self.env_url = driver.env_url
         self.driver = driver
         self.wait = 60
         self.w = WebDriverWait(self.driver, self.wait)
@@ -94,21 +95,29 @@ class Page(GMWebElement):
         crumbs[-1].click()
         return self.load_page()
 
+    def goto_breadcrumb_number(self, number):
+        crumbs = self.find_elements("css=a.bread")
+        crumbs[number * -1].click()
+        return self.load_page()
+
     def go(self, locator, replace=False):
         self.find(locator, replace).click()
         return self.load_page()
 
     def goto_segment(self, segment_id):
-        url = "https://%s.harvard.edu/gmas/project/SCR0104SegmentHome.jsp?segmentId=%s" % (self.env, segment_id)
+        url = "%s/gmas/project/SCR0104SegmentHome.jsp?segmentId=%s" % (self.env_url, segment_id)
         self.driver.get(url)
         return self.load_page()
 
     def goto_gmashome(self):
-        url = "https://%s.harvard.edu/gmas/user/SCR0270GMASHomePage.jsp" % (self.env)
+        url = "%s/gmas/user/SCR0270GMASHomePage.jsp" % (self.env_url)
         self.driver.get(url)
         return self.load_page()
 
     def test_login(self, huid):
-        url = "https://%s.harvard.edu/gmas/testLoginServlet?HUID=%s" % (self.env, huid)
+        url = "%s/gmas/testLoginServlet?HUID=%s" % (self.env_url, huid)
         self.driver.get(url)
         return self.load_page()
+
+    def quit(self):
+        self.driver.quit()

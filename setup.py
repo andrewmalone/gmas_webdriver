@@ -23,6 +23,7 @@ def startBrowser(browser, os="win"):
         else:
             return webdriver.PhantomJS(service_args=a)
         #return webdriver.PhantomJS(executable_path="/phantomjs%s" %(str))
+    raise Exception("%s is not a defined browser" % browser)
 
 def init_db(database):
     import cx_Oracle
@@ -35,14 +36,14 @@ def init_db(database):
     con = cx_Oracle.connect("%s/%s@%s" % (user, passwd, database))
     return con.cursor()
 
-def loginGMAS(driver, env):
+def loginGMAS(driver):
     dir = os.path.dirname(os.path.abspath(__file__))
     cfg = dir + "/config.ini"
     config = ConfigParser.RawConfigParser()
     config.read(cfg)
     HUID = base64.b64decode(config.get("setup", "a"))
     PIN = base64.b64decode(config.get("setup", "b"))
-    driver.get("https://%s.harvard.edu/gmas/" % (env))
+    driver.get("%s/gmas" % driver.env_url)
     w = WebDriverWait(driver, 60)
     w.until(lambda e: e.find_element_by_id("username"))
     driver.find_element_by_id("username").send_keys(HUID)
@@ -50,9 +51,12 @@ def loginGMAS(driver, env):
     driver.find_element_by_css_selector("input.login-button[type=submit][value=Login]").click()
 
 
-def init(browser, env, splitscreen=False, position="full"):
+def init(browser, env, splitscreen=False, position="full", port=None):
     # this is so that imports will work (there's probably a better way)
     sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+    url = env_url(env)
+
     d = startBrowser(browser)
     if splitscreen is True:
         d.set_window_position(1500,0)
@@ -66,7 +70,8 @@ def init(browser, env, splitscreen=False, position="full"):
         x = pos["x"] if position == "left" else pos["x"] + size["width"]/2
         d.set_window_position(x, pos["y"])
     d.env = env
-    loginGMAS(d, d.env)
+    d.env_url = url
+    loginGMAS(d)
     from pages.SCR0270 import SCR0270
     p = SCR0270(d).nav_to()
     return p
@@ -85,3 +90,16 @@ def highlight(element):
             element.setAttribute('style', original_style);
         }, 500);
     """, element)
+
+def env_url(env):
+    instances = {
+        "gdev": "https://gmasdev.cadm.harvard.edu",
+        "gtest": "https://gmastest.cadm.harvard.edu",
+        "gtrain": "https://gmastraining.harvard.edu",
+        "gprod": "https://gmas.harvard.edu",
+        "gdev_new": "http://gmastst-app1.cadm.harvard.edu:8351"
+    }
+    try:
+        return instances[env]
+    except KeyError:
+        raise Exception("%s is not a defined GMAS environment" % env)
