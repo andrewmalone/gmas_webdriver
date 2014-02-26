@@ -29,6 +29,9 @@ class GMWebElement(object):
         else:
             locator_type = locator[:locator.find("=")]
             locator_value = locator[locator.find("=") + 1:]
+        if locator_type == "event":
+            locator_type = "css"
+            locator_value = "a[href*=%s]" % locator_value
         return self.driver.find_element(locator_map[locator_type], locator_value)
 
     def find_elements(self, locator):
@@ -38,4 +41,7 @@ class GMWebElement(object):
         else:
             locator_type = locator[:locator.find("=")]
             locator_value = locator[locator.find("=") + 1:]
+        if locator_type == "event":
+            locator_type = "css"
+            locator_value = "a[href*=%s]" % locator_value
         return self.driver.find_elements(locator_map[locator_type], locator_value)
