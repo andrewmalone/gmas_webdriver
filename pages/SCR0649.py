@@ -6,11 +6,12 @@ from pages.elements import Text, Select
 
 class SCR0649(Page):
     """
-    SCR_0649
+    SCR_0649 Edit research team
     """
     locators = {
         "row": "css=#dataRow",
-        "add input": "name=personName"
+        "add input": "name=personName",
+        "cancel": "EditResearchTeamCancelEvent"
     }
 
     add_member_text = Text("add input", "Text box for adding a new person")
@@ -27,6 +28,13 @@ class SCR0649(Page):
         test2
         """
         return self.Row(self.finds("row")[rownum - 1], self)
+
+    def cancel(self):
+        """
+        Click <Cancel>
+        Goes to SCR_0015
+        """
+        return self.go("cancel")
 
     class Row(GMWebElement):
         """
