@@ -100,6 +100,9 @@ class Page(GMWebElement):
         crumbs[number * -1].click()
         return self.load_page()
 
+    def back(self, number=1):
+        return self.goto_breadcrumb_number(number)
+
     def go(self, locator, replace=False):
         self.find(locator, replace).click()
         return self.load_page()
