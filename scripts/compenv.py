@@ -8,22 +8,27 @@ import os
 import csv
 
 class wrapper(object):
-    def __init__(self, a, b, log_folder=""):
+    def __init__(self, a, b, log_folder="", e=0, log=None, compare=True):
         self._a = a
         self._b = b
 
         # internal var for error tracking
-        self._e = 0
+        self._e = e
 
         # log file header
-        self._log = [['Match', 'Page1', 'Page2', 'Pageload1', 'Pageload2']]
+        if log is None:
+            self._log = [['Match', 'Page1', 'Page2', 'Pageload1', 'Pageload2']]
+        else:
+            self._log = log
 
         # set up the log folder, adding trailing slash if necessary
-        if log_folder != "":
+        if log_folder != "" and log is None:
                 if log_folder[-1] != "/":
                     log_folder = log_folder + "/"
                 os.makedirs(log_folder)
         self._log_folder = log_folder
+
+        self._compare = compare
 
     def __getattr__(self, attr):
         """
@@ -48,7 +53,7 @@ class wrapper(object):
         # need to return a wrapper object if not a builtin
         # this is used for any sub objects that are GMWebElements or 
         # something else(like rows within a page object)
-        return wrapper(a, b)
+        return wrapper(a, b, log_folder = self._log_folder, e = self._e, log = self._log, compare=self._compare)
 
         
     def __setattr__(self, attr, value):
@@ -81,29 +86,31 @@ class wrapper(object):
             source1 = self.clean_source(self._a.driver.page_source)
             source2 = self.clean_source(self._b.driver.page_source)
 
-            match = "True";
+            if self._compare is True:
+                match = "True";
 
-            # compare the source
-            if source1 != source2:
-                # increment the error count
-                self._e += 1
-                match = "False E%s" % self._e
+                # compare the source
+                if source1 != source2:
+                    # increment the error count
+                    self._e += 1
+                    match = "False E%s" % self._e
 
-                # save the full page sources
-                self.save_file("E%s-S1.txt" % self._e, self._a.driver.page_source.encode('utf-8'))
-                self.save_file("E%s-S2.txt" % self._e, self._b.driver.page_source.encode('utf-8'))
+                    # save the full page sources
+                    self.save_file("E%s-S1.txt" % self._e, self._a.driver.page_source.encode('utf-8'))
+                    self.save_file("E%s-S2.txt" % self._e, self._b.driver.page_source.encode('utf-8'))
 
-                # save screenshots
-                self._a.driver.save_screenshot("%sE%s-S1.png" % (self._log_folder, self._e))
-                self._b.driver.save_screenshot("%sE%s-S2.png" % (self._log_folder, self._e))
+                    # save screenshots
+                    self._a.driver.save_screenshot("%sE%s-S1.png" % (self._log_folder, self._e))
+                    self._b.driver.save_screenshot("%sE%s-S2.png" % (self._log_folder, self._e))
 
-                # do the diff and save to a file
-                import difflib
-                fromfile = self.get_context(self._a)
-                tofile = self.get_context(self._b)
-                result = list(difflib.unified_diff(source1.splitlines(1),source2.splitlines(1), fromfile=fromfile, tofile=tofile))
-                self.save_file("E%s-D.txt" % self._e, result)
-
+                    # do the diff and save to a file
+                    import difflib
+                    fromfile = self.get_context(self._a)
+                    tofile = self.get_context(self._b)
+                    result = list(difflib.unified_diff(source1.splitlines(1),source2.splitlines(1), fromfile=fromfile, tofile=tofile))
+                    self.save_file("E%s-D.txt" % self._e, result)
+            else:
+                match = "N/A"
 
             log_line = [
                 match,
@@ -122,7 +129,7 @@ class wrapper(object):
             else: return 0
 
         # need to return a wrapper object if not a Page or builtin
-        return wrapper(a, b)
+        return wrapper(a, b, log_folder = self._log_folder, e = self._e, log = self._log, compare=self._compare)
 
     def clean_source(self, source):
         import re
@@ -167,7 +174,7 @@ class wrapper(object):
 
         return '\n'.join(s)
 
-    def write_log(self):
-        with open("%slog.csv" % self._log_folder, "wb") as f:
+    def write_log(self, filename="log.csv"):
+        with open("%s%s" % (self._log_folder, filename), "wb") as f:
             writer = csv.writer(f)
             writer.writerows(self._log)
