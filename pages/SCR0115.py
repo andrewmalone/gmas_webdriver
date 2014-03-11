@@ -17,7 +17,8 @@ class SCR0115(Page):
         "edit ggov attachments": "css=a[href*='EditGrantsGovAttachmentsEvent'] img",
         "prepare ggov submission": "css=a[href*='PrepareGrantsGovSubmissionEvent'] img",
         "edit atrisk": "css=a[href*='AtRiskAccountEditEvent'] img",
-        "budget": "event=ProposedDollarsSummaryViewBudgetEvent"
+        "budget": "event=ProposedDollarsSummaryViewBudgetEvent",
+        "subagreements": "event=ViewListOfSubagreementsEvent"
     }
 
     def nav_to(self, segment_id, request_id):
@@ -115,3 +116,10 @@ class SCR0115(Page):
         Goes to SCR_0031
         """
         return self.go("budget")
+
+    def goto_subagreements(self):
+        """
+        Click the "Subagreement" link
+        Goes to SCR_0250
+        """
+        return self.go("subagreements")
