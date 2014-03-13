@@ -10,7 +10,7 @@ class SCR0433(Page):
         "add document": "name=DocumentFolderAddADocumentEvent",
         "add folder": "name=DocumentFolderAddAFolderEvent",
         "document row": "xpath=//a[contains(@href,'DocumentFolderFilesLinkEvent')]/../..",
-        "document row by name": "xpath=//a[normalize-space(text())='REPLACE']/../..",
+        "document row by name": "xpath=//a[normalize-space(text())='REPLACE'][not(@class)]/../..",
         "delete": "name=DocumentFolderDeleteDocumentEvent",
         "lock": "name=DocumentFolderLockDocumentEvent",
         "get from clipboard": "name=DocumentFolderGetFromMyClipboardEvent",
