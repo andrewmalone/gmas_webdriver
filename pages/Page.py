@@ -107,13 +107,25 @@ class Page(GMWebElement):
         self.find(locator, replace).click()
         return self.load_page()
 
+    # TODO: Figure out how to move all goto methods to a common class
+
     def goto_segment(self, segment_id):
         url = "%s/gmas/project/SCR0104SegmentHome.jsp?segmentId=%s" % (self.env_url, segment_id)
         self.driver.get(url)
         return self.load_page()
 
+    def goto_request(self, segment_id, request_id):
+        url = "%s/gmas/request/SCR0115Request.jsp?requestId=%s&segmentId=%s" % (self.env_url, request_id, segment_id)
+        self.driver.get(url)
+        return self.load_page()
+
     def goto_gmashome(self):
         url = "%s/gmas/user/SCR0270GMASHomePage.jsp" % (self.env_url)
+        self.driver.get(url)
+        return self.load_page()
+
+    def goto_person(self, person_id):
+        url = "%s/gmas/dispatch?PersonNameLinkEvent=&ref=%%2Fperson%%2FSCR0065PersonSearch.jsp&formName=PersonSearchResultsForm&personId=%s" % (self.env_url, person_id)
         self.driver.get(url)
         return self.load_page()
 
