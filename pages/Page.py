@@ -28,6 +28,10 @@ class Page(GMWebElement):
         self.project_snapshot = COM0500(self)
         self.global_header = GMAS_Header(self)
 
+    @property
+    def scr(self):
+        return self.get_current_page()[0:7]
+
     def get_current_page(self):
         elems = self.find_elements("css=td.footer")
         for elem in elems:
