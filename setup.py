@@ -25,15 +25,18 @@ def startBrowser(browser, os="win"):
         #return webdriver.PhantomJS(executable_path="/phantomjs%s" %(str))
     raise Exception("%s is not a defined browser" % browser)
 
-def init_db(database):
+def init_db(host):
     import cx_Oracle
+    from gmas_webdriver.database.hosts import hosts
+    host = hosts[host]
     dir = os.path.dirname(os.path.abspath(__file__))
     cfg = dir + "/config.ini"
     config = ConfigParser.RawConfigParser()
     config.read(cfg)
     user = base64.b64decode(config.get("setup", "c"))
     passwd = base64.b64decode(config.get("setup", "d"))
-    con = cx_Oracle.connect("%s/%s@%s" % (user, passwd, database))
+    dbstring = cx_Oracle.makedsn(host["host"], host["port"], host["sid"])
+    con = cx_Oracle.connect(user, passwd, dbstring)
     return con.cursor()
 
 def loginGMAS(driver):
