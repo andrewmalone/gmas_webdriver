@@ -8,7 +8,7 @@ class SCR0250(Page):
     SCR_0250 Subagreement list for request
     """
     locators = {
-    	"sub link": "event=ViewSubagreementEvent"
+    	"sub link": "event=ViewSubagreementEvent",
     	"sub row": xpath.parent_row_of_event("ViewSubagreementEvent")
     }
 
