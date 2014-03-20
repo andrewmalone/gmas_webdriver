@@ -9,8 +9,18 @@ class SCR0050(Page):
         "add member": "css=a[href*=AddStandingTeamMemberEvent] img",
         "link": "css=a[href*=ViewPersonAssignmentEvent]",
         "link id": "css=a[href*='teamMemberPersonId=REPLACE']",
-        "link name": "link=REPLACE"
+        "link name": "link=REPLACE",
+        "assignments": "event=ViewTeamMemberAssignmentsEvent",
+        "roles": "event=ViewTeamRolesEvent",
+        "scope": "event=ViewTeamOrgCoverageEvent"
     }
+
+    @property
+    def member_count(self):
+        """
+        Count of people on the team
+        """
+        return len(self.finds("link"))
 
     def add_member(self):
         """
@@ -38,4 +48,31 @@ class SCR0050(Page):
             link = self.finds("link")[num - 1]
             link.click()
             return self.load_page()
+
+    def goto_member_num(self, num):
+        """
+        (not sure if this will stay here)
+        """
+        return self.goto_member(num=num)
+
+    def goto_assignments(self):
+        """
+        Click the <View team assignments> button
+        Goes to SCR_0366
+        """
+        return self.go("assignments")
+
+    def goto_roles(self):
+        """
+        Click the <Team roles> button
+        Goes to SCR_0539
+        """
+        return self.go("roles")
+
+    def goto_orgs(self):
+        """
+        Click the <Team org coverage> button
+        Goes to SCR_0540
+        """
+        return self.go("scope")
 
