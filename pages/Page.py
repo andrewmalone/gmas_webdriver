@@ -26,7 +26,9 @@ class Page(GMWebElement):
         # set up some includes
         #TODO: There must be a better way to do this!
         self.project_snapshot = COM0500(self)
+        #TODO deprecate this!
         self.global_header = GMAS_Header(self)
+        self.header = self.global_header
 
     @property
     def scr(self):
