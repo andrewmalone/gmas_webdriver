@@ -193,3 +193,6 @@ class wrapper(object):
 
     def skip(self, number=1):
         self._skip = number
+
+    def add_log(self, text):
+        self._log[-1].append(text)
