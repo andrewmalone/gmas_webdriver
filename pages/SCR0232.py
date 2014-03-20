@@ -36,10 +36,12 @@ class SCR0232(Page):
     class Subagreement_row(Row):
         locators = {
             "link": "event=SubagreementEvent",
-            "status": "css=td:nth-child(15)"
+            "status": "css=td:nth-child(15)",
+            "id": "css=td:nth-child(11)"
         }
 
         status = RText("status", "Subagreement status")
+        sub_id = RText("id", "Subagreement ID")
 
         def go(self):
             """
