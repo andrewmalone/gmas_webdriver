@@ -30,7 +30,7 @@ class SCR0066(Page):
             row = self.finds("row")[identifier - 1]
             
         if type(identifier) is str:
-            row = self.find("row_name", identifier)
+            row = self.find("row_name", identifier.strip())
 
         return self.Result_row(row, self)
 
