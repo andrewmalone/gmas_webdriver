@@ -9,7 +9,8 @@ locators = {
     "search": "name=ProjectSearchEvent",
     "loc": "link=Letter of Credit",
     "documents": "name=g_documentsoff",
-    "organizations": "name=g_organizations"
+    "organizations": "name=g_organizations",
+    "standing teams": "event=ViewStandingTeamEvent"
 }
 
 
@@ -94,4 +95,11 @@ class SCR0270(Page):
         Clicks the "organizations" link
         Goes to SCR_0067
         """
-        return self.go("organizations")  
+        return self.go("organizations")
+
+    def goto_standing_teams(self):
+        """
+        Clicks the "Standing Teams" link
+        Goes to SCR_0066
+        """
+        return self.go("standing teams")
