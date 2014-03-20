@@ -7,7 +7,7 @@ class SCR0134a(Page):
     SCR_01134a Organization Profile
     """
     locators = {
-        "documents": "link=Documents"        
+        "documents": "event=RepositoryLinkEvent"     
     }
 
     def goto_documents(self):
