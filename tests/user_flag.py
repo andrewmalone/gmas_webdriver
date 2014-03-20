@@ -1,7 +1,7 @@
 from gmas_webdriver.setup import init, init_db
 
 db = init_db("gdev")
-p = init("Firefox", "gmasdev.cadm")
+p = init("Firefox", "gdev")
 
 import scripts.security.user as security
 from scripts.person.search import search_by_huid
