@@ -69,6 +69,7 @@ class Page(GMWebElement):
                 page = "SCR0104a"
         if page == "SCR0089a": page = "SCR0089"
         if page == "SCR0474b": page = "SCR0474"
+        if page == "SCR0366v": page = "SCR0366"
         cls = getattr(importlib.import_module("pages.%s" % (page)), page)
         return cls(self.driver)
 
