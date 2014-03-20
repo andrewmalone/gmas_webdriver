@@ -20,7 +20,7 @@ class wrapper(object):
 
         # log file header
         if log is None:
-            self._log = [['Match', 'Page1', 'Page2', 'Pageload1', 'Pageload2']]
+            self._log = [['Match', 'Page1', 'URL1', 'Page2', 'URL2', 'Pageload1 (ms)', 'Pageload2 (ms)', 'Pageload compare']]
         else:
             self._log = log
 
@@ -117,12 +117,19 @@ class wrapper(object):
 
             if self._skip > 0:
                 self._skip = self._skip - 1
+
+            load_a = self._a.get_page_load_time()
+            load_b = self._b.get_page_load_time()
+
             log_line = [
                 match,
                 self._a.get_current_page(),
+                self._a.driver.current_url,
                 self._b.get_current_page(),
-                self._a.get_page_load_time(),
-                self._b.get_page_load_time()
+                self._b.driver.current_url,
+                load_a,
+                load_b,
+                round(float(load_b) / load_a, 2)
             ]
             self._log.append(log_line)
             return self
