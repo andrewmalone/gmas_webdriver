@@ -99,12 +99,12 @@ class wrapper(object):
                     match = "False E%s" % self._e
 
                     # save the full page sources
-                    self.save_file("E%s-S1.txt" % self._e, self._a.driver.page_source.encode('utf-8'))
-                    self.save_file("E%s-S2.txt" % self._e, self._b.driver.page_source.encode('utf-8'))
+                    #self.save_file("E%s-S1.txt" % self._e, self._a.driver.page_source.encode('utf-8'))
+                    #self.save_file("E%s-S2.txt" % self._e, self._b.driver.page_source.encode('utf-8'))
 
                     # save screenshots
-                    self._a.driver.save_screenshot("%sE%s-S1.png" % (self._log_folder, self._e))
-                    self._b.driver.save_screenshot("%sE%s-S2.png" % (self._log_folder, self._e))
+                    #self._a.driver.save_screenshot("%sE%s-S1.png" % (self._log_folder, self._e))
+                    #self._b.driver.save_screenshot("%sE%s-S2.png" % (self._log_folder, self._e))
 
                     # do the diff and save to a file
                     import difflib
