@@ -8,9 +8,12 @@ import os
 import csv
 
 class wrapper(object):
-    def __init__(self, a, b, log_folder="", e=0, log=None, compare=True):
+    def __init__(self, a, b, log_folder="", e=0, log=None, compare=True, skip=0):
         self._a = a
         self._b = b
+
+        # internal var to allow skipping comparisons
+        self._skip = skip
 
         # internal var for error tracking
         self._e = e
@@ -53,7 +56,7 @@ class wrapper(object):
         # need to return a wrapper object if not a builtin
         # this is used for any sub objects that are GMWebElements or 
         # something else(like rows within a page object)
-        return wrapper(a, b, log_folder = self._log_folder, e = self._e, log = self._log, compare=self._compare)
+        return wrapper(a, b, log_folder = self._log_folder, e = self._e, log = self._log, compare=self._compare, skip=self._skip)
 
         
     def __setattr__(self, attr, value):
@@ -83,11 +86,11 @@ class wrapper(object):
             self._a = a
             self._b = b
 
-            source1 = self.clean_source(self._a.driver.page_source)
-            source2 = self.clean_source(self._b.driver.page_source)
+            if self._compare is True and self._skip == 0:
+                match = "True"
 
-            if self._compare is True:
-                match = "True";
+                source1 = self.clean_source(self._a.driver.page_source)
+                source2 = self.clean_source(self._b.driver.page_source)
 
                 # compare the source
                 if source1 != source2:
@@ -112,6 +115,8 @@ class wrapper(object):
             else:
                 match = "N/A"
 
+            if self._skip > 0:
+                self._skip = self._skip - 1
             log_line = [
                 match,
                 self._a.get_current_page(),
@@ -129,7 +134,7 @@ class wrapper(object):
             else: return 0
 
         # need to return a wrapper object if not a Page or builtin
-        return wrapper(a, b, log_folder = self._log_folder, e = self._e, log = self._log, compare=self._compare)
+        return wrapper(a, b, log_folder = self._log_folder, e = self._e, log = self._log, compare=self._compare, skip=self._skip)
 
     def clean_source(self, source):
         import re
@@ -178,3 +183,6 @@ class wrapper(object):
         with open("%s%s" % (self._log_folder, filename), "wb") as f:
             writer = csv.writer(f)
             writer.writerows(self._log)
+
+    def skip(self, number=1):
+        self._skip = number
