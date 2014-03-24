@@ -19,6 +19,20 @@ class SCR0433(Page):
         "folder row by name": "xpath=//a[normalize-space(text())='REPLACE']/../..",
     }
 
+    @property
+    def document_count(self):
+        """
+        Return the count of documents in this specific folder
+        """
+        return len(self.finds("document row"))
+
+    @property
+    def folder_count(self):
+        """
+        Number of folders
+        """
+        return len(self.finds("folder row"))
+
     def add_document(self):
         """
         Click the <Add document> button
@@ -36,7 +50,7 @@ class SCR0433(Page):
     def document(self, identifier):
         """
         returns a document row object from the page based on an identifier, which can be a number or a string.
-        If a string is passed, it returns the row with that document name (exact match). 
+        If a string is passed, it returns the row with that document name (exact match).
         If a number is passed, it returns that number row from the list. For example, `p.document(2)` will return the second document on the page.
         //Document_row
 
@@ -44,7 +58,7 @@ class SCR0433(Page):
         """
         if type(identifier) is int:
             row = self.finds("document row")[identifier - 1]
-            
+
         if type(identifier) is str:
             row = self.find("document row by name", identifier)
 
@@ -53,15 +67,15 @@ class SCR0433(Page):
     def folder(self, identifier):
         """
         returns a folder row object from the page based on an identifier, which can be a number or a string.
-        If a string is passed, it returns the row with that folder name (exact match). 
+        If a string is passed, it returns the row with that folder name (exact match).
         If a number is passed, it returns that number row from the list.
         //Folder_row
-        
+
         For example, `p.folder(2)` will return the second folder on the page.
         """
         if type(identifier) is int:
             row = self.finds("folder row")[identifier - 1]
-            
+
         if type(identifier) is str:
             row = self.find("folder row by name", identifier)
 
