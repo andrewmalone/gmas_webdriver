@@ -1,4 +1,6 @@
 from pages.Page import Page
+import utilities.xpath as xpath
+from pages.elements import RText
 
 
 class SCR0115(Page):
@@ -14,12 +16,19 @@ class SCR0115(Page):
         "log notice": "css=img[alt='Log notice']",
         "edit budget": "css=a[href*='EditProposedDollarsSummaryBudgetEvent'] img",
         "edit ggov questions": "css=a[href*='EditGrantsGovQuestionsEvent'] img",
+        "view ggov questions": "event=ViewGrantsGovQuestionsEvent",
         "edit ggov attachments": "css=a[href*='EditGrantsGovAttachmentsEvent'] img",
+        "view ggov attachments": "event=ViewGrantsGovAttachmentsEvent",
         "prepare ggov submission": "css=a[href*='PrepareGrantsGovSubmissionEvent'] img",
         "edit atrisk": "css=a[href*='AtRiskAccountEditEvent'] img",
         "budget": "event=ProposedDollarsSummaryViewBudgetEvent",
-        "subagreements": "event=ViewListOfSubagreementsEvent"
+        "subagreements": "event=ViewListOfSubagreementsEvent",
+        "submissions": "event=RequestSubmissionSummaryLinkEvent",
+        "status": xpath.text_sibling("td", "Status", 2),
+        "preview": "event=GrantsGovPreviewLinkEvent"
     }
+
+    status = RText("status", "Request status")
 
     def nav_to(self, segment_id, request_id):
         """
@@ -89,12 +98,26 @@ class SCR0115(Page):
         """
         return self.go("edit ggov attachments")
 
+    def goto_attachments(self):
+        """
+        Click the "Grants.gov attachments" link
+        Goes to SCR_0610c
+        """
+        return self.go("view ggov attachments")
+
     def edit_questions(self):
         """
         Click <edit> in the ggov questions component
         Goes to SCR_0612b
         """
         return self.go("edit ggov questions")
+
+    def goto_questions(self):
+        """
+        Click the "Grants.gov questions link
+        Goes to SCR_0612c
+        """
+        return self.go("view ggov questions")
 
     def prepare_ggov_submission(self):
         """
@@ -123,3 +146,17 @@ class SCR0115(Page):
         Goes to SCR_0250
         """
         return self.go("subagreements")
+
+    def goto_submissions(self):
+        """
+        Click "Submissions"
+        Goes to SCR_0406
+        """
+        return self.go("submissions")
+
+    def goto_preview(self):
+        """
+        Click "Preview"
+        Goes to SCR_0615a
+        """
+        return self.go("preview")
