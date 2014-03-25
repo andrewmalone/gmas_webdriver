@@ -8,8 +8,7 @@ template = """
 {descriptors}
 {methods}"""
 
-subclass_template = """{descriptors}
-{methods}"""
+subclass_template = """{descriptors}{methods}"""
 
 method_header = "### Methods"
 descriptor_header = "### Descriptors"
@@ -117,9 +116,9 @@ def replace_subclass(string):
     return re.sub(find, repl, string)
 
 if __name__ == "__main__":
-    scr = raw_input("Screen: ")
-    padding = '000'
-    num = re.match(r'[0-9]{1,3}', scr).group(0)
-    scr = "SCR%s%s" % (padding[:4 - len(num)], scr)
-    print get_method_list(scr)
+    #scr = raw_input("Screen: ")
+    #padding = '000'
+    #num = re.match(r'[0-9]{1,3}', scr).group(0)
+    #scr = "SCR%s%s" % (padding[:4 - len(num)], scr)
+    print get_method_list("SCR0344")
 
