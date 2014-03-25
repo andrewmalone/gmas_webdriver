@@ -5,7 +5,7 @@ import utilities.xpath as xpath
 class SCR0015(Page):
     """
     SCR_0015 Research team list
-    
+
     This has only been tested with the request version of the screen. Also, there's no great way to go to a person by name (will be added eventually)
     """
     locators = {
@@ -16,6 +16,13 @@ class SCR0015(Page):
         "person links": "event=ResearchPersonNameLinkEvent",
         "role links": "event=ResearchTeamMemberViewEvent"
     }
+
+    @property
+    def people_count(self):
+        """
+        Number of people showing in the list
+        """
+        return len(self.finds("role links"))
 
     def add_team_member(self):
         """
