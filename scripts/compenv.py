@@ -51,7 +51,8 @@ class wrapper(object):
         if a.__class__.__module__ == '__builtin__' and b.__class__.__module__ == '__builtin__':
             if a == b:
                 return a
-            else: return 0
+            else:
+                return 0
 
         # need to return a wrapper object if not a builtin
         # this is used for any sub objects that are GMWebElements or 
@@ -74,12 +75,12 @@ class wrapper(object):
             if hasattr(self._b, attr):
                 self._b.__setattr__(attr, value)
 
-    def call(self, *args):
+    def call(self, *args, **kwargs):
         """
         call function calls methods on each wrapped page object
         """
-        a = getattr(self._a, self._attr)(*args)
-        b = getattr(self._b, self._attr)(*args)
+        a = getattr(self._a, self._attr)(*args, **kwargs)
+        b = getattr(self._b, self._attr)(*args, **kwargs)
 
         # check if we are getting a page object
         if isinstance(a, Page) and isinstance(b, Page):
