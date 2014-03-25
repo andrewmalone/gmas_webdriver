@@ -1,5 +1,5 @@
 from pages.Page import Page
-#import pages.SCR0105
+import utilities.xpath as xpath
 
 locators = {
     "make revision": 'css=a[href*=SegmentHomeMakeRevisionEvent]',
@@ -7,6 +7,7 @@ locators = {
     "confirm research team": "css=img[alt='Confirm research team']",
     "create request": "css=a[href*='SegmentHomeCreateRequestEvent']",
     "documents": "event=RepositoryLinkEvent",
+    "document count": "xpath=(//a[contains(@href,'RepositoryLinkEvent')])[1]/ancestor::tr[1]/td[4]",
     "approvals": "event=ApprovalListHomeEvent",
     "notices": "event=ViewNoticeListEvent",
     "subagreements": "event=SubagreementsLinkEvent",
@@ -23,6 +24,14 @@ class SCR0104b(Page):
     SCR_0104b Segment Home
     """
     locators = locators
+
+    @property
+    def document_count(self):
+        """
+        Number of documents showing in the document component
+        """
+        count = self.find("document count").text
+        return int(count[:count.find(" ")])
 
     def nav_to(self, segment_id):
         """
