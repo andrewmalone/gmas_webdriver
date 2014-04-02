@@ -15,7 +15,8 @@ locators = {
     "admin team": "css=a[href*=SegmentSummaryAdministrativeTeamLinkEvent]",
     "requests": "css=a[href*=RequestListEvent]",
     "accounts": "event=AccountsLinkEvent",
-    "segment documents": "event=SegmentDocumentsLinkEvent"
+    "segment documents": "event=SegmentDocumentsLinkEvent",
+    "revisions": "event=SegmentHomeRevisionListEvent"
 }
 
 
@@ -80,7 +81,7 @@ class SCR0104b(Page):
         Goes to SCR_0433
         """
         return self.go("documents")
-	
+
     def goto_approvals(self):
         """
         Clicks the "Approvals" link
@@ -136,3 +137,10 @@ class SCR0104b(Page):
         Goes to SCR_0634
         """
         return self.go("segment documents")
+
+    def goto_revisions(self):
+        """
+        Clicks the  "Revisions" link
+        Goes to SCR_0425
+        """
+        return self.go("revisions")
