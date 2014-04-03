@@ -146,10 +146,16 @@ class wrapper(object):
 
     def clean_source(self, source):
         import re
+        # remove all attributes from inside html tags
         source = re.sub(r'<([^/][a-zA-Z]*)\s?[^>]*>', r'<\1>', source)
+        # remove instance header/footer
         source = re.sub(r'<font>(G[^<]*)</font>',r'<font></font>', source)
+        # remove build tag in footer
         source = re.sub(r'<td>\xa9[^<]*</td>', r'<td></td>', source)
+        # remove submitTime javascript
         source = re.sub(r'submitTime = [0-9]*;', r'', source)
+        # remove newlines
+        source = re.sub(r'^\n', r'', source, flags=re.MULTILINE)
         # @todo: handle project snapshot differences
         return source
 
