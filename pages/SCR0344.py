@@ -11,6 +11,13 @@ class SCR0344(Page):
         "request row id": "xpath=//a[contains(@href,'requestId=REPLACE')]/ancestor::tr[1]"
     }
 
+    @property
+    def request_count(self):
+        """
+        Number of requests in the list
+        """
+        return len(self.finds("request row"))
+
     def request(self, num=None, request_id=None):
         """
         returns a request row based on index or id
