@@ -22,9 +22,12 @@ def rgs(p, f=None, finish="request"):
             "title": "Title",
             "sponsor": "nih",
             "pi": "03750001",
-            "mentor": "", # optional
-            "prime_sponsor": "", # optional
-            "prime_pi": "", # optional
+            # optional
+            "mentor": "",
+            # optional
+            "prime_sponsor": "",
+            # optional
+            "prime_pi": "",
             "a21": "A02-Organized Research",
             "discipline": "Arts",
             "rfp": "false",
