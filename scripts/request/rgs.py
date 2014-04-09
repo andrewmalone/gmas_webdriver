@@ -1,6 +1,7 @@
 import os
 import rgs_samples as samples
 
+
 def calc_end(start_date, num_periods):
     """
     helper method - sets the end date field based on the start date and the number of periods (assumes 1 year period)
@@ -11,7 +12,17 @@ def calc_end(start_date, num_periods):
     end = date.strftime(date(start.year + int(num_periods), start.month, start.day) - timedelta(days=1), "%m/%d/%y")
     return end
 
-def rgs(p, f=None, finish="request"):
+
+def checkstop(p, stop):
+    if stop is None:
+        return False
+    if p.scr == stop:
+        return True
+    else:
+        return False
+
+
+def rgs(p, f=None, finish="request", stop=None):
     if f is None:
         f = {
             # SCR_0088
@@ -158,6 +169,8 @@ def rgs(p, f=None, finish="request"):
     p.org = f["org"]
     p.project_type = f["project_type"]
     p.retro = f["retro"]
+    if checkstop(p, stop):
+        return p
     p = p.ok()
 
     # SCR_0089
@@ -174,12 +187,16 @@ def rgs(p, f=None, finish="request"):
     p.rfp = f["rfp"]
     p.subs = f["subs"]
     p.ifi = f["ifi"]
+    if checkstop(p, stop):
+        return p
     p = p.ok()
 
     # Need to check for which screen... (231 or 613)
     if p.get_current_page() == "SCR0613EnterOpportunity":
         if "opportunity" in f and f["opportunity"] != "":
             p.opportunity = f["opportunity"]
+        if checkstop(p, stop):
+            return p
         p = p.ok()
 
     # SCR_0231 or SCR_0231b
@@ -193,16 +210,22 @@ def rgs(p, f=None, finish="request"):
         p.copies = f["copies"]
         if "mailing" in f:
             p.mailing = f["mailing"]
+    if checkstop(p, stop):
+        return p
     p = p.ok()
 
     # SCR_0090
     p.start = f["start"]
     p.calc_end(f["start"], f["periods"])
     p.periods = f["periods"]
+    if checkstop(p, stop):
+        return p
     p = p.ok()
 
     # SCR_0227
     p.calc_periods(f["start"], f["periods"])
+    if checkstop(p, stop):
+        return p
     p = p.ok()
 
     # SCR_0229
@@ -214,9 +237,13 @@ def rgs(p, f=None, finish="request"):
     p.on_campus = f["on_campus"]
     if p.admin_salary is True:
         p.admin_salary = f["admin_salary"]
+    if checkstop(p, stop):
+        return p
     p = p.ok()
 
     # SCR_0102
+    if checkstop(p, stop):
+        return p
     p = p.ok()
 
     # SUBS and IFI get added here...
@@ -235,6 +262,8 @@ def rgs(p, f=None, finish="request"):
                     p.start = f["start"]
                     p.end = calc_end(f["start"], f["periods"])
                 p = p.ok()
+        if checkstop(p, stop):
+            return p
         p = p.ok()
 
     # SCR_0228
@@ -252,10 +281,14 @@ def rgs(p, f=None, finish="request"):
                     p.start = f["start"]
                     p.end = calc_end(f["start"], f["periods"])
                 p = p.ok()
+        if checkstop(p, stop):
+            return p
         p = p.ok()
 
-
     # SCR_0098 (and SCR_0365)
+    # check for stop before doing research team stuff
+    if checkstop(p, stop):
+        return p
     p = p.edit_pi()
     p.human_subjects = f["pi_hs"]
     p = p.ok()
@@ -289,6 +322,8 @@ def rgs(p, f=None, finish="request"):
             p.role = person["role"]
             p.name = person["huid"]
             p = p.ok()
+    if checkstop(p, stop):
+        return p
     p = p.ok()
 
     # SCR_0097
@@ -305,10 +340,14 @@ def rgs(p, f=None, finish="request"):
         p.appt_exp_option = f["appt_exp_option"]
         if f["appt_exp_option"] == "other":
             p.appt_exp_comment = f["appt_exp_comment"]
+    if checkstop(p, stop):
+        return p
     p = p.ok()
 
     # SCR_0544
     p.set_all_radios("false")
+    if checkstop(p, stop):
+        return p
     p = p.ok()
 
     # S2S screens go here...
@@ -318,7 +357,10 @@ def rgs(p, f=None, finish="request"):
             # @todo - add support for multiple performance sites
             for question in sorted(f["ggov_questions"].keys()):
                 setattr(p, question, f["ggov_questions"][question])
+        if checkstop(p, stop):
+            return p
         p = p.ok()
+
         # SCR_0610b
         if "ggov_attachments" in f:
             if "directory" in f["ggov_attachments"]:
@@ -332,10 +374,13 @@ def rgs(p, f=None, finish="request"):
                     p = p.locate(p.locate_buttons(form, attachment)[0])
                     p.set_file("%s%s" % (base_dir, f["ggov_attachments"][form][attachment]))
                     p = p.ok()
-
+        if checkstop(p, stop):
+            return p
         p = p.ok()
 
     # SCR_0332
+    if checkstop(p, stop):
+        return p
     if finish == "budget":
         p = p.goto_budget()
     else:
