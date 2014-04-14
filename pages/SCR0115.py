@@ -1,6 +1,6 @@
 from pages.Page import Page
 import utilities.xpath as xpath
-from pages.elements import RText
+from pages.elements import RText, Row
 
 
 class SCR0115(Page):
@@ -25,11 +25,29 @@ class SCR0115(Page):
         "subagreements": "event=ViewListOfSubagreementsEvent",
         "submissions": "event=RequestSubmissionSummaryLinkEvent",
         "status": xpath.text_sibling("td", "Status", 2),
-        "preview": "event=GrantsGovPreviewLinkEvent"
+        "preview": "event=GrantsGovPreviewLinkEvent",
         "r2r": "event=ReviseThisRequestEvent",
+        "log": "event=ElectronicSignatureBoxLogEvent",
+        # table containing a signature
+        "signature": "css=#requiredSignatureCCBODY > table > tbody > tr > td > table"
     }
 
     status = RText("status", "Request status")
+
+    @property
+    def signature_count(self):
+        """
+        Number of signatures
+        """
+        return len(self.finds("signature"))
+
+    def signature(self, n):
+        """
+        Returns the nth signature on the page
+        //Signature
+        """
+        row = self.finds("signature")[n - 1]
+        return self.Signature(row, self)
 
     def nav_to(self, segment_id, request_id):
         """
@@ -168,3 +186,15 @@ class SCR0115(Page):
         Goes to SCR_0615a
         """
         return self.go("preview")
+
+    class Signature(Row):
+        locators = {
+            "log": "event=ElectronicSignatureBoxLogEvent"
+        }
+
+        def log(self):
+            """
+            Click the <Log> button
+            Goes to SCR_0371
+            """
+            return self._go("log")
