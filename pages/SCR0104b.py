@@ -16,7 +16,9 @@ locators = {
     "requests": "css=a[href*=RequestListEvent]",
     "accounts": "event=AccountsLinkEvent",
     "segment documents": "event=SegmentDocumentsLinkEvent",
-    "revisions": "event=SegmentHomeRevisionListEvent"
+    "revisions": "event=SegmentHomeRevisionListEvent",
+    "event history": "event=SegmentSummaryViewProjectHistoryLinkEvent",
+    "todos": "event=SegmentSummaryViewProjectToDosLinkEvent"
 }
 
 
@@ -140,7 +142,21 @@ class SCR0104b(Page):
 
     def goto_revisions(self):
         """
-        Clicks the  "Revisions" link
+        Clicks the "Revisions" link
         Goes to SCR_0425
         """
         return self.go("revisions")
+
+    def goto_event_history(self):
+        """
+        Clicks the "Event history" link
+        Goes to SCR_0002
+        """
+        return self.go("event history")
+
+    def goto_todos(self):
+        """
+        Clicks the "Segment to-do's" link
+        Goes to SCR_0159
+        """
+        return self.go("todos")
