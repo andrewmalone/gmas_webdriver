@@ -26,6 +26,7 @@ class SCR0115(Page):
         "submissions": "event=RequestSubmissionSummaryLinkEvent",
         "status": xpath.text_sibling("td", "Status", 2),
         "preview": "event=GrantsGovPreviewLinkEvent"
+        "r2r": "event=ReviseThisRequestEvent",
     }
 
     status = RText("status", "Request status")
@@ -83,6 +84,13 @@ class SCR0115(Page):
         Goes to SCR_0387
         """
         return self.go("log notice")
+
+    def r2r(self):
+        """
+        Click <Revise to resubmit>
+        Goes to SCR_0409
+        """
+        return self.go("r2r")
 
     def edit_budget(self):
         """
