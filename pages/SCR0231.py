@@ -29,4 +29,3 @@ class SCR0231(Page):
         """
         self.find("next").click()
         return self.load_page()
-
