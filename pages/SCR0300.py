@@ -1,5 +1,7 @@
 from pages.Page import Page
 from pages.elements import Row, RText
+import utilities.xpath as xpath
+
 
 class SCR0300(Page):
     """
@@ -9,8 +11,24 @@ class SCR0300(Page):
         "role": "link=REPLACE",
         "row by person": "xpath=//a[contains(@href,'ProjectAdminTeamPersonProfileEvent')][contains(@href,'personId=REPLACE')]/ancestor::tr[1]",
         "row by role": "xpath=//*[contains(text(),'REPLACE')][not(@class)]/ancestor::tr[1]",
+        "row": xpath.parent_row_of_event("ProjectAdminTeamEditRolesEvent"),
         "add": "ProjectAdminTeamAddRolesEvent"
     }
+
+    @property
+    def row_count(self):
+        """
+        Count of rows that can be clicked (not PI)
+        """
+        return len(self.finds("row"))
+
+    def row(self, n):
+        """
+        Returns the nth row (that has a clickable row)
+        //role_row
+        """
+        row = self.finds("row")[n - 1]
+        return self.role_row(row, self)
 
     def goto_role(self, role):
         """
@@ -19,12 +37,15 @@ class SCR0300(Page):
         """
         return self.go("role", role)
 
-    def role_rows(self, role):
+    def role_rows(self, role=None):
         """
-        Returns a list of rows matching the role specified
+        Returns a list of rows matching the role specified. If no role is specified, returns all rows with a clickable row (so not PI)
         //role_row
         """
-        elements = self.finds("row by role", role)
+        if role is None:
+            elements = self.finds("row")
+        else:
+            elements = self.finds("row by role", role)
         rows = []
         for el in elements:
             rows.append(self.role_row(el, self))
