@@ -31,7 +31,8 @@ class SCR0115(Page):
         # table containing a signature
         "signature": "css=#requiredSignatureCCBODY > table > tbody > tr > td > table",
         "admin team": "event=RequestHomeAdministrativeTeamLinkEvent",
-        "approvals": "event=ApprovalsComponentListViewListEvent"
+        "approvals": "event=ApprovalsComponentListViewListEvent",
+        "accounts": "event=ViewAllAccountsEvent"
     }
 
     status = RText("status", "Request status")
@@ -181,6 +182,13 @@ class SCR0115(Page):
         Goes to SCR_0080
         """
         return self.go("approvals")
+
+    def goto_accounts(self):
+        """
+        Click the "Accounts" link
+        Goes to SCR_0030
+        """
+        return self.go("accounts")
 
     def goto_subagreements(self):
         """
