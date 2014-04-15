@@ -29,7 +29,8 @@ class SCR0115(Page):
         "r2r": "event=ReviseThisRequestEvent",
         "log": "event=ElectronicSignatureBoxLogEvent",
         # table containing a signature
-        "signature": "css=#requiredSignatureCCBODY > table > tbody > tr > td > table"
+        "signature": "css=#requiredSignatureCCBODY > table > tbody > tr > td > table",
+        "admin team": "event=RequestHomeAdministrativeTeamLinkEvent"
     }
 
     status = RText("status", "Request status")
@@ -165,6 +166,13 @@ class SCR0115(Page):
         Goes to SCR_0031
         """
         return self.go("budget")
+
+    def goto_admin_team(self):
+        """
+        Click the "Administrative team" link
+        Goes to SCR_0300
+        """
+        return self.go("admin team")
 
     def goto_subagreements(self):
         """

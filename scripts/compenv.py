@@ -8,19 +8,22 @@ import os
 import csv
 
 class wrapper(object):
-    def __init__(self, a, b, log_folder="", e=0, log=None, compare=True, skip=0):
+    def __init__(self, a, b, log_folder="", e=0, log=None, compare=True, skip=0, ignore=None):
         self._a = a
         self._b = b
 
         # internal var to allow skipping comparisons
         self._skip = skip
 
+        # internal ignore to filter out extra page differences
+        self._ignore = ignore
+
         # internal var for error tracking
         self._e = e
 
         # log file header
         if log is None:
-            self._log = [['Match', 'Page1', 'URL1', 'Page2', 'URL2', 'Pageload1 (ms)', 'Pageload2 (ms)', 'Pageload compare']]
+            self._log = [['Match', 'Error', 'Page1', 'URL1', 'Page2', 'URL2', 'Pageload1 (ms)', 'Pageload2 (ms)', 'Pageload compare']]
         else:
             self._log = log
 
@@ -57,7 +60,7 @@ class wrapper(object):
         # need to return a wrapper object if not a builtin
         # this is used for any sub objects that are GMWebElements or 
         # something else(like rows within a page object)
-        return wrapper(a, b, log_folder = self._log_folder, e = self._e, log = self._log, compare=self._compare, skip=self._skip)
+        return wrapper(a, b, log_folder = self._log_folder, e = self._e, log = self._log, compare=self._compare, skip=self._skip, ignore=self._ignore)
 
         
     def __setattr__(self, attr, value):
@@ -89,6 +92,7 @@ class wrapper(object):
 
             if self._compare is True and self._skip == 0:
                 match = "True"
+                error = ""
 
                 source1 = self.clean_source(self._a.driver.page_source)
                 source2 = self.clean_source(self._b.driver.page_source)
@@ -97,7 +101,8 @@ class wrapper(object):
                 if source1 != source2:
                     # increment the error count
                     self._e += 1
-                    match = "False E%s" % self._e
+                    match = "False"
+                    error = "E%s" % self._e
 
                     # save the full page sources
                     #self.save_file("E%s-S1.txt" % self._e, self._a.driver.page_source.encode('utf-8'))
@@ -115,6 +120,7 @@ class wrapper(object):
                     self.save_file("E%s-D.txt" % self._e, result)
             else:
                 match = "N/A"
+                error = ""
 
             if self._skip > 0:
                 self._skip = self._skip - 1
@@ -124,6 +130,7 @@ class wrapper(object):
 
             log_line = [
                 match,
+                error,
                 self._a.get_current_page(),
                 self._a.driver.current_url,
                 self._b.get_current_page(),
@@ -142,7 +149,7 @@ class wrapper(object):
             else: return 0
 
         # need to return a wrapper object if not a Page or builtin
-        return wrapper(a, b, log_folder = self._log_folder, e = self._e, log = self._log, compare=self._compare, skip=self._skip)
+        return wrapper(a, b, log_folder = self._log_folder, e = self._e, log = self._log, compare=self._compare, skip=self._skip, ignore=self._ignore)
 
     def clean_source(self, source):
         import re
@@ -157,6 +164,9 @@ class wrapper(object):
         # remove newlines
         source = re.sub(r'^\n', r'', source, flags=re.MULTILINE)
         # @todo: handle project snapshot differences
+        if "project id" in self._ignore:
+            source = re.sub(r'[0-9]{8}-[0-9]{2}', r'', source)
+
         return source
 
     def save_file(self, file, s):
