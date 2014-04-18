@@ -345,10 +345,11 @@ def rgs(p, f=None, finish="request", stop=None):
     p = p.ok()
 
     # SCR_0544
-    p.set_all_radios("false")
-    if checkstop(p, stop):
-        return p
-    p = p.ok()
+    if p.scr == "SCR0544":
+        p.set_all_radios("false")
+        if checkstop(p, stop):
+            return p
+        p = p.ok()
 
     # S2S screens go here...
     if f["s2s"] == "true":
