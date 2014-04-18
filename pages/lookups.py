@@ -33,7 +33,24 @@ class Lookup_person(Lookup_basic):
     """
     Person lookup expects an 8 digit HUID
     """
-    pass
+    def __set__(self, obj, val):
+        # check for HUID...
+        import re
+        if re.match(r'[0-9]{8}', val):
+            # set the text
+            self.input.__set__(obj, val)
+            # click the lookup
+            obj.find_element(self.lookup_locator).click()
+            # wait for a match
+            obj.w.until(lambda e: obj.find_element(self.match_locator))
+        else:
+            self.input.__set__(obj, val)
+            obj.find_element(self.lookup_locator).click()
+            obj.switch_to_popup()
+            popup = obj.load_page()
+            popup.select_first_non_huid()
+            popup.ok()
+
 
 
 class Lookup_organization(Lookup):
