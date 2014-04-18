@@ -11,7 +11,7 @@ minimal = {
     "retro": "false",
     # SCR_0089
     "title": add_ts("Minimal RGS automation"),
-    "sponsor": "nih",
+    "sponsor": "egg",
     "pi": "03750001",
     "a21": "A02-Organized Research",
     "discipline": "Arts",
@@ -48,6 +48,7 @@ basic_s2s = copy.deepcopy(minimal)
 basic_s2s["title"] = add_ts("Minimal S2S submission (SF424 only)")
 basic_s2s["opportunity"] = "NIH-UBER-4-1-2013"
 basic_s2s["s2s"] = "true"
+basic_s2s["sponsor"] = "nih"
 basic_s2s["ggov_questions"] = {
     "sf424_3": 2,
     "sf424_4": 2,
