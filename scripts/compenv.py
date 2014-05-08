@@ -7,8 +7,8 @@ from pages.Page import Page
 import os
 import csv
 
+
 class wrapper(object):
-    def __init__(self, a, b, log_folder="", e=0, log=None, compare=True, skip=0, ignore=None):
     def __init__(self, a, b, log_folder="", e=0, log=None, compare=True, skip=0, ignore=[]):
         self._a = a
         self._b = b
@@ -127,7 +127,7 @@ class wrapper(object):
                     import difflib
                     fromfile = self.get_context(self._a)
                     tofile = self.get_context(self._b)
-                    result = list(difflib.unified_diff(source1.splitlines(1),source2.splitlines(1), fromfile=fromfile, tofile=tofile))
+                    result = list(difflib.unified_diff(source1.splitlines(1), source2.splitlines(1), fromfile=fromfile, tofile=tofile))
                     self.save_file("E%s-D.txt" % self._e, result)
             else:
                 match = "N/A"
@@ -157,25 +157,24 @@ class wrapper(object):
         if a.__class__.__module__ == '__builtin__' and b.__class__.__module__ == '__builtin__':
             if a == b:
                 return a
-            else: return 0
+            else:
+                return 0
 
         # need to return a wrapper object if not a Page or builtin
-        return wrapper(a, b, log_folder = self._log_folder, e = self._e, log = self._log, compare=self._compare, skip=self._skip, ignore=self._ignore)
+        return wrapper(a, b, log_folder=self._log_folder, e=self._e, log=self._log, compare=self._compare, skip=self._skip, ignore=self._ignore)
 
     def clean_source(self, source):
         import re
         # remove all attributes from inside html tags
         source = re.sub(r'<([^/][a-zA-Z]*)\s?[^>]*>', r'<\1>', source)
         # remove instance header/footer
-        source = re.sub(r'<font>(G[^<]*)</font>',r'<font></font>', source)
+        source = re.sub(r'<font>(G[^<]*)</font>', r'<font></font>', source)
         # remove build tag in footer
         source = re.sub(r'<td>\xa9[^<]*</td>', r'<td></td>', source)
         # remove submitTime javascript
         source = re.sub(r'submitTime = [0-9]*;', r'', source)
         # remove newlines
         source = re.sub(r'^\n', r'', source, flags=re.MULTILINE)
-        # @todo: handle project snapshot differences
-        if "project id" in self._ignore:
         if "project id" in self._ignore["ignore"]:
             source = re.sub(r'[0-9]{8}-[0-9]{2}', r'', source)
 
@@ -189,7 +188,6 @@ class wrapper(object):
         else:
             f.write(s)
         f.close()
-
 
     def get_context(self, p):
         """
