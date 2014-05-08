@@ -45,9 +45,9 @@ def rgs(p, f=None, finish="request", stop=None):
             "subs": "false",
             "ifi": "false",
             # SCR_0613
-            "opportunity": "PA-C-R01", # optional
+            "opportunity": "PA-C-R01",  # optional
             #SCR_0231 and SCR_0231b
-            "s2s": "true", # optional
+            "s2s": "true",  # optional
             "due_date": "1/1/08",
             "due_date_type": "2401",
             "copies": "1",
@@ -62,8 +62,10 @@ def rgs(p, f=None, finish="request", stop=None):
             "admin_salary": "false",
             "program_income": "false",
             "on_campus": "true",
+            # SCR_0102
+            "template": "nih",  # optional
             # SCR_0091, #SCR_0092
-            "subagreements": [ # optional
+            "subagreements": [  # optional
                 {
                     "name": "egg",
                     "pi": "03750001"
@@ -71,13 +73,13 @@ def rgs(p, f=None, finish="request", stop=None):
                 {
                     "name": "lincoln",
                     "pi": "03750002",
-                    "start": "2/15/08", # optional
-                    "end": "3/15/08" # optional
+                    "start": "2/15/08",  # optional
+                    "end": "3/15/08"  # optional
                     # add rate detail here!
                 }
             ],
             # SCR_0228, #SCR_0094
-            "ifi_list": [ # optional
+            "ifi_list": [  # optional
                 {
                     "org": "31240",
                     "pi": "03750001"
@@ -85,17 +87,16 @@ def rgs(p, f=None, finish="request", stop=None):
                 {
                     "org": "31570",
                     "pi": "03750003",
-                    "start": "2/15/08", # optional
-                    "end": "3/15/08" # optional
+                    "start": "2/15/08",  # optional
+                    "end": "3/15/08"  # optional
                 }
             ],
             # SCR_0098
             "pi_hs": "false",
-            "mentor_hs": "false", # optional (required if fellowship)
-            "mentor_key": "false", # optional (required  if fellowship)
-            "research team": [ # optional
+            "mentor_hs": "false",  # optional (required if fellowship)
+            "mentor_key": "false",  # optional (required  if fellowship)
+            "research team": [  # optional
                 {
-                    "huid": "03750002",
                     "huid": "03750002",  # can be tbd
                     "role": "Analyst",
                     "key": "true",
@@ -112,7 +113,7 @@ def rgs(p, f=None, finish="request", stop=None):
                 }
             ],
             # SCR_0099
-            "admin_team": [ # optional
+            "admin_team": [  # optional
                 {
                     "huid": "03750002",
                     "role": "Department Administrator"
@@ -131,10 +132,10 @@ def rgs(p, f=None, finish="request", stop=None):
             "add_staff": "false",
             "use_of_name": "false",
             "appt_exp": "false",
-            "appt_exp_option": "transfer institution", # only required if appt_exp is true
-            "attp_exp_comment": "Other", # only required if appt_exp_option is "other"
+            "appt_exp_option": "transfer institution",  # only required if appt_exp is true
+            "attp_exp_comment": "Other",  # only required if appt_exp_option is "other"
             # SCR_0612b
-            "ggov_questions": { # optional
+            "ggov_questions": {  # optional
                 "sf424_3": 2,
                 "sf424_4": 1,
                 "sf424_4a": "Other agency",
@@ -144,24 +145,24 @@ def rgs(p, f=None, finish="request", stop=None):
             "ggov_attachments": {
                 "directory": "%s\\s2s\\" % os.path.dirname(os.path.abspath(__file__)),
                 "Research & Related Other Project Info":
-                    {
-                        "Project Summary/Abstract": "Project_Summary_Abstract.pdf",
-                        "Project Narrative": "Project_Narrative.pdf",
-                        "Bibliography & References Cited": "Bibliography.pdf"
-                    },
+                {
+                    "Project Summary/Abstract": "Project_Summary_Abstract.pdf",
+                    "Project Narrative": "Project_Narrative.pdf",
+                    "Bibliography & References Cited": "Bibliography.pdf"
+                },
                 "Research & Related Budget":
-                    {
-                        "Budget Justification": "Budget_Justification.pdf"
-                    },
+                {
+                    "Budget Justification": "Budget_Justification.pdf"
+                },
                 "Research & Related Key Person Expanded":
-                    {
-                        "Biographical Sketch": "Biosketch_PI.pdf"
-                    },
+                {
+                    "Biographical Sketch": "Biosketch_PI.pdf"
+                },
                 "PHS398 ResearchPlan":
-                    {
-                        "Specific Aims": "Specific_Aims.pdf",
-                        "Research Strategy": "Research_Strategy.pdf"
-                    }
+                {
+                    "Specific Aims": "Specific_Aims.pdf",
+                    "Research Strategy": "Research_Strategy.pdf"
+                }
             }
         }
 
@@ -320,7 +321,6 @@ def rgs(p, f=None, finish="request", stop=None):
             p.role = person["role"]
             if person["role"] == "Other":
                 p.other_role_description = person["other_role_description"]
-            p.person = person["huid"]
             if person["huid"] == "tbd":
                 p.tbd = True
             else:
