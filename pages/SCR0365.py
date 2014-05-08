@@ -1,5 +1,5 @@
 from pages.Page import Page
-from pages.elements import Select, Radio, Text
+from pages.elements import Select, Radio, Text, Checkbox
 from pages.lookups import Lookup_person
 
 
