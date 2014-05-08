@@ -95,6 +95,7 @@ def rgs(p, f=None, finish="request", stop=None):
             "research team": [ # optional
                 {
                     "huid": "03750002",
+                    "huid": "03750002",  # can be tbd
                     "role": "Analyst",
                     "key": "true",
                     "investigator": "true",
@@ -308,6 +309,10 @@ def rgs(p, f=None, finish="request", stop=None):
             if person["role"] == "Other":
                 p.other_role_description = person["other_role_description"]
             p.person = person["huid"]
+            if person["huid"] == "tbd":
+                p.tbd = True
+            else:
+                p.person = person["huid"]
             p.key = person["key"]
             p.human_subjects = person["hs"]
             if person["key"] == "false" and p.investigator is True:
