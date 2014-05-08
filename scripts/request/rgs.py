@@ -242,6 +242,8 @@ def rgs(p, f=None, finish="request", stop=None):
     p = p.ok()
 
     # SCR_0102
+    if "template" in f:
+        p.template = f["template"]
     if checkstop(p, stop):
         return p
     p = p.ok()
