@@ -73,6 +73,7 @@ def rgs(p, f=None, finish="request", stop=None):
                     "pi": "03750002",
                     "start": "2/15/08", # optional
                     "end": "3/15/08" # optional
+                    # add rate detail here!
                 }
             ],
             # SCR_0228, #SCR_0094
@@ -264,6 +265,17 @@ def rgs(p, f=None, finish="request", stop=None):
                 else:
                     p.start = f["start"]
                     p.end = calc_end(f["start"], f["periods"])
+                if "admin" in sub:
+                    p.sub_admin = sub["admin"]
+                if "description" in sub:
+                    p.description = sub["description"]
+                if "rates" in sub:
+                    for i, rate in enumerate(sub["rates"]):
+                        if i > 0:
+                            p = p.add_rate()
+                        p.rate(i + 1).rate = rate["rate"]
+                        p.rate(i + 1).expiration = rate["expiration"]
+                    p.basis = sub["basis"]
                 p = p.ok()
         if checkstop(p, stop):
             return p
