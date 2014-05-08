@@ -90,6 +90,27 @@ class Page(GMWebElement):
         locator = "css=input[type='hidden'][name='%sId']" % (id_name)
         return self.find_element(locator).get_attribute("value")
 
+    def get_ids(self, id_name):
+        # Get a list of Ids from hidden inputs or from urls.
+
+        # start with hidden inputs
+        locator = "css=input[type='hidden'][name='%sId']" % (id_name)
+        ids = [e.get_attribute("value") for e in self.find_elements(locator)]
+
+        # now do urls
+        locator = "css=a[href*=%sId]" % (id_name)
+        from utilities.url import url_param
+        ids += [url_param(e.get_attribute("href"), "%sId" % id_name) for e in self.find_elements(locator)]
+
+        s = set()
+        result = []
+        for item in ids:
+            if item not in s:
+                s.add(item)
+                result.append(item)
+
+        return result
+
     def goto_breadcrumb(self, text):
         crumbs = self.find_elements("css=a.bread")
         for crumb in crumbs:
