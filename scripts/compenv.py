@@ -9,6 +9,7 @@ import csv
 
 class wrapper(object):
     def __init__(self, a, b, log_folder="", e=0, log=None, compare=True, skip=0, ignore=None):
+    def __init__(self, a, b, log_folder="", e=0, log=None, compare=True, skip=0, ignore=[]):
         self._a = a
         self._b = b
 
@@ -16,7 +17,13 @@ class wrapper(object):
         self._skip = skip
 
         # internal ignore to filter out extra page differences
-        self._ignore = ignore
+        if type(ignore) is list:
+            self._ignore = {
+                "ignore": ignore,
+                "ids": []
+            }
+        else:
+            self._ignore = ignore
 
         # internal var for error tracking
         self._e = e
@@ -97,6 +104,10 @@ class wrapper(object):
                 source1 = self.clean_source(self._a.driver.page_source)
                 source2 = self.clean_source(self._b.driver.page_source)
 
+                # use the ignore id list to replace ids
+                for ids in self._ignore["ids"]:
+                    source1 = source1.replace(ids[0], ids[1])
+
                 # compare the source
                 if source1 != source2:
                     # increment the error count
@@ -165,6 +176,7 @@ class wrapper(object):
         source = re.sub(r'^\n', r'', source, flags=re.MULTILINE)
         # @todo: handle project snapshot differences
         if "project id" in self._ignore:
+        if "project id" in self._ignore["ignore"]:
             source = re.sub(r'[0-9]{8}-[0-9]{2}', r'', source)
 
         return source
@@ -213,3 +225,7 @@ class wrapper(object):
 
     def add_log(self, text):
         self._log[-1].append(text)
+
+    def add_ids(self, id_name):
+        for ids in zip(self._a.get_ids(id_name), self._b.get_ids(id_name)):
+            self._ignore["ids"].append(ids)
