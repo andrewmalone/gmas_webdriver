@@ -14,6 +14,7 @@ class SCR0365(Page):
         "person input": "name=personName",
         "key": "css=[name='KeyPersonnel']",
         "investigator": "css=[name='phsInvestigationFlag']",
+        "tbd": "toBeDeterminedChecked",
         "ok": "name=ResearchTeamMemberOKEvent"
     }
 
@@ -24,6 +25,7 @@ class SCR0365(Page):
     person_text = Text("person input", "Text box for person name/HUID")
     person = Lookup_person(person_text, "researchTeamMemberImage", "Research team member lookup")
     investigator = Radio("investigator", "Investigator radio button (true/false)")
+    tbd = Checkbox("tbd", "TBD Checkbox")
 
     def ok(self):
         """
