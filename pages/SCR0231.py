@@ -6,7 +6,8 @@ locators = {
     "due date type": "css=[name='dueDateType'][value='REPLACE']",
     "copies": "name=numberOfRequiredCopies",
     "mailing": "name=mailingInstructions",
-    "next": "name=RequestSubmissionDetailsNextEvent"
+    "next": "name=RequestSubmissionDetailsNextEvent",
+    "cancel": "RequestSubmissionDetailsCancelEvent"
 }
 
 
@@ -29,3 +30,10 @@ class SCR0231(Page):
         """
         self.find("next").click()
         return self.load_page()
+
+    def cancel(self):
+        """
+        Clicks <Cancel>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("cancel")

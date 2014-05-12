@@ -13,7 +13,9 @@ class SCR0229(Page):
         "program_income": "css=[name='programIncomeFlag']",
         "on_campus": "css=[name='onOffCampusCode']",
         "admin salary": "css=[name='administrativeSalary']",
-        "estimated_cost": "name=totalEstimatedCost"
+        "estimated_cost": "name=totalEstimatedCost",
+        "cancel": "BudgetApprovalsAttributesCancelEvent",
+        "save": "BudgetApprovalsAttributesSaveContinueLaterEvent"
     }
 
     cost_share = Radio("cost_share", "Cost share radio button (true/false)")
@@ -38,3 +40,17 @@ class SCR0229(Page):
         """
         self.find("next").click()
         return self.load_page()
+
+    def cancel(self):
+        """
+        Clicks <Cancel>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("cancel")
+
+    def save(self):
+        """
+        Clicks <Save and continue later>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("save")

@@ -9,7 +9,9 @@ class SCR0098(Page):
         "PI link": "link=Principal Investigator",
         "add member": "name=RequestAddResearchTeamMemberEvent",
         "next": "name=CreateResearchTeamNextEvent",
-        "mentor link": "link=Mentor"
+        "mentor link": "link=Mentor",
+        "cancel": "ResearchStaffSaveContinueLaterEvent",
+        "save": "ResearchStaffSaveContinueLaterEvent"
     }
 
     def add_member(self):
@@ -43,3 +45,16 @@ class SCR0098(Page):
         self.find("next").click()
         return self.load_page()
 
+    def cancel(self):
+        """
+        Clicks <Cancel>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("cancel")
+
+    def save(self):
+        """
+        Clicks <Save and continue later>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("save")

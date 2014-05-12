@@ -10,7 +10,8 @@ class SCR0613(Page):
     locators = {
         "opportunity": "name=opportunity_id",
         "validate": "css=img[alt='Validate']",
-        "next": "name=EnterOpportunityNextEvent"
+        "next": "name=EnterOpportunityNextEvent",
+        "cancel": "EnterOpportunityCancelEvent"
     }
 
     opportunity_text = Text("opportunity", "opportunity number text box")
@@ -24,3 +25,10 @@ class SCR0613(Page):
         Goes to SCR_0231 or SCR_0231b
         """
         return self.go("next")
+
+    def cancel(self):
+        """
+        Clicks <Cancel>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("cancel")

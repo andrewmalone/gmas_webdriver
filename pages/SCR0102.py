@@ -19,7 +19,9 @@ class SCR0102(Page):
     """
     locators = {
         "next": "name=BudgetCategoriesNextEvent",
-        "template": "css=input[name=sponsorBudgetTemplate]"
+        "template": "css=input[name=sponsorBudgetTemplate]",
+        "save": "BudgetCategoriesSaveContinueLaterEvent",
+        "cancel": "BudgetCategoriesCancelEvent"
     }
 
     template = Radio("template", "Budget template", mapping=template_map)
@@ -30,3 +32,17 @@ class SCR0102(Page):
         Goes to SCR_0091, SCR_0228, or SCR_0098
         """
         return self.go("next")
+
+    def cancel(self):
+        """
+        Clicks <Cancel>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("cancel")
+
+    def save(self):
+        """
+        Clicks <Save and continue later>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("save")

@@ -10,7 +10,8 @@ class SCR0090(Page):
         "start": "name=requestStartDate",
         "end": "name=requestEndDate",
         "periods": "name=numberOfPeriods",
-        "next": "name=RequestDatesNextEvent"
+        "next": "name=RequestDatesNextEvent",
+        "cancel": "RequestDatesCancelEvent"
     }
 
     start = Text("start", "text input for start date")
@@ -36,3 +37,10 @@ class SCR0090(Page):
         self.find("next").click()
         from pages.SCR0227 import SCR0227
         return SCR0227(self.driver)
+
+    def cancel(self):
+        """
+        Clicks <Cancel>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("cancel")

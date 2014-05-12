@@ -26,3 +26,10 @@ class SCR0088(Page):
         Goes to SCR_0089
         """
         return self.go("next")
+
+    def cancel(self):
+        """
+        Clicks <Cancel>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("cancel")

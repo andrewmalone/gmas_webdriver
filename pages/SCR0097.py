@@ -17,7 +17,9 @@ class SCR0097(Page):
         "use of name": "css=input[value='1710'] + tr input[type='radio']",
         "appointment expiration": "css=input[value='1709'] + tr input[type='radio']",
         "appt option": "css=input[name=transferOptionId]",
-        "appt comment": "terminationAttributeComments"
+        "appt comment": "terminationAttributeComments",
+        "save": "ApprovalQuestionsSaveContinueLaterEvent",
+        "cancel": "ApprovalQuestionsCancelEvent"
     }
 
     human_subjects = Radio("human subjects", "Human subjects radio button")
@@ -54,3 +56,17 @@ class SCR0097(Page):
         """
         self.find("next").click()
         return self.load_page()
+
+    def cancel(self):
+        """
+        Clicks <Cancel>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("cancel")
+
+    def save(self):
+        """
+        Clicks <Save and continue later>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("save")

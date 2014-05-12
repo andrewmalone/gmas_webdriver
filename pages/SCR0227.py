@@ -8,7 +8,9 @@ class SCR0227(Page):
     """
     locators = {
         "next": "name=RequestPeriodDatesNextEvent",
-        "period start": "css=[name$='REPLACE__periodStartDate']"
+        "period start": "css=[name$='REPLACE__periodStartDate']",
+        "cancel": "RequestPeriodDatesCancelEvent",
+        "save": "RequestPeriodDatesSaveContinueLaterEvent"
     }
 
     def set_period_start(self, period, start_date):
@@ -43,3 +45,17 @@ class SCR0227(Page):
         """
         self.find("next").click()
         return self.load_page()
+
+    def cancel(self):
+        """
+        Clicks <Cancel>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("cancel")
+
+    def save(self):
+        """
+        Clicks <Save and continue later>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("save")

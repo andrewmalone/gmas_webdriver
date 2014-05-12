@@ -20,7 +20,7 @@ class SCR0089(Page):
         "subs": "css=input[name='hasSubAgreements'][value='REPLACE']",
         "ifi": "css=input[name='isOtherSchoolSharing'][value='REPLACE']",
         "comment": None,
-        "cancel": None,
+        "cancel": "EnterIdentifyingInfoVersionACCancelEvent",
         "back": None,
         "next": "name=CreateInitialRequestNextEvent"
     }
@@ -48,3 +48,10 @@ class SCR0089(Page):
         """
         self.find("next").click()
         return self.load_page()
+
+    def cancel(self):
+        """
+        Clicks <Cancel>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("cancel")

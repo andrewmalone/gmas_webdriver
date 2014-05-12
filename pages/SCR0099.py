@@ -7,7 +7,9 @@ class SCR0099(Page):
     """
     locators = {
         "next": "name=GrantsMgmtStaffNextEvent",
-        "add": "name=GrantsMgmtStaffAddTeamMemberEvent"
+        "add": "name=GrantsMgmtStaffAddTeamMemberEvent",
+        "cancel": "GrantsMgmtStaffCancelEvent",
+        "save": "GrantsMgmtStaffSaveContinueLaterEvent"
     }
 
     def add_member(self):
@@ -23,3 +25,17 @@ class SCR0099(Page):
         Goes to SCR_0097
         """
         return self.go("next")
+
+    def cancel(self):
+        """
+        Clicks <Cancel>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("cancel")
+
+    def save(self):
+        """
+        Clicks <Save and continue later>
+        Goes to SCR_0270 (for initial)
+        """
+        return self.go("save")
