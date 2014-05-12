@@ -83,6 +83,7 @@ def rgs(p, f=None, finish="request", stop=None):
                 {
                     "org": "31240",
                     "pi": "03750001"
+                    # admin
                 },
                 {
                     "org": "31570",
@@ -296,15 +297,14 @@ def rgs(p, f=None, finish="request", stop=None):
                 else:
                     p.start = f["start"]
                     p.end = calc_end(f["start"], f["periods"])
+                if "admin" in ifi:
+                    p.admin = ifi["admin"]
                 p = p.ok()
         if checkstop(p, stop):
             return p
         p = p.ok()
 
-    # SCR_0098 (and SCR_0365)
-    # check for stop before doing research team stuff
-    if checkstop(p, stop):
-        return p
+    # SCR_0098 (and SCR_0365) 
     p = p.edit_pi()
     p.human_subjects = f["pi_hs"]
     p = p.ok()
@@ -330,7 +330,8 @@ def rgs(p, f=None, finish="request", stop=None):
             if person["key"] == "false" and p.investigator is True:
                 p.investigator = person["investigator"]
             p = p.ok()
-
+    if checkstop(p, stop):
+        return p
     p = p.ok()
 
     # SCR_0099
@@ -410,5 +411,5 @@ def rgs(p, f=None, finish="request", stop=None):
 
 if __name__ == "__main__":
     from gmas_webdriver.setup import init
-    p = init("Firefox", "gmastest.cadm", False)
-    p = rgs(p)
+    p = init("Chrome", "gdev", False)
+    #p = rgs(p)
