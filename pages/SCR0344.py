@@ -7,7 +7,7 @@ class SCR0344(Page):
     SCR_0344 Request list
     """
     locators = {
-        "request row": "xpath=//a[contains(@href,'RequestListLinkEvent')]/ancestor::tr[1]",
+        "request row": "xpath=//a[contains(@href,'LinkEvent')]/ancestor::tr[1]",
         "request row id": "xpath=//a[contains(@href,'requestId=REPLACE')]/ancestor::tr[1]"
     }
 
@@ -33,7 +33,7 @@ class SCR0344(Page):
 
     class request_row(Row):
         locators = {
-            "link": "css=a[href*=RequestListLinkEvent]"
+            "link": "css=a[href*=LinkEvent]"
         }
 
         def go(self):
