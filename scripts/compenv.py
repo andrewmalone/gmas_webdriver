@@ -58,7 +58,6 @@ class wrapper(object):
             return self.call
 
         # check if this is a builtin type, if so return the attribute directly
-        if a.__class__.__module__ == '__builtin__' and b.__class__.__module__ == '__builtin__':
         if (a.__class__.__module__ == '__builtin__' and b.__class__.__module__ == '__builtin__') or (a.__class__.__module__ == 'pages.elements' and b.__class__.__module__ == 'pages.elements'):
             if a == b:
                 return a
@@ -174,8 +173,10 @@ class wrapper(object):
         source = re.sub(r'<td>\xa9[^<]*</td>', r'<td></td>', source)
         # remove submitTime javascript
         source = re.sub(r'submitTime = [0-9]*;', r'', source)
-        # remove newlines
-        source = re.sub(r'^\n', r'', source, flags=re.MULTILINE)
+        # remove newlines (maybe not needed?)
+        # source = re.sub(r'^\n', r'', source, flags=re.MULTILINE)
+        # collapse whitespace at the beginning of lines
+        source = re.sub(r'^\s*', r'', source, flags=re.MULTILINE)
         if "project id" in self._ignore["ignore"]:
             source = re.sub(r'[0-9]{8}-[0-9]{2}', r'', source)
 
