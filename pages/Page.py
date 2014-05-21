@@ -56,21 +56,13 @@ class Page(GMWebElement):
 
     def load_page(self):
         import importlib
+        from pagemap import pagemap
         #TODO: this method assumes we can match based on the footer names. Need to account for any exceptions
 
         # make sure we aren't on the wait screen
         self.w.until(lambda e: len(e.find_elements_by_css_selector("script[src$='waitScreen.js']")) == 0)
         self.w.until(lambda d: d.find_element_by_css_selector("td.footer"))
-        page = re.search("SCR[0-9]{4}[a-z]?", self.get_current_page()).group(0)
-        if page == "SCR0104":
-            if self.get_current_page() == "SCR0104SegmentHome":
-                page = "SCR0104b"
-            elif self.get_current_page() == "SCR0104ProjectHome":
-                page = "SCR0104a"
-        if page == "SCR0089a": page = "SCR0089"
-        if page == "SCR0474b": page = "SCR0474"
-        if page == "SCR0366v": page = "SCR0366"
-        if page == "SCR0005b": page = "SCR0005"
+        page = pagemap(self.get_current_page())
         cls = getattr(importlib.import_module("pages.%s" % (page)), page)
         return cls(self.driver)
 
@@ -106,7 +98,6 @@ class Page(GMWebElement):
         s = set()
         result = []
         for item in ids:
-            if item not in s:
             if item not in s and item is not None:
                 s.add(item)
                 result.append(item)
