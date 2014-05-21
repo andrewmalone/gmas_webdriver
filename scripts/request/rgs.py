@@ -134,7 +134,7 @@ def rgs(p, f=None, finish="request", stop=None):
             "use_of_name": "false",
             "appt_exp": "false",
             "appt_exp_option": "transfer institution",  # only required if appt_exp is true
-            "attp_exp_comment": "Other",  # only required if appt_exp_option is "other"
+            "appt_exp_comment": "Other",  # only required if appt_exp_option is "other"
             # SCR_0612b
             "ggov_questions": {  # optional
                 "sf424_3": 2,
