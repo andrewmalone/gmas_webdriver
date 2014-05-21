@@ -16,6 +16,10 @@ class SCR0097(Page):
         "add staff": "css=input[value='1701'] + tr input[type='radio']",
         "use of name": "css=input[value='1710'] + tr input[type='radio']",
         "appointment expiration": "css=input[value='1709'] + tr input[type='radio']",
+        "protocol": "css=input[value='1712'] + tr input[type='radio']",
+        "admin_salary": "css=input[value='1702'] + tr input[type='radio']",
+        "cost_share": "css=input[value='1705'] + tr input[type='radio']",
+        "matching": "css=input[value='1708'] + tr input[type='radio']",
         "appt option": "css=input[name=transferOptionId]",
         "appt comment": "terminationAttributeComments",
         "save": "ApprovalQuestionsSaveContinueLaterEvent",
@@ -40,6 +44,11 @@ class SCR0097(Page):
         }
     )
     appt_exp_comment = Text("appt comment", "Appointment expiration comment")
+
+    protocol = Radio("protocol", "Have your protocols changed (continuation only)")
+    admin_salary = Radio("admin_salary", "Admin salary (continuation only)")
+    cost_share = Radio("cost_share", "Cost sharing (continuation only)")
+    matching = Radio("matching", "Matching funds (continuation only)")
 
     def set_all_radios(self, value):
         """
