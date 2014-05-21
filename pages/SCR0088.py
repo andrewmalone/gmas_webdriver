@@ -33,3 +33,16 @@ class SCR0088(Page):
         Goes to SCR_0270 (for initial)
         """
         return self.go("cancel")
+
+    def fill(self, data):
+        """
+            {
+                "org",
+                "retro",
+                "project_type"
+            }
+        """
+        # All fields required...
+        self.org = data["org"]
+        self.project_type = data["project_type"]
+        self.retro = data["retro"]
