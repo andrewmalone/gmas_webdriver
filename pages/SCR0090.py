@@ -34,9 +34,7 @@ class SCR0090(Page):
         Click <Next>
         Goes to SCR_0227
         """
-        self.find("next").click()
-        from pages.SCR0227 import SCR0227
-        return SCR0227(self.driver)
+        return self.go("next")
 
     def cancel(self):
         """
