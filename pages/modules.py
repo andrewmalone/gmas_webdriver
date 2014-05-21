@@ -1,12 +1,32 @@
 from pages.webelement import GMWebElement
+import gmas_webdriver.utilities.xpath as xpath
 
-class COM0500(object):
+
+class COM0500(GMWebElement):
+    locators = {
+        "segment home": "css=a[href*='ProjectSnapShotSegmentHomeEvent']",
+        "dates": xpath.text_sibling("td", "Dates", 2)
+    }
+
     def __init__(self, page):
         self.page = page
+        self.driver = page.driver
+
+    @property
+    def start_date(self):
+        return self.find("dates").text[:10]
+
+    @property
+    def end_date(self):
+        return self.find("dates").text[-10:]
+
+    def _go(self, locator):
+        self.find(locator).click()
+        return self.page.load_page()
 
     def goto_segment_home(self):
-        self.page.find_element("css=a[href*='ProjectSnapShotSegmentHomeEvent']").click()
-        return self.page.load_page()
+        return self._go("segment home")
+
 
 class GMAS_Header(GMWebElement):
     locators = {
