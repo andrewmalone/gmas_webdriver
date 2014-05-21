@@ -32,7 +32,8 @@ class SCR0115(Page):
         "signature": "css=#requiredSignatureCCBODY > table > tbody > tr > td > table",
         "admin team": "event=RequestHomeAdministrativeTeamLinkEvent",
         "approvals": "event=ApprovalsComponentListViewListEvent",
-        "accounts": "event=ViewAllAccountsEvent"
+        "accounts": "event=ViewAllAccountsEvent",
+        "delete": "event=DeleteThisRequestEvent"
     }
 
     status = RText("status", "Request status")
@@ -210,6 +211,13 @@ class SCR0115(Page):
         Goes to SCR_0615a
         """
         return self.go("preview")
+
+    def delete_request(self):
+        """
+        Click <Delete this request>
+        Goes to SCR_0407
+        """
+        return self.go("delete")
 
     class Signature(Row):
         locators = {
