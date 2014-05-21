@@ -59,6 +59,7 @@ class wrapper(object):
 
         # check if this is a builtin type, if so return the attribute directly
         if a.__class__.__module__ == '__builtin__' and b.__class__.__module__ == '__builtin__':
+        if (a.__class__.__module__ == '__builtin__' and b.__class__.__module__ == '__builtin__') or (a.__class__.__module__ == 'pages.elements' and b.__class__.__module__ == 'pages.elements'):
             if a == b:
                 return a
             else:
