@@ -10,7 +10,7 @@ class SCR0098(Page):
         "add member": "name=RequestAddResearchTeamMemberEvent",
         "next": "name=CreateResearchTeamNextEvent",
         "mentor link": "link=Mentor",
-        "cancel": "ResearchStaffSaveContinueLaterEvent",
+        "cancel": "ResearchStaffCancelEvent",
         "save": "ResearchStaffSaveContinueLaterEvent"
     }
 
