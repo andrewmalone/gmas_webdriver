@@ -26,7 +26,7 @@ class SCR0231(Page):
     def ok(self):
         """
         Click the <Next> button.
-        Goes to SCR_0090
+        Goes to SCR_0090, SCR_0461 (SNAP for continuations)
         """
         self.find("next").click()
         return self.load_page()
