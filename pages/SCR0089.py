@@ -22,7 +22,8 @@ class SCR0089(Page):
         "comment": None,
         "cancel": "EnterIdentifyingInfoVersionACCancelEvent",
         "back": None,
-        "next": "name=CreateInitialRequestNextEvent"
+        "next": "name=CreateInitialRequestNextEvent",
+        "next_supplement": "CreateSupplementRequestEvent"
     }
     title = Text("title", "Project title")
     sponsor_text = Text("sponsor", "Sponsor name text input")
@@ -46,8 +47,11 @@ class SCR0089(Page):
         Clicks the <Ok> button
         Goes to SCR_0613 or SCR_0231
         """
-        self.find("next").click()
-        return self.load_page()
+        from selenium.common.exceptions import NoSuchElementException
+        try:
+            return self.go("next")
+        except NoSuchElementException:
+            return self.go("next_supplement")
 
     def cancel(self):
         """
