@@ -107,6 +107,7 @@ class Page(GMWebElement):
         result = []
         for item in ids:
             if item not in s:
+            if item not in s and item is not None:
                 s.add(item)
                 result.append(item)
 
