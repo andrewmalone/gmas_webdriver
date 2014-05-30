@@ -100,7 +100,8 @@ def env_url(env):
         "gtest": "https://gmastest.cadm.harvard.edu",
         "gtrain": "https://gmastraining.harvard.edu",
         "gprod": "https://gmas.harvard.edu",
-        "gdev_new": "https://gmasdev.ca.harvard.edu"
+        "gdev_new": "https://gmasdev.ca.harvard.edu",
+        "gtest_new": "https://gmastest.ca.harvard.edu"
     }
     try:
         return instances[env]
