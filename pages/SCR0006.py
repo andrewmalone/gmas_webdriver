@@ -18,7 +18,7 @@ class SCR0006(Page):
         "periods": "xpath=//td[@class='strong'][contains(text(),'Period')]",
         "level": "css=input[name=recordByBudgetLevel]",
         "category_row": "xpath=//input[@type='text'][contains(@name,'segmentCategoryBudgetEntryAmount')]/ancestor::tr[1]",
-        "person_salary_row": "xpath=//a[contains(@href,'setSCR252fields')/ancestor::tr[1]"
+        "person_salary_row": "xpath=//a[contains(@href,'setSCR252fields')]/ancestor::tr[1]"
     }
 
     total_direct = Text("total_direct", "Total direct cost")
