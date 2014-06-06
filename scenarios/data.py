@@ -96,6 +96,18 @@ def random_active_segments(n):
     return random.sample(get("active_segments"), n)
 
 
+def random_pending_segments(n):
+    return random.sample(get("pending_segments"), n)
+
+
+def random_closed_segments(n):
+    return random.sample(get("closed_segments"), n)
+
+
+def random_not_funded_segments(n):
+    return random.sample(get("not_funded_segments"), n)
+
+
 def person_mix(n=4):
     import math
     n = float(n)
