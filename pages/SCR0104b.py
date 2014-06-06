@@ -18,7 +18,8 @@ locators = {
     "segment documents": "event=SegmentDocumentsLinkEvent",
     "revisions": "event=SegmentHomeRevisionListEvent",
     "event history": "event=SegmentSummaryViewProjectHistoryLinkEvent",
-    "todos": "event=SegmentSummaryViewProjectToDosLinkEvent"
+    "todos": "event=SegmentSummaryViewProjectToDosLinkEvent",
+    "project_info": xpath.text_sibling("td", "Project Information", 2)
 }
 
 
@@ -35,6 +36,14 @@ class SCR0104b(Page):
         """
         count = self.find("document count").text
         return int(count[:count.find(" ")])
+
+    @property
+    def status(self):
+        """
+        Segment status
+        """
+        text = self.find("project_info").text
+        return text[text.index("|") + 2:]
 
     def nav_to(self, segment_id):
         """
