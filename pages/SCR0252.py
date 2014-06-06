@@ -9,6 +9,7 @@ appt_mapping = {
     "3": "9103"
 }
 
+
 class SCR0252(Page):
     """
     SCR_0252
@@ -37,7 +38,7 @@ class SCR0252(Page):
             l = val
         else:
             l = [val for i in range(len(self.finds("budget row")))]
-        
+
         return l
 
     # TODO: make this cleaner (make into a descriptor?)
@@ -72,6 +73,24 @@ class SCR0252(Page):
         val = self._to_list(val)
         for i in range(len(self.finds("budget row"))):
             self.budget(i + 1).key = val[i]
+
+    @property
+    def budgets(self):
+        """
+        Returns a list of budget rows
+        """
+        rows = []
+        for row in self.finds("budget row"):
+            rows.append(self.Budget_row(row, self))
+
+        return rows
+
+    @property
+    def budget_count(self):
+        """
+        Number of budget rows
+        """
+        return len(self.finds("budget row"))
 
     def budget(self, n):
         """
