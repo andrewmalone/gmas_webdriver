@@ -58,7 +58,7 @@ class SCR0092(Page):
     class Rate_row(Row):
         locators = {
             "rate": "css=input[type=text][name^=rate]",
-            "date": "css=input[type=text][name^=expirationDate"
+            "date": "css=input[type=text][name^=expirationDate]"
         }
 
         rate = Text("rate", "Indirect rate")
