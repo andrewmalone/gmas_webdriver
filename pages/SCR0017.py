@@ -39,6 +39,9 @@ class SCR0017(Page):
         }
 
         def enter(self, period, amount):
+            """
+            Enters an amount for the specified period
+            """
             elem = self.finds("input")[period - 1]
             elem.clear()
             elem.send_keys(amount)
