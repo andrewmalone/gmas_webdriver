@@ -13,7 +13,8 @@ class SCR0031(Page):
         "modular": "event=ViewProposedBudgetViewModularBudgetEvent",
         "next period": "css=input[title='Next period']",
         "periods": "xpath=//td[@class='strong'][contains(text(),'Period')]",
-        "subagreement_row": xpath.parent_row_of_event("ViewProposedBudgetSubagreementEvent")
+        "subagreement_row": xpath.parent_row_of_event("ViewProposedBudgetSubagreementEvent"),
+        "person_salary_row": xpath.parent_row_of_event("ViewProposedBudgetResearchTeamEvent")
     }
 
     @property
@@ -90,5 +91,32 @@ class SCR0031(Page):
             """
             Click the subagreement link
             Goes to SCR_00017
+            """
+            return self._go("link")
+
+    @property
+    def person_count(self):
+        """
+        Number of people
+        """
+        return len(self.finds("person_salary_row")) / 2
+
+    def person(self, n):
+        """
+        Returns the nth person (salary only, not fringe)
+        //Person
+        """
+        row = self.finds("person_salary_row")[n - 1]
+        return self.Person(row, self)
+
+    class Person(Row):
+        locators = {
+            "link": "css=a"
+        }
+
+        def go(self):
+            """
+            Click the person link
+            Goes to SCR_0363
             """
             return self._go("link")
