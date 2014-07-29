@@ -44,6 +44,7 @@ minimal = {
     "appt_exp": "false"
 }
 
+
 basic_s2s = copy.deepcopy(minimal)
 basic_s2s["title"] = add_ts("Minimal S2S submission (SF424 only)")
 basic_s2s["opportunity"] = "NIH-UBER-4-1-2013"
