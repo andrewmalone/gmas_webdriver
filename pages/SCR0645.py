@@ -1,6 +1,6 @@
 from pages.Page import Page
-from pages.elements import Text, Row
-        
+from pages.elements import Text, Row, Select
+
 
 class SCR0645(Page):
     """
@@ -26,7 +26,6 @@ class SCR0645(Page):
         """
         return self.PersonRow(self.finds("person row")[number - 1], self)
 
-    def count_people(self):
     @property
     def person_count(self):
         """
@@ -36,7 +35,9 @@ class SCR0645(Page):
 
     class PersonRow(Row):
         locators = {
-            "cal_effort": "css=#calculatedEffortId"
+            "cal_effort": "css=#calculatedEffortId",
+            "commitment_flag": "css=select[name$=sponsorCommitmentFlag]"
         }
 
         cal_effort = Text("cal_effort", "Calendar effort")
+        sponsor_commitment = Select("commitment_flag", "Sponsor commitment")
