@@ -43,10 +43,14 @@ class Text(Element):
             pass
 
     def __get__(self, obj, type=None):
-        elem = obj.find(self.locator)
-        r = self.returnObj(elem.get_attribute("value"))
-        r.element = elem
-        return r
+        from selenium.common.exceptions import NoSuchElementException
+        try:
+            elem = obj.find(self.locator)
+            r = self.returnObj(elem.get_attribute("value"))
+            r.element = elem
+            return r
+        except NoSuchElementException:
+            return False
 
 
 class Select(Element):
@@ -65,12 +69,16 @@ class Select(Element):
             elem.select_by_value(val)
 
     def __get__(self, obj, type=None):
+        from selenium.common.exceptions import NoSuchElementException
         from selenium.webdriver.support.select import Select as WDSelect
-        elem = WDSelect(obj.find(self.locator))
-        r = self.returnObj(elem.first_selected_option.text)
-        r.element = obj.find(self.locator)
-        r.p = self
-        return r
+        try:
+            elem = WDSelect(obj.find(self.locator))
+            r = self.returnObj(elem.first_selected_option.text)
+            r.element = obj.find(self.locator)
+            r.p = self
+            return r
+        except NoSuchElementException:
+            return False
  
 
 class Radio(Element):
