@@ -27,6 +27,8 @@ class SCR0645(Page):
         return self.PersonRow(self.finds("person row")[number - 1], self)
 
     def count_people(self):
+    @property
+    def person_count(self):
         """
         Returns the number of people on the screen
         """
