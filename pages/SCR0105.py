@@ -11,6 +11,7 @@ class SCR0105(Page):
         "edit sponsors": "name=EditSponsorsInformationEvent",
         "edit accounts": "name=EditAccountsEvent",
         "edit id info": "name=EditAwardIdentifyingInformationEvent",
+        "edit dates": "EditAwardedDatesEvent",
         "delete revision": "name=DeleteThisRevisionEvent",
         "revision id": "name=segmentRevisionId",
         "edit all": "name=EditAllEvent"
@@ -51,6 +52,13 @@ class SCR0105(Page):
         Goes to SCR_0196
         """
         return self.go("edit accounts")
+
+    def edit_dates(self):
+        """
+        Click <edit> for awarded edit_dates
+        Goes to SCR_0359
+        """
+        return self.go("edit dates")
 
     def commit_changes(self):
         """
