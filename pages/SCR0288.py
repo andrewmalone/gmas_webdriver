@@ -1,9 +1,9 @@
 from pages.Page import Page
 
 
-class SCR0287(Page):
+class SCR0288(Page):
     """
-    SCR_0287 Role list
+    SCR_0288 Role details
     """
     locators = {
         
