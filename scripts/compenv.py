@@ -175,8 +175,10 @@ class wrapper(object):
         source = re.sub(r'submitTime = [0-9]*;', r'', source)
         # remove newlines (maybe not needed?)
         # source = re.sub(r'^\n', r'', source, flags=re.MULTILINE)
-        # collapse whitespace at the beginning of lines
+        # collapse whitespace at the beginning of lines (not sure if this is a good idea - makes results slightly less readable)
         source = re.sub(r'^\s*', r'', source, flags=re.MULTILINE)
+        # remove spacers
+        source = re.sub(r'</?spacer>', r'', source)
         if "project id" in self._ignore["ignore"]:
             source = re.sub(r'[0-9]{8}-[0-9]{2}', r'', source)
 
