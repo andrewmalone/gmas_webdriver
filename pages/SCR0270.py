@@ -15,7 +15,8 @@ class SCR0270(Page):
         "loc": "link=Letter of Credit",
         "documents": "name=g_documentsoff",
         "organizations": "name=g_organizations",
-        "standing teams": "event=ViewStandingTeamEvent"
+        "standing teams": "event=ViewStandingTeamEvent",
+        "security": "event=ViewSecurityDetailsEvent"
     }
 
     search_text = Text("search box", "Fund/project search box")
@@ -79,6 +80,13 @@ class SCR0270(Page):
         Goes to SCR_0066
         """
         return self.go("standing teams")
+
+    def goto_security(self):
+        """
+        Clicks the "Security" link
+        Goes to SCR_0287
+        """
+        return self.go("security")
 
     class Recent_project(Row):
         # def __init__(self, row):
