@@ -312,7 +312,7 @@ def rgs(p, f=None, finish="request", stop=None):
         p = p.edit_mentor()
         p.human_subjects = f["mentor_hs"]
         p.key = f["mentor_key"]
-        if f["mentor_key"] == "false" and p.investigator is True:
+        if f["mentor_key"] == "false" and p.investigator is not False:
             p.investigator = f["mentor_investigator"]
         p = p.ok()
     if "research team" in f:
@@ -327,7 +327,7 @@ def rgs(p, f=None, finish="request", stop=None):
                 p.person = person["huid"]
             p.key = person["key"]
             p.human_subjects = person["hs"]
-            if person["key"] == "false" and p.investigator is True:
+            if person["key"] == "false" and p.investigator is not False:
                 p.investigator = person["investigator"]
             p = p.ok()
     if checkstop(p, stop):
