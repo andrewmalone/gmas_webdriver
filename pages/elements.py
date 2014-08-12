@@ -102,7 +102,11 @@ class Radio(Element):
             return False
         else:
             if el.is_displayed():
-                return True
+                elements = obj.find_elements(l)
+                for e in elements:
+                    if e.get_attribute("checked") == "true":
+                        return e.get_attribute("value")
+                return ""
             return False
 
 
