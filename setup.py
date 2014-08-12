@@ -10,7 +10,10 @@ def startBrowser(browser, os="win"):
     if browser == "Firefox":
         return webdriver.Firefox()
     if browser == "Chrome":
-        return webdriver.Chrome()
+        from selenium.webdriver.chrome.options import Options
+        chrome_options = Options()
+        chrome_options.add_argument("--test-type")
+        return webdriver.Chrome(chrome_options=chrome_options)
     if browser == "IE":
         return webdriver.Ie()
     if browser == "Phantom":
