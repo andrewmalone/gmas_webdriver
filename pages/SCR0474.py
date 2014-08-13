@@ -20,6 +20,7 @@ class SCR0474(Page):
         "end": "endDate",
         "idc": "idcBasis",
         "edit rates": "EditIDCRatesForEditAccountRevisionEvent",
+        "edit location": "EditResearchLocationForEditAccountEvent",
         "create fund": "CreateNewFundEvent",
         "select activity": "activityLookupImage",
         "root text": "rootValue",
@@ -57,6 +58,13 @@ class SCR0474(Page):
         self.find("select activity").click()
         self.switch_to_popup()
         return self.load_page()
+
+    def edit_location(self):
+        """
+        Click <Edit locations>
+        Goes to SCR_0557
+        """
+        return self.go("edit location")
 
     def cancel(self):
         """
