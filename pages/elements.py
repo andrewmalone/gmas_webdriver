@@ -35,6 +35,18 @@ class Element(object):
                         options.append(option.text)
                 e.select_by_visible_text(random.choice(options))
 
+        @property
+        def options(self):
+            if self.element.tag_name == "select":
+                from selenium.webdriver.support.select import Select as WDSelect
+                e = WDSelect(self.element)
+                options = []
+                for option in e.options:
+                    if option.get_attribute("value") != "":
+                        options.append(option.text)
+                return options
+            return ""
+
 class Text(Element):
     """ (Text) """
     def __set__(self, obj, val):
