@@ -239,7 +239,7 @@ def rgs(p, f=None, finish="request", stop=None):
     p.matching = f["matching"]
     p.program_income = f["program_income"]
     p.on_campus = f["on_campus"]
-    if p.admin_salary is True:
+    if p.admin_salary is not False:
         p.admin_salary = f["admin_salary"]
     if checkstop(p, stop):
         return p
