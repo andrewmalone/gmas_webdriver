@@ -1,6 +1,7 @@
 from pages.Page import Page
 from pages.elements import Radio
 
+
 class SCR0182(Page):
     """
     SCR_0182 Select Activity
