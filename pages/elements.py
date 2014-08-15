@@ -38,6 +38,9 @@ class Element(object):
         @property
         def options(self):
             if self.element.tag_name == "select":
+                if self.p.mapping is not None:
+                    options = [option for option in self.p.mapping.keys() if option != "_method"]
+                    return options
                 from selenium.webdriver.support.select import Select as WDSelect
                 e = WDSelect(self.element)
                 options = []
