@@ -8,8 +8,16 @@ class SCR0309(Page):
     locators = {
         "review completed": "name=ReviewCompletedEvent",
         "revise project": "name=CreateNewRevisionEvent",
-        "documents": "link=Documents"
+        "documents": "link=Documents",
+        "status": "xpath=//td[contains(text(), 'Notice status')]"
     }
+
+    @property
+    def notice_status(self):
+        """
+        Status as displayed on the screen
+        """
+        return self.find("status").text.replace("Notice status: ", "")
 
     def review_completed(self):
         """
