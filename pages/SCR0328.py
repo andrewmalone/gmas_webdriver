@@ -17,7 +17,8 @@ class SCR0328(Page):
         "ia": "css=input[name='expandedAuthorityFlag']",
         "snap": "css=input[name='snapFlag']",
         "equipment": "css=input[name='specialEquipmentTermsFlag']",
-        "agency": "css=input[name='agencyFundFlag']"
+        "agency": "css=input[name='agencyFundFlag']",
+        "foreign": "css=input[name='foreignCurrencyFlag']"
     }
 
     funding_instrument = Select("funding instrument", "Funding instrument", docextra="""
@@ -40,6 +41,7 @@ class SCR0328(Page):
     snap = Radio("snap", "SNAP")
     equipment = Radio("equipment", "Special equipment terms")
     agency = Radio("agency", "Agency fund")
+    foreign = Radio("foreign", "Foreign curency flag")
 
     def ok(self):
         """
