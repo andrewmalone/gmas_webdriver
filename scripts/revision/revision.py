@@ -12,6 +12,7 @@ default_data = {
     "ia": "false",
     "snap": "false",
     "cfda": "1234",
+    "prime award": "12345",
     # 324
     # 403b
     # 359
@@ -97,6 +98,16 @@ def awarding_revision(p, data={}):
         p.snap = data["snap"]
     if p.cfda is not False:
         p.cfda = data["cfda"]
+    if p.prime is not False:
+        if "prime award" in data:
+            p.prime = data["prime award"]
+        else:
+            p.prime = "1234"
+    if p.foreign is not False:
+        if "foreign" in data:
+            p.foreign = data["foreign"]
+        else:
+            p.foreign = "false"
     p = p.ok()
 
     # now do edit all...
