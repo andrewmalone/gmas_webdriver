@@ -18,7 +18,7 @@ class SCR0360(Page):
         """
         return len(self.finds("account row"))
 
-    def accounts(self, num):
+    def account(self, num):
         """
         Returns an account row
         //account_row
