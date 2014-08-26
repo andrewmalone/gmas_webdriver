@@ -9,7 +9,7 @@ import csv
 
 
 class wrapper(object):
-    def __init__(self, a, b, log_folder="", e=0, log=None, compare=True, skip=0, ignore=[]):
+    def __init__(self, a, b, log_folder="", e=0, log=None, compare=True, skip=0, ignore=[], screenshot=False, performance=True):
         self._a = a
         self._b = b
 
@@ -42,6 +42,8 @@ class wrapper(object):
         self._log_folder = log_folder
 
         self._compare = compare
+        self._screenshot = screenshot
+        self._performance = performance
 
     def __getattr__(self, attr):
         """
@@ -65,11 +67,10 @@ class wrapper(object):
                 return 0
 
         # need to return a wrapper object if not a builtin
-        # this is used for any sub objects that are GMWebElements or 
+        # this is used for any sub objects that are GMWebElements or
         # something else(like rows within a page object)
-        return wrapper(a, b, log_folder = self._log_folder, e = self._e, log = self._log, compare=self._compare, skip=self._skip, ignore=self._ignore)
+        return wrapper(a, b, log_folder = self._log_folder, e = self._e, log = self._log, compare=self._compare, skip=self._skip, ignore=self._ignore, screenshot=self._screenshot, performance=self._performance)
 
-        
     def __setattr__(self, attr, value):
         """
         overrides the default setter
@@ -120,8 +121,9 @@ class wrapper(object):
                     #self.save_file("E%s-S2.txt" % self._e, self._b.driver.page_source.encode('utf-8'))
 
                     # save screenshots
-                    #self._a.driver.save_screenshot("%sE%s-S1.png" % (self._log_folder, self._e))
-                    #self._b.driver.save_screenshot("%sE%s-S2.png" % (self._log_folder, self._e))
+                    if self._screenshot is True:
+                        self._a.driver.save_screenshot("%sE%s-S1.png" % (self._log_folder, self._e))
+                        self._b.driver.save_screenshot("%sE%s-S2.png" % (self._log_folder, self._e))
 
                     # do the diff and save to a file
                     import difflib
@@ -136,8 +138,12 @@ class wrapper(object):
             if self._skip > 0:
                 self._skip = self._skip - 1
 
-            load_a = self._a.get_page_load_time()
-            load_b = self._b.get_page_load_time()
+            if self._performance is True:
+                load_a = self._a.get_page_load_time()
+                load_b = self._b.get_page_load_time()
+            else:
+                load_a = 1
+                load_b = 1
 
             log_line = [
                 match,
@@ -161,7 +167,7 @@ class wrapper(object):
                 return 0
 
         # need to return a wrapper object if not a Page or builtin
-        return wrapper(a, b, log_folder=self._log_folder, e=self._e, log=self._log, compare=self._compare, skip=self._skip, ignore=self._ignore)
+        return wrapper(a, b, log_folder=self._log_folder, e=self._e, log=self._log, compare=self._compare, skip=self._skip, ignore=self._ignore, screenshot=self._screenshot, performance=self._performance)
 
     def clean_source(self, source):
         import re
