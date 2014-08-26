@@ -18,7 +18,8 @@ class SCR0328(Page):
         "snap": "css=input[name='snapFlag']",
         "equipment": "css=input[name='specialEquipmentTermsFlag']",
         "agency": "css=input[name='agencyFundFlag']",
-        "foreign": "css=input[name='foreignCurrencyFlag']"
+        "foreign": "css=input[name='foreignCurrencyFlag']",
+        "prime": "primeAwardNumber"
     }
 
     funding_instrument = Select("funding instrument", "Funding instrument", docextra="""
@@ -42,6 +43,7 @@ class SCR0328(Page):
     equipment = Radio("equipment", "Special equipment terms")
     agency = Radio("agency", "Agency fund")
     foreign = Radio("foreign", "Foreign curency flag")
+    prime = Text("prime", "Prime award number")
 
     def ok(self):
         """
