@@ -19,7 +19,9 @@ locators = {
     "revisions": "event=SegmentHomeRevisionListEvent",
     "event history": "event=SegmentSummaryViewProjectHistoryLinkEvent",
     "todos": "event=SegmentSummaryViewProjectToDosLinkEvent",
-    "project_info": xpath.text_sibling("td", "Project Information", 2)
+    "project_info": xpath.text_sibling("td", "Project Information", 2),
+    "dates_dollars": "event=SegmentHomeViewDatesAndDollarsEvent",
+    "additional info": "event=AdditionalAwardInformationEvent"
 }
 
 
@@ -92,6 +94,20 @@ class SCR0104b(Page):
         Goes to SCR_0433
         """
         return self.go("documents")
+
+    def goto_dates_dollars(self):
+        """
+        Clicks the "Dates and Dollars" link
+        Goes to SCR_0070
+        """
+        return self.go("dates_dollars")
+
+    def goto_additional_info(self):
+        """
+        Clicks the "Additional award information" link
+        Goes to SCR_0519
+        """
+        return self.go("additional info")
 
     def goto_approvals(self):
         """
