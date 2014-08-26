@@ -17,15 +17,10 @@ def startBrowser(browser, os="win"):
     if browser == "IE":
         return webdriver.Ie()
     if browser == "Phantom":
-        return webdriver.PhantomJS()
-        a = ["--ignore-ssl-errors=yes", "--proxy-type=none"]
-        str = ""
-        if os == "win":
-            str = ".exe"
-            return webdriver.PhantomJS(executable_path="/phantomjs%s" % (str), service_args=a)
-        else:
-            return webdriver.PhantomJS(service_args=a)
-        #return webdriver.PhantomJS(executable_path="/phantomjs%s" %(str))
+        # not sure why the proxy type needed to be here
+        # a = ["--ignore-ssl-errors=yes", "--proxy-type=none"]
+        a = ["--ignore-ssl-errors=yes"]
+        return webdriver.PhantomJS(service_args=a)
     raise Exception("%s is not a defined browser" % browser)
 
 def init_db(host):
@@ -97,14 +92,13 @@ def highlight(element):
         }, 500);
     """, element)
 
+
 def env_url(env):
     instances = {
-        "gdev": "https://gmasdev.cadm.harvard.edu",
-        "gtest": "https://gmastest.cadm.harvard.edu",
         "gtrain": "https://gmastraining.harvard.edu",
         "gprod": "https://gmas.harvard.edu",
-        "gdev_new": "https://gmasdev.ca.harvard.edu",
-        "gtest_new": "https://gmastest.ca.harvard.edu"
+        "gdev": "https://gmasdev.ca.harvard.edu",
+        "gtest": "https://gmastest.ca.harvard.edu"
     }
     try:
         return instances[env]
