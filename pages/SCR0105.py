@@ -1,4 +1,5 @@
 from pages.Page import Page
+from pages.elements import Text
 
 
 class SCR0105(Page):
@@ -14,8 +15,11 @@ class SCR0105(Page):
         "edit dates": "EditAwardedDatesEvent",
         "delete revision": "name=DeleteThisRevisionEvent",
         "revision id": "name=segmentRevisionId",
-        "edit all": "name=EditAllEvent"
+        "edit all": "name=EditAllEvent",
+        "comment": "revisionCommentsText"
     }
+
+    comment = Text("comment", "Revision comment")
 
     def nav_to(self, segment_id, revision_id):
         """
