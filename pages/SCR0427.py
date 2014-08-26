@@ -1,5 +1,5 @@
 from pages.Page import Page
-from pages.elements import Text
+from pages.elements import Text, RText
 
 
 class SCR0427(Page):
@@ -8,11 +8,13 @@ class SCR0427(Page):
     **Note**: currently only supports allocating to one account
     """
     locators = {
-        "ok" : "name=AllocateAwardedFundstoAccountsDoneEvent",
-        "allocation": "css=input[type=text][name$=__accountChangeAmount]"
+        "ok": "name=AllocateAwardedFundstoAccountsDoneEvent",
+        "allocation": "css=input[type=text][name$=__accountChangeAmount]",
+        "funds remaining": "id=fundsRemainingToBeAllocated"
     }
 
     allocation = Text("allocation", "Allocation change amount")
+    remaining = RText("funds remaining", "Funds remaining to be allocated")
 
     def ok(self):
         """
@@ -20,4 +22,3 @@ class SCR0427(Page):
         Goes to SCR_0105
         """
         return self.go("ok")
-
