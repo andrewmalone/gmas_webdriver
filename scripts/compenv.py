@@ -82,6 +82,12 @@ class wrapper(object):
         else:
             # set the attributes in the wrapped objects
             if hasattr(self._a, attr):
+                # check for returnObj and random
+                element = getattr(self._a, attr)
+                if value == "random" and element.__class__.__name__ == "returnObj" and element.options != "":
+                    # get the options
+                    import random
+                    value = random.choice(element.options)
                 self._a.__setattr__(attr, value)
             if hasattr(self._b, attr):
                 self._b.__setattr__(attr, value)
