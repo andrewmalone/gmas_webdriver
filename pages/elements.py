@@ -171,10 +171,10 @@ class Checkbox(Element):
     """ (Checkbox) """
     def __set__(self, obj, val):
         elem = obj.find(self.locator)
-        if val == True:
+        if val is True or val == "true":
             if elem.get_attribute("checked") != "true":
                 elem.click()
-        if val == False:
+        if val is False or val == "false":
             if elem.get_attribute("checked") == "true":
                 elem.click()
 
@@ -185,7 +185,7 @@ class Checkbox(Element):
             # TODO: figure out what to return here - also, think about refactoring everything in the same way
             return self.returnObj(None)
         attr = elem.get_attribute("checked")
-        if attr == None:
+        if attr is None:
             attr = "false"
         r = self.returnObj(attr)
         r.element = elem
