@@ -118,6 +118,10 @@ class Radio(Element):
         elem.click()
 
     def __get__(self, obj, cls=None):
+        """
+        Get the value of a radio button (currently selected)
+        returns False if the element is not on the page or isn't displayed
+        """
         l = obj.locators[self.locator]
         l = l.replace("[value='REPLACE']", "")
         # switch to try/catch
@@ -129,10 +133,13 @@ class Radio(Element):
         else:
             if el.is_displayed():
                 elements = obj.find_elements(l)
+                value = ""
                 for e in elements:
                     if e.get_attribute("checked") == "true":
-                        return e.get_attribute("value")
-                return ""
+                        value = e.get_attribute("value")
+                r = self.returnObj(value)
+                r.element = el
+                return r
             return False
 
 
