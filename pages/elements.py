@@ -95,7 +95,7 @@ class Select(Element):
             elem.select_by_value(val)
 
     def __get__(self, obj, type=None):
-        from selenium.common.exceptions import NoSuchElementException
+        from selenium.common.exceptions import NoSuchElementException, UnexpectedTagNameException
         from selenium.webdriver.support.select import Select as WDSelect
         try:
             elem = WDSelect(obj.find(self.locator))
@@ -103,7 +103,7 @@ class Select(Element):
             r.element = obj.find(self.locator)
             r.p = self
             return r
-        except NoSuchElementException:
+        except (NoSuchElementException, UnexpectedTagNameException):
             return False
  
 
