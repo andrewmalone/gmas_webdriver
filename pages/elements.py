@@ -16,6 +16,14 @@ class Element(object):
             self.__doc__ += docextra
 
     class returnObj(str):
+        @property
+        def element_type(self):
+            tag_name = self.element.tag_name
+            if tag_name == "select":
+                return "select"
+            elif tag_name == "input":
+                return self.element.get_attribute("type")
+
         def is_displayed(self):
             if hasattr(self, "element"):
                 return self.element.is_displayed()
@@ -37,18 +45,26 @@ class Element(object):
 
         @property
         def options(self):
-            if self.element.tag_name == "select":
-                if self.p.mapping is not None:
-                    options = [option for option in self.p.mapping.keys() if option != "_method"]
+            options = []
+            if self.element_type == "select":
+                if self.parent.mapping is not None:
+                    options = [option for option in self.parent.mapping.keys() if option != "_method"]
                     return options
                 from selenium.webdriver.support.select import Select as WDSelect
                 e = WDSelect(self.element)
-                options = []
                 for option in e.options:
                     if option.get_attribute("value") != "":
                         options.append(option.text)
                 return options
+            if self.element_type == "radio":
+                if self.parent.mapping is not None:
+                    options = [option for option in self.parent.mapping.keys() if option != "_method"]
+                    return options
+                for element in self.elements:
+                    options.append(element.get_attribute("value"))
+                return options
             return ""
+
 
 class Text(Element):
     """ (Text) """
@@ -101,7 +117,7 @@ class Select(Element):
             elem = WDSelect(obj.find(self.locator))
             r = self.returnObj(elem.first_selected_option.text)
             r.element = obj.find(self.locator)
-            r.p = self
+            r.parent = self
             return r
         except (NoSuchElementException, UnexpectedTagNameException):
             return False
@@ -139,6 +155,8 @@ class Radio(Element):
                         value = e.get_attribute("value")
                 r = self.returnObj(value)
                 r.element = el
+                r.elements = elements
+                r.parent = self
                 return r
             return False
 
