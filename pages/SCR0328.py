@@ -1,5 +1,6 @@
 from pages.Page import Page
 from pages.elements import Text, Select, Radio
+from pages.lookups import Lookup_org, Lookup_person
 
 
 class SCR0328(Page):
@@ -19,7 +20,12 @@ class SCR0328(Page):
         "equipment": "css=input[name='specialEquipmentTermsFlag']",
         "agency": "css=input[name='agencyFundFlag']",
         "foreign": "css=input[name='foreignCurrencyFlag']",
-        "prime": "primeAwardNumber"
+        "prime": "primeAwardNumber",
+        "org text": "orgDescriptor",
+        "pi text": "pI",
+        "title": "title",
+        "award number": "css=input[name$=awardNumber]",
+        "discipline": "disciplineId"
     }
 
     funding_instrument = Select("funding instrument", "Funding instrument", docextra="""
@@ -44,6 +50,13 @@ class SCR0328(Page):
     agency = Radio("agency", "Agency fund")
     foreign = Radio("foreign", "Foreign curency flag")
     prime = Text("prime", "Prime award number")
+    org_text = Text("org text", "Input box for Org")
+    org = Lookup_org(org_text, "orgLookupImage", "Org lookup")
+    pi_text = Text("pi text", "Input box for PI")
+    pi = Lookup_person(pi_text, "pILookupImage", "PI lookup")
+    award_number = Text("award number", "Award number - currently only works for the top award number")
+    discipline = Select("discipline", "Disclipline")
+    title = Text("title", "Project title")
 
     def ok(self):
         """

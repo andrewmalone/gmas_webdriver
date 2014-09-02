@@ -13,6 +13,7 @@ default_data = {
     "snap": "false",
     "cfda": "1234",
     "prime award": "12345",
+    "org": "31240"
     # 324
     # 403b
     # 359
@@ -108,6 +109,16 @@ def awarding_revision(p, data={}):
             p.foreign = data["foreign"]
         else:
             p.foreign = "false"
+    if "org" in data:
+        p.org = data["org"]
+    if "pi" in data:
+        p.pi = data["pi"]
+    if "discipline" in data:
+        p.discipline = data["discipline"]
+    if "title" in data:
+        p.title = data["title"]
+    if "award number" in data:
+        p.award_number = data["award number"]
     p = p.ok()
 
     # now do edit all...
