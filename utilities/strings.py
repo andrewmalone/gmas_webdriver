@@ -17,5 +17,9 @@ def random_string(size=6, lowercase=True, uppercase=True, numbers=False):
     return string_generator(size, chars)
 
 
+def random_sentence(words=5):
+    return ' '.join(random_string(random.randint(2, 10), uppercase=False) for _ in range(words)).capitalize()
+
+
 if __name__ == "__main__":
-    print random_string(numbers=True)
+    print random_sentence()
