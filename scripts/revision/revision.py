@@ -230,6 +230,9 @@ def awarding_revision(p, data={}):
                     else:
                         p.location = account["location"]
                     p = p.ok()
+                # set the org if changing in this revision
+                if "org" in data:
+                    p.org = data["org"]
                 if "fund" in account:
                     if account["fund"] == "new":
                         p = p.create_fund()
@@ -237,6 +240,7 @@ def awarding_revision(p, data={}):
                             p.fund_type = random.choice(p.fund_type.options)
                         if p.fund == "":
                             p = p.get_new_fund()
+                            # what to do if the fund still doesn't come back?
                         p = p.ok()
                 if "activity" in account:
                     if account["activity"] == "new":

@@ -1,6 +1,6 @@
 from pages.Page import Page
 from pages.elements import Select, Text
-from pages.lookups import Lookup_root
+from pages.lookups import Lookup_root, Lookup_org
 
 idc_mapping = {
     "TDC": "Total Direct Costs",
@@ -25,7 +25,8 @@ class SCR0474(Page):
         "select activity": "activityLookupImage",
         "root text": "rootValue",
         "cancel": "AddAccountRevisionCancelEvent",
-        "ok": "EditAccountWithValidationForRevisionOkEvent"
+        "ok": "EditAccountWithValidationForRevisionOkEvent",
+        "org text": "orgValue"
     }
 
     account_type = Select("account type", "Account type dropdown")
@@ -35,6 +36,8 @@ class SCR0474(Page):
     idc_basis = Select("idc", "IDC Basis", idc_mapping)
     root_text = Text("root text")
     root = Lookup_root(root_text, "rootLookupImage")
+    org_text = Text("org text")
+    org = Lookup_org(org_text, "orgLookupImage")
 
     def create_fund(self):
         """
