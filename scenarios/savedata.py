@@ -10,21 +10,23 @@ import gmas_webdriver.database.request as request_query
 
 db = init_db("gdev")
 
+created = '6/20/2014'
+
 queries = {
-    # "orgs": org_query.get_all_orgs(db),
-    # "fed_sponsors": sponsor_query.get_all_fed(db),
-    # "nonfed_sponsors": sponsor_query.get_all_nonfed(db),
-    # "huids": person_query.get_huid_persons(db),
-    # "non-huids": person_query.get_nonhuid_persons(db),
-    # "huids_not_in_persons": person_query.query(db, "huid_not_in_persons"),
-    # "research_team_roles": role_query.get_research_team_roles(db),
-    # "admin_team_roles": role_query.get_admin_team_roles(db),
-    # "users": person_query.get_gmas_users(db),
-    "active_segments": segment_query.get_active_segments(db, created='3/21/2014'),
-    "pending_segments": segment_query.get_pending_segments(db, created='3/21/2014'),
-    "closed_segments": segment_query.get_closed_segments(db, created='3/21/2014'),
-    "not_funded_segments": segment_query.get_not_funded_segments(db, created='3/21/2014'),
-    # "submitted_initial": request_query.get_submitted_initial(db)
+    "orgs": org_query.get_all_orgs(db),
+    "fed_sponsors": sponsor_query.get_all_fed(db),
+    "nonfed_sponsors": sponsor_query.get_all_nonfed(db),
+    "huids": person_query.get_huid_persons(db),
+    "non-huids": person_query.get_nonhuid_persons(db),
+    "huids_not_in_persons": person_query.query(db, "huid_not_in_persons"),
+    "research_team_roles": role_query.get_research_team_roles(db),
+    "admin_team_roles": role_query.get_admin_team_roles(db),
+    "users": person_query.get_gmas_users(db),
+    "active_segments": segment_query.get_active_segments(db, created=created),
+    "pending_segments": segment_query.get_pending_segments(db, created=created),
+    "closed_segments": segment_query.get_closed_segments(db, created=created),
+    "not_funded_segments": segment_query.get_not_funded_segments(db, created=created),
+    "submitted_initial": request_query.get_submitted_initial(db)
 }
 
 
@@ -34,5 +36,7 @@ def save(data, filename):
 
 
 if __name__ == "__main__":
-    for q in queries:
+    count = len(queries)
+    for i, q in enumerate(queries):
+        print "Query %s/%s: %s" % (i + 1, count, q)
         save(queries[q], q)
