@@ -224,6 +224,8 @@ def awarding_revision(p, data={}):
                         p = p.create_fund()
                         if p.fund == "" and p.fund_type is not False:
                             p.fund_type = random.choice(p.fund_type.options)
+                        if p.fund == "":
+                            p = p.get_new_fund()
                         p = p.ok()
                 if "activity" in account:
                     if account["activity"] == "new":
