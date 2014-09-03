@@ -129,6 +129,9 @@ def awarding_revision(p, data={}):
 
     # 324 - sponsor
     # TODO: add ability to change sponsor here
+    if p.prime_pi_text.is_displayed():
+        if "prime_pi" in data:
+            p.prime_pi = data["prime_pi"]
     p = p.next()
 
     # 403b - approval
