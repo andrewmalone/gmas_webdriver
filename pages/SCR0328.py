@@ -23,6 +23,7 @@ class SCR0328(Page):
         "prime": "primeAwardNumber",
         "org text": "orgDescriptor",
         "pi text": "pI",
+        "mentor text": "fellow",
         "title": "title",
         "award number": "css=input[name$=awardNumber]",
         "discipline": "disciplineId"
@@ -54,6 +55,8 @@ class SCR0328(Page):
     org = Lookup_org(org_text, "orgLookupImage", "Org lookup")
     pi_text = Text("pi text", "Input box for PI")
     pi = Lookup_person(pi_text, "pILookupImage", "PI lookup")
+    mentor_text = Text("mentor text", "Input box for Mentor")
+    mentor = Lookup_person(mentor_text, "fellowLookupImage", "Mentor lookup")
     award_number = Text("award number", "Award number - currently only works for the top award number")
     discipline = Select("discipline", "Disclipline")
     title = Text("title", "Project title")
