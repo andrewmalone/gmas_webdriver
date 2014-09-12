@@ -8,7 +8,7 @@ import gmas_webdriver.database.segment as segment_query
 import gmas_webdriver.database.request as request_query
 
 
-db = init_db("gdev")
+db = init_db("gdev11")
 
 created = '6/20/2014'
 
