@@ -77,6 +77,7 @@ class Text(Element):
         script = """
             if (arguments[0].onchange) arguments[0].onchange();
             if (arguments[0].onblur) arguments[0].onblur();
+            document.activeElement.blur();
         """
         from selenium.common.exceptions import WebDriverException
         try:
