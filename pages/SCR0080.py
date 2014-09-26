@@ -1,6 +1,7 @@
 from pages.Page import Page
 from pages.elements import Row
 import utilities.xpath as xpath
+import utilities.url as url
 
 
 class SCR0080(Page):
@@ -26,6 +27,16 @@ class SCR0080(Page):
         # TODO - document which pages here
         return self.go("approval link")
 
+    @property
+    def approvals(self):
+        """
+        List of all approval row objects
+        """
+        approvals = []
+        for row in self.finds("approval row"):
+            approvals.append(self.Approval_row(row, self))
+        return approvals
+
     def approval(self, n):
         """
         Returns the nth approval
@@ -38,6 +49,21 @@ class SCR0080(Page):
         locators = {
             "link": "event=ApprovalListViewOrEditDetailEvent"
         }
+
+        @property
+        def type(self):
+            """
+            Approval type
+            """
+            return self.find("link").text
+
+        @property
+        def huid(self):
+            """
+            HUID for the approval (if it is a person approval)
+            """
+            link = self.find("link").get_attribute("href")
+            return url.url_param(link, "HUID")
 
         def go(self):
             """
