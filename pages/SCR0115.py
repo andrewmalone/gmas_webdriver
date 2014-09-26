@@ -14,6 +14,7 @@ class SCR0115(Page):
         "initiate review": "css=a[href*='InitiateInternalReviewEvent'] img",
         "submit": "css=a[href*='SubmitToSponsorEvent'] img",
         "log notice": "css=img[alt='Log notice']",
+        "edit info": "event=RequestInfoEditEvent",
         "edit budget": "css=a[href*='EditProposedDollarsSummaryBudgetEvent'] img",
         "edit ggov questions": "css=a[href*='EditGrantsGovQuestionsEvent'] img",
         "view ggov questions": "event=ViewGrantsGovQuestionsEvent",
@@ -113,6 +114,13 @@ class SCR0115(Page):
         Goes to SCR_0409
         """
         return self.go("r2r")
+
+    def edit_info(self):
+        """
+        Click <edit> for request information
+        Goes to SCR_0400
+        """
+        return self.go("edit info")
 
     def edit_budget(self):
         """
