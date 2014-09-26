@@ -1,5 +1,6 @@
 from pages.Page import Page
 from pages.elements import Text, Row, Select
+from pages.lookups import Lookup_person
 
 
 class SCR0645(Page):
@@ -8,8 +9,12 @@ class SCR0645(Page):
     """
     locators = {
         "ok": "name=ConfirmResearchTeamOkEvent",
-        "person row": "css=#dataRow"
+        "person row": "css=#dataRow",
+        "add person": "personName"
     }
+
+    person_text = Text("add person", "Text box to add a person")
+    new_person = Lookup_person(person_text, "personLookupImage", "Add person lookup")
 
     def ok(self):
         """
@@ -36,8 +41,16 @@ class SCR0645(Page):
     class PersonRow(Row):
         locators = {
             "cal_effort": "css=#calculatedEffortId",
-            "commitment_flag": "css=select[name$=sponsorCommitmentFlag]"
+            "commitment_flag": "css=select[name$=sponsorCommitmentFlag]",
+            "role": "css=select[name$=role]",
+            "key": "css=select[name$=isKeyPerson]",
+            "investigator": "css=select[name$=isMemberPHSInvestigator]",
+            "human subjects": "css=select[name$=isMemberInvolvedWithHumanSubjects]"
         }
 
         cal_effort = Text("cal_effort", "Calendar effort")
         sponsor_commitment = Select("commitment_flag", "Sponsor commitment")
+        role = Select("role", "Research team role")
+        key = Select("key", "Key person flag")
+        investigator = Select("investigator", "PHS investigator flag")
+        human_subjects = Select("human subjects", "Human Subjects flag")
