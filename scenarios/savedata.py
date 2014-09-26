@@ -19,6 +19,7 @@ queries = {
     "huids": person_query.get_huid_persons(db),
     "non-huids": person_query.get_nonhuid_persons(db),
     "huids_not_in_persons": person_query.query(db, "huid_not_in_persons"),
+    "fcoi_university_policy": person_query.get_fcoi_university_policy(db),
     "research_team_roles": role_query.get_research_team_roles(db),
     "admin_team_roles": role_query.get_admin_team_roles(db),
     "users": person_query.get_gmas_users(db),

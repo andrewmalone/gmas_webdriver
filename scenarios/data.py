@@ -88,6 +88,17 @@ def random_nonhuid(n=1):
     return random.sample(get("non-huids"), n)
 
 
+def random_fcoi_university_policy(n=1):
+    return random.sample(get("fcoi_university_policy"), n)
+
+
+def random_fcoi_not_university_policy(n=1):
+    all_huids = get("huids")
+    fcoi_huids = get("fcoi_university_policy")
+    huid_list = [n for n in all_huids if n not in fcoi_huids]
+    return random.sample(huid_list, n)
+
+
 def random_user(n=1):
     return random.sample(get("users"), n)
 

@@ -14,7 +14,15 @@ queries = {
         """,
     "users": """
         select huid from gmasprod.persons where valid_user_flag = 1 and disabled_flag = 0
-        """
+        """,
+    "fcoi_university_policy": """
+        select
+          huid
+        from
+          gmasprod.coi
+        where
+          university_policy = 1
+      """
 }
 
 
@@ -47,3 +55,7 @@ def get_non_huid(database, n=1):
 
 def get_gmas_users(database):
     return query(database, "users")
+
+
+def get_fcoi_university_policy(database):
+    return query(database, "fcoi_university_policy")
