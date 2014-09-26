@@ -1,6 +1,38 @@
 import random
 import gmas_webdriver.utilities.dates as dateutil
-"""
+import screens
+
+data_map = {
+    "328": [
+        "funding_instrument",
+        "payment_method",
+        "loc_number",
+        "arra",
+        "equipment",
+        "agency",
+        "ia",
+        "snap",
+        "cfda",
+        "prime",
+        "org",
+        "discipline",
+        "title",
+        "pi",
+        "award number"
+    ],
+    "359": ["awarded_dates"],
+    "123": ["awarded_dollars"],
+    "196": ["accounts"]
+}
+
+
+def check_screen(screen, data):
+    for key in data_map[screen]:
+        if key in data:
+            return True
+    return False
+
+
 default_data = {
     # 328
     "funding_instrument": "Grant",
@@ -13,7 +45,7 @@ default_data = {
     "snap": "false",
     "cfda": "1234",
     "prime award": "12345",
-    "org": "31240"
+    "org": "31240",
     # 324
     # 403b
     # 359
@@ -45,9 +77,9 @@ default_data = {
             "action": "edit",
             "name": "Main 1",
             "year": "Y1",
-            "budget_period": 1,
-            #"start": "start",
-            #"end": "end",
+            #"budget_period": 1,
+            "start": "start",
+            "end": "end",
             # acct group
             # country
             # location
@@ -66,17 +98,9 @@ default_data = {
     "allocations": "",
     "comment": "This is a first revision test"
 }
-"""
 
 
-def revision():
-    # what is the starting point?
-    # segment home?
-    # notice
-    pass
-
-
-def awarding_revision(p, data={}, minimal=False, commit=True):
+def awarding_revision(p, data={}, minimal=False, commit=True, notification=False):
     # starting from 309
 
     #global default_data
@@ -86,40 +110,7 @@ def awarding_revision(p, data={}, minimal=False, commit=True):
 
     # 328
     # TODO: add potential of changing optional fields
-    p.funding_instrument = data["funding_instrument"]
-    p.payment_method = data["payment_method"]
-    if data["payment_method"] == "Letter Of Credit":
-        p.loc_number = data["loc_number"]
-    p.arra = data["arra"]
-    p.equipment = data["equipment"]
-    p.agency = data["agency"]
-    if p.ia is not False:
-        p.ia = data["ia"]
-    if p.snap is not False:
-        p.snap = data["snap"]
-    if p.cfda is not False:
-        p.cfda = data["cfda"]
-    if p.prime is not False:
-        if "prime award" in data:
-            p.prime = data["prime award"]
-        else:
-            p.prime = "1234"
-    if p.foreign is not False:
-        if "foreign" in data:
-            p.foreign = data["foreign"]
-        else:
-            p.foreign = "false"
-    if "org" in data:
-        p.org = data["org"]
-    if "pi" in data:
-        p.pi = data["pi"]
-    if "discipline" in data:
-        p.discipline = data["discipline"]
-    if "title" in data:
-        p.title = data["title"]
-    if "award number" in data:
-        p.award_number = data["award number"]
-    p = p.ok()
+    p = screens.SCR0328(p, data, button="ok")
 
     if minimal is False:
         # now do edit all...
@@ -264,12 +255,15 @@ def awarding_revision(p, data={}, minimal=False, commit=True):
                     # check to send to GL?
                     if "gl" in account and account["gl"] is True:
                         p.account(1).checkbox = True
-                    p = p.next()
+        p = p.next()
         # ALLOCATIONS!!!
         if "allocations" in data:
             # for now, put all the money in the main
             p.allocation = p.remaining
-            p = p.ok()
+            # this is ugly, but something is odd on 427 (probably javascript)
+            import time
+            time.sleep(1)
+        p = p.ok()
 
     # back on 105
     if "comment" in data:
@@ -277,8 +271,63 @@ def awarding_revision(p, data={}, minimal=False, commit=True):
 
     if commit is True:
         p = p.commit_changes()
-        p.check_all = False
+        if notification is False:
+            p.check_all = False
         p = p.ok()
+    return p
+
+
+def admin_revision(p, data, commit=True, notification=False, edit_all=True):
+    # start from segment home
+    p = p.make_revision()
+
+    if edit_all is True:
+        # 105
+        p = p.edit_all()
+
+        # 328 award id info
+        p = p.next()
+
+        # 324 - sponsor
+        p = p.next()
+
+        # 403b - approval
+        # TODO: add ability to make changes here
+        p = p.next()
+
+        # 359 - dates
+        p = p.next()
+
+        # 123 - dollars
+        # TODO - add SCR_0039
+        p = p.next()
+
+        # 549 - cost share
+        p = p.next()
+
+        # 196 - accounts
+        p = p.next()
+
+        # ALLOCATIONS!!!
+        p = p.ok()
+
+    else:
+        # check for each screen and edit it
+        # 328
+        if check_screen("328", data):
+            p = p.edit_id_info()
+            p = screens.SCR0328(p, data, button="ok")
+
+    # back on 105
+    if "comment" in data:
+        p.comment = data["comment"]
+
+    if commit is True:
+        p = p.commit_changes()
+        if notification is False:
+            p.check_all = False
+        p = p.ok()
+
     return p
 
 
@@ -294,4 +343,14 @@ def empty_revision(p, data={}):
 
 
 if __name__ == '__main__':
-    pass
+    from gmas_webdriver.setup import init
+    p = init("Chrome", "gtrain", True)
+    p = p.goto_segment(10228049)
+    # p = p.goto_notices()
+    # p = p.goto_first_notice()
+    # if p.notice_status == "Under Review":
+    #     p = p.review_completed()
+    data = {
+        "title": "New title"
+    }
+    p = admin_revision(p, data, commit=False, edit_all=False)
