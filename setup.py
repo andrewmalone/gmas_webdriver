@@ -6,13 +6,16 @@ import sys
 import base64
 
 
-def startBrowser(browser, os="win"):
+def startBrowser(browser, os="win", download_dir=None):
     if browser == "Firefox":
         return webdriver.Firefox()
     if browser == "Chrome":
         from selenium.webdriver.chrome.options import Options
         chrome_options = Options()
         chrome_options.add_argument("--test-type")
+        if download_dir is not None:
+            prefs = {"download.default_directory": download_dir}
+            chrome_options.add_experimental_option("prefs", prefs)
         return webdriver.Chrome(chrome_options=chrome_options)
     if browser == "IE":
         return webdriver.Ie()
@@ -22,6 +25,7 @@ def startBrowser(browser, os="win"):
         a = ["--ignore-ssl-errors=yes"]
         return webdriver.PhantomJS(service_args=a)
     raise Exception("%s is not a defined browser" % browser)
+
 
 def init_db(host):
     import cx_Oracle
@@ -36,6 +40,7 @@ def init_db(host):
     dbstring = cx_Oracle.makedsn(host["host"], host["port"], host["sid"])
     con = cx_Oracle.connect(user, passwd, dbstring)
     return con.cursor()
+
 
 def loginGMAS(driver):
     dir = os.path.dirname(os.path.abspath(__file__))
@@ -52,15 +57,15 @@ def loginGMAS(driver):
     driver.find_element_by_css_selector("input.login-button[type=submit][value=Login]").click()
 
 
-def init(browser, env, splitscreen=False, position="full", port=None):
+def init(browser, env, splitscreen=False, position="full", port=None, download_dir=None):
     # this is so that imports will work (there's probably a better way)
     sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
     url = env_url(env)
 
-    d = startBrowser(browser)
+    d = startBrowser(browser, download_dir)
     if splitscreen is True:
-        d.set_window_position(1500,0)
+        d.set_window_position(1500, 0)
     if position == "full":
         d.maximize_window()
     if position == "left" or position == "right":
