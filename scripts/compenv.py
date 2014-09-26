@@ -110,7 +110,6 @@ class wrapper(object):
 
                 source1 = self.clean_source(self._a.driver.page_source)
                 source2 = self.clean_source(self._b.driver.page_source)
-
                 # use the ignore id list to replace ids
                 for ids in self._ignore["ids"]:
                     source1 = source1.replace(ids[0], ids[1])
@@ -124,6 +123,8 @@ class wrapper(object):
 
                     # save the full page sources
                     #self.save_file("E%s-S1.txt" % self._e, self._a.driver.page_source.encode('utf-8'))
+                    #self.save_file("test1.txt", source1.encode('utf-8'))
+                    #self.save_file("test2.txt", source2.encode('utf-8'))
                     #self.save_file("E%s-S2.txt" % self._e, self._b.driver.page_source.encode('utf-8'))
 
                     # save screenshots
@@ -137,6 +138,8 @@ class wrapper(object):
                     tofile = self.get_context(self._b)
                     result = list(difflib.unified_diff(source1.splitlines(1), source2.splitlines(1), fromfile=fromfile, tofile=tofile))
                     self.save_file("E%s-D.txt" % self._e, result)
+                    #from pprint import pprint
+                    #pprint(result)
             else:
                 match = "N/A"
                 error = ""
@@ -177,6 +180,15 @@ class wrapper(object):
 
     def clean_source(self, source):
         import re
+        # temporary stuff!!
+        if self._a.scr == "SCR0104":
+            # approval attributes on segment home
+            source = re.sub(r'<div id="approvalAttributesCCBODY".*?</div>', r'', source, flags=re.DOTALL)
+
+        # Document repository component
+        source = re.sub(r'<div id="DocRepositoryComponentCCBODY".*?</div>', r'', source, flags=re.DOTALL)
+
+        #return source
         # remove all attributes from inside html tags
         source = re.sub(r'<([^/][a-zA-Z]*)\s?[^>]*>', r'<\1>', source)
         # remove instance header/footer
@@ -193,6 +205,9 @@ class wrapper(object):
         source = re.sub(r'</?spacer>', r'', source)
         if "project id" in self._ignore["ignore"]:
             source = re.sub(r'[0-9]{8}-[0-9]{2}', r'', source)
+
+        # Remove documents component?
+        source = re.sub(r'<table>((?!<table>).)*([0-9]{1,3} Document\(s\)).*?</table>', r'\2', source, flags=re.DOTALL)
 
         return source
 
