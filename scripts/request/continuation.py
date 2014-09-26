@@ -57,7 +57,7 @@ def continuation(p, f):
             p.appt_exp_comment = f["appt_exp_comment"]
     p.cost_share = f["cost_share"]
     p.matching = f["matching"]
-    if p.admin_salary is True:
+    if p.admin_salary is not False:
         p.admin_salary = f["admin_salary"]
     p = p.ok()
 

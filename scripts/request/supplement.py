@@ -50,7 +50,7 @@ def supplement(p, f):
     p.cost_share = f["cost_share"]
     p.matching = f["matching"]
     p.on_campus = f["on_campus"]
-    if p.admin_salary is True:
+    if p.admin_salary is not False:
         p.admin_salary = f["admin_salary"]
     p = p.ok()
 
