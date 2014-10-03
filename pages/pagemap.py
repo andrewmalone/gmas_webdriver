@@ -11,7 +11,8 @@ def pagemap(page):
         "SCR0089a": "SCR0089",
         "SCR0474b": "SCR0474",
         "SCR0366v": "SCR0366",
-        "SCR0005b": "SCR0005"
+        "SCR0005b": "SCR0005",
+        "SCR0092b": "SCR0092"
     }
     screen = re.search("SCR[0-9]{4}[a-z]?", page).group(0)
 

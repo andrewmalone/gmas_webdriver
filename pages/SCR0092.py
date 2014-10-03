@@ -14,6 +14,7 @@ class SCR0092(Page):
         "start": "name=proposedStartDate",
         "end": "name=proposedEndDate",
         "ok": "name=SubagreementDetailsOKEvent",
+        "okb": "name=CreateProposedSubagreementOKEvent",
         "description": "description",
         "rate": "xpath=//input[contains(@name, 'idcRateVersion')]//ancestor::tr[1]",
         "add rate": "RequestAddSubrecipientRateEvent",
@@ -38,9 +39,12 @@ class SCR0092(Page):
     def ok(self):
         """
         Click <Ok>
-        Goes to SCR_0091
+        Goes to SCR_0091 or SCR_0250 (from SCR_0092b)
         """
-        return self.go("ok")
+        if "SCR0092b" in self.get_current_page():
+            return self.go("okb")
+        else:
+            return self.go("ok")
 
     def rate(self, n):
         """
