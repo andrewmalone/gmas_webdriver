@@ -100,7 +100,6 @@ def request():
                 "investigator": "false",
                 "hs": "false"
             }
-            # 10604826
         ]
     })
     return request
@@ -145,14 +144,22 @@ def add_person(huid, key="true", investigator="true"):
     people[huid] = {
         "investigator": investigator,
         "OAR": 0,
-        "FCOI": 0
+        "FCOI": 0,
+        "added": True
     }
 
 
 class test_coi_continuation(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        # create an awarded project...
+        pass
+
+    @classmethod
+    def tearDownClass(self):
+        global p
+        p.quit()
+
+    def setUp(self):
         global p
         r = request()
         init_people(r)
@@ -178,17 +185,8 @@ class test_coi_continuation(unittest.TestCase):
         self.segment = p.get_id("segment")
         print "Created segment %s" % self.segment
 
-    @classmethod
-    def tearDownClass(self):
-        global p
-        p.quit()
-
-    def setUp(self):
-        global p
         if p.scr != "SCR0104":
             p = p.goto_segment(self.segment)
-        p = continuation(p, continuation_data)
-        init_people(self.request)
 
     def tearDown(self):
         pass
@@ -219,19 +217,42 @@ class test_coi_continuation(unittest.TestCase):
                 people[approval.huid]["OAR"] += 1
         p = p.back()
 
-    def test_01_continuation_basic(self):
+    def test_supplement_basic(self):
         global p
+        p = continuation(p, continuation_data)
         self.assertNone()
 
-    def test_02_add_people(self):
+    def test_add_people(self):
         global p
+        p = continuation(p, continuation_data)
         add_person(data.random_huid()[0], key="true")
         add_person(data.random_huid()[0], key="false", investigator="false")
         add_person(data.random_huid()[0], key="false", investigator="true")
         self.assertNone()
 
-    def test_03_award_continuation(self):
+    def test_change_flags(self):
         global p
+        p = continuation(p, continuation_data)
+        p = p.goto_research_team()
+        p = p.goto_role(4)
+        p = p.edit_personnel()
+        p.set_key("true")
+        p.appt = "12"
+        self.request["research team"][2]["key"] = "true"
+        self.request["research team"][2]["investigator"] = "true"
+        p = p.ok().back()
+        p = p.goto_role(5)
+        p = p.edit_personnel()
+        p.phs = "true"
+        p.appt = "12"
+        self.request["research team"][3]["investigator"] = "true"
+        init_people(self.request)
+        p = p.ok().back(2)
+        self.assertNone()
+
+    def test_award_continuation(self):
+        global p
+        p = continuation(p, continuation_data)
         add_person(data.random_huid()[0], key="true")
         add_person(data.random_huid()[0], key="false", investigator="false")
         add_person(data.random_huid()[0], key="false", investigator="true")
