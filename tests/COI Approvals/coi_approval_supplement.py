@@ -193,7 +193,7 @@ class test_coi_supplement(unittest.TestCase):
     @classmethod
     def tearDownClass(self):
         global p
-        # p.quit()
+        p.quit()
 
     def setUp(self):
         global p
