@@ -9,7 +9,8 @@ class SCR0250(Page):
     """
     locators = {
         "sub link": "event=SubagreementEvent",
-        "sub row": xpath.parent_row_of_event("SubagreementEvent")
+        "sub row": xpath.parent_row_of_event("SubagreementEvent"),
+        "create": "event=CreateSubagreementWithinRequestEvent"
     }
 
     @property
@@ -26,6 +27,13 @@ class SCR0250(Page):
         """
         row = self.finds("sub row")[n - 1]
         return self.Subagreement_row(row, self)
+
+    def create_subagreement(self):
+        """
+        Click <Create subagreement>
+        Goes to SCR_0092 (92b)
+        """
+        return self.go("create")
 
     class Subagreement_row(Row):
         locators = {
