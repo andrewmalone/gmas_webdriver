@@ -5,5 +5,7 @@ def log_signatures(p):
     for i in range(count):
         p = p.signature(i + 1).log()
         p.date = "1/1/08"
+        if p.name_text == "":
+            p.name = "03750001"
         p = p.ok()
     return p
