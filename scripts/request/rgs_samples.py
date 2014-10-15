@@ -44,12 +44,13 @@ minimal = {
     "appt_exp": "false"
 }
 
+minimal_s2s = copy.deepcopy(minimal)
+minimal_s2s["title"] = add_ts("Minimal S2S submission (no data)")
+minimal_s2s["opportunity"] = "NIH-UBER-4-1-2013"
+minimal_s2s["s2s"] = "true"
+minimal_s2s["sponsor"] = "nih"
 
-basic_s2s = copy.deepcopy(minimal)
-basic_s2s["title"] = add_ts("Minimal S2S submission (SF424 only)")
-basic_s2s["opportunity"] = "NIH-UBER-4-1-2013"
-basic_s2s["s2s"] = "true"
-basic_s2s["sponsor"] = "nih"
+basic_s2s = copy.deepcopy(minimal_s2s)
 basic_s2s["ggov_questions"] = {
     "sf424_3": 2,
     "sf424_4": 2,
