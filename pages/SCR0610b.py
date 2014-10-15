@@ -25,13 +25,14 @@ class SCR0610b(Page):
         locator = self.locators["locate form"].replace("FORM", form_name).replace("ATTACHMENT", attachment_name)
         return self.find_elements(locator)
 
-    def locate(self, locate_button):
+    def locate(self, form_name, attachment_name, num=1):
         """
         Click a locate button to go to SCR_0611
-        locate_button needs to be a selenium webelement. This is most likely to be used in conjuction with the locate_buttons() method - for example: 
+        locate_button needs to be a selenium webelement. This is most likely to be used in conjuction with the locate_buttons() method - for example:
         * locate(locate_buttons("Research & Related Budget","Budget Justification")[0]) will click the budget justification <locate> button
         * locate(locate_buttons("Research & Related Key Person Expanded","Biographical Sketch")[2]) will click the third biosketch <Locate> button
         """
+        locate_button = self.locate_buttons(form_name, attachment_name)[num - 1]
         locate_button.click()
         return self.load_page()
 

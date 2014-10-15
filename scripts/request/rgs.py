@@ -393,7 +393,7 @@ def rgs(p, f=None, finish="request", stop=None):
                 if form == "directory":
                     continue
                 for attachment in f["ggov_attachments"][form]:
-                    p = p.locate(p.locate_buttons(form, attachment)[0])
+                    p = p.locate(form, attachment)
                     p.set_file(os.path.join(base_dir, f["ggov_attachments"][form][attachment]))
                     # print "%s%s" % (base_dir, f["ggov_attachments"][form][attachment])
                     p = p.ok()
