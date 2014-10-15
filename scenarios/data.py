@@ -95,7 +95,7 @@ def random_fcoi_university_policy(n=1):
 def random_fcoi_not_university_policy(n=1):
     all_huids = get("huids")
     fcoi_huids = get("fcoi_university_policy")
-    huid_list = [n for n in all_huids if n not in fcoi_huids]
+    huid_list = [p for p in all_huids if p not in fcoi_huids]
     return random.sample(huid_list, n)
 
 
@@ -157,4 +157,13 @@ def random_submitted_initial(n):
 
 
 if __name__ == "__main__":
-    print "%s/db_data" % os.path.dirname(os.path.abspath(__file__))
+    fcoi_huids = get("fcoi_university_policy")
+    # https://gmasdev.ca.harvard.edu/gmas/dispatch?PersonNameLinkEvent=&ref=%2Fperson%2FSCR0065PersonSearch.jsp&hUID=30628233
+    # huid_list = [n for n in all_huids if n not in fcoi_huids]
+    # return random.sample(huid_list, n)
+    from gmas_webdriver.setup import init
+    p = init("Chrome", "gdev", True)
+    for huid in fcoi_huids:
+        p = p.global_header.goto_people()
+        p.name = huid
+        p = p.search().click_first_result()
