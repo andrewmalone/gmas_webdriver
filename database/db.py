@@ -12,3 +12,12 @@ def get_list(db, q):
     """
     result = query(db, q)
     return [r[0] for r in result]
+
+
+def get_single_record(db, q):
+    """
+    Execute a database and return the first result (one column, one row)
+    """
+    result = query(db, q)
+    return result[0][0]
+
