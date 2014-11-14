@@ -7,7 +7,8 @@ class SCR0615a(Page):
     """
     locators = {
         "select all": "css=img[title='Select all']",
-        "validate": "PreviewGrantsGovValidateEvent"
+        "validate": "PreviewGrantsGovValidateEvent",
+        "preview": "PreviewGrantsGovFormEvent"
     }
 
     def select_all(self):
@@ -22,3 +23,9 @@ class SCR0615a(Page):
         Goes to SCR_0615b
         """
         return self.go("validate")
+
+    def preview(self):
+        """
+        Click <Preview>
+        """
+        self.find("preview").click()
