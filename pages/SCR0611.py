@@ -1,5 +1,6 @@
 # @todo - change file to use element.File
 from pages.Page import Page
+from pages.elements import File
 
 
 class SCR0611(Page):
@@ -10,6 +11,8 @@ class SCR0611(Page):
         "ok": "css=img[src$='b_ok.gif']",
         "file": "name=file1"
     }
+
+    document = File("file", "file location")
 
     def set_file(self, file_location):
         """
