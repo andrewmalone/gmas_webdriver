@@ -351,7 +351,7 @@ def rgs(p, f=None, finish="request", stop=None):
     p.animals = f["animals"]
     p.biohazards = f["biohazards"]
     p.stem_cells = f["stem_cells"]
-    if p.foreign:
+    if p.foreign is not False:
         p.foreign = f["foreign"]
     p.add_staff = f["add_staff"]
     p.use_of_name = f["use_of_name"]
