@@ -11,7 +11,8 @@ class SCR0649(Page):
     locators = {
         "row": "css=#dataRow",
         "add input": "name=personName",
-        "cancel": "EditResearchTeamCancelEvent"
+        "cancel": "EditResearchTeamCancelEvent",
+        "ok": "EditResearchTeamOkEvent"
     }
 
     add_member_text = Text("add input", "Text box for adding a new person")
@@ -35,6 +36,13 @@ class SCR0649(Page):
         Goes to SCR_0015
         """
         return self.go("cancel")
+
+    def ok(self):
+        """
+        Click <Ok>
+        Goes to SCR_0015
+        """
+        return self.go("ok")
 
     class Row(GMWebElement):
         """
@@ -66,7 +74,7 @@ class SCR0649(Page):
         acad = Text("acad")
         summer = Text("sum")
         effective_date = Text("eff_date")
-        sponsor_commitment = Select("sc") 
+        sponsor_commitment = Select("sc")
 
         def __init__(self, row, page):
             self.driver = row
