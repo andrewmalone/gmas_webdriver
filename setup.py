@@ -63,7 +63,7 @@ def init(browser, env, splitscreen=False, position="full", port=None, download_d
 
     url = env_url(env)
 
-    d = startBrowser(browser, download_dir)
+    d = startBrowser(browser, download_dir=download_dir)
     if splitscreen is True:
         d.set_window_position(1500, 0)
     if position == "full":
