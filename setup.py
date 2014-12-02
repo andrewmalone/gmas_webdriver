@@ -101,7 +101,7 @@ def highlight(element):
 def env_url(env):
     instances = {
         "gtrain": "https://gmastraining.harvard.edu",
-        "gprod": "https://gmas.harvard.edu",
+        "gmasprod": "https://gmas.harvard.edu",
         "gdev": "https://gmasdev.ca.harvard.edu",
         "gtest": "https://gmastest.ca.harvard.edu"
     }
