@@ -24,6 +24,9 @@ class SCR0635(Page):
     # (but probably not before UI conversion)
     @property
     def organization(self):
+        """
+        Organization (autocomplete)
+        """
         return self.organization_text
 
     @organization.setter
