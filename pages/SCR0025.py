@@ -87,6 +87,13 @@ class SCR0025(Page):
         """
         return self.go("add address")
 
+    def add_job(self):
+        """
+        Click the <add> button for jobs
+        Goes to SCR_0635
+        """
+        return self.go("add job")
+
     def goto_documents(self):
         """
         Click the "documents" link
@@ -115,7 +122,6 @@ class SCR0025(Page):
         Clicks "Open all"
         """
         self.find("open all").click()
-
 
     def goto_standing_team(self, team):
         """
