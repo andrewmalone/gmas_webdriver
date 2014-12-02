@@ -1,4 +1,5 @@
 from gmas_webdriver.setup import init
+import copy
 p = init("Chrome", "gdev", True)
 
 import unittest
@@ -74,6 +75,7 @@ supplement_data = {
     "appt_exp_option": "transfer institution",  # only required if appt_exp is true
     "appt_exp_comment": "Other"  # only required if appt_exp_option is "other"
 }
+supplement_data_copy = copy.deepcopy(supplement_data)
 
 
 def request():
@@ -169,8 +171,8 @@ def add_person(huid, key="true", investigator="true"):
 
 
 def add_person_supplement(huid, key="true", investigator="true"):
-    global supplement_data, people
-    supplement_data["research team"].append({
+    global supplement_data_copy, people
+    supplement_data_copy["research team"].append({
         "huid": huid,
         "role": "Consultant",
         "key": key,
@@ -288,7 +290,7 @@ class test_coi_supplement(unittest.TestCase):
         add_person_supplement(data.random_huid()[0], key="true")
         add_person_supplement(data.random_huid()[0], key="false", investigator="false")
         add_person_supplement(data.random_huid()[0], key="false", investigator="true")
-        p = supplement(p, supplement_data)
+        p = supplement(p, supplement_data_copy)
         self.assertOAR()
         self.assertOARSegment()
 
@@ -331,6 +333,6 @@ if __name__ == '__main__':
     unittest.main(verbosity=2, exit=False)
 
     # suite = unittest.TestSuite()
-    # suite.addTest(test_coi_confirm_team("test_confirm_team_change_key_flag"))
+    # suite.addTest(test_coi_supplement("test_supplement_basic"))
     # runner = unittest.TextTestRunner()
     # runner.run(suite)

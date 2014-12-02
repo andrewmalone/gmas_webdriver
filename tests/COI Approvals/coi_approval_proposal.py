@@ -2,8 +2,7 @@ from gmas_webdriver.setup import init
 p = init("Chrome", "gdev", True)
 
 import unittest
-from gmas_webdriver.scripts.request import rgs, samples, submit, initiate
-from gmas_webdriver.scripts.notice.notice import log_notice
+from gmas_webdriver.scripts.request import rgs, samples
 from gmas_webdriver.scenarios import data
 
 people = None
