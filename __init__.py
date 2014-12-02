@@ -1,0 +1,1 @@
+from gmas_webdriver.setup import init
