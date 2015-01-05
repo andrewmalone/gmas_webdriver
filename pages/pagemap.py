@@ -12,18 +12,22 @@ def pagemap(page):
         "SCR0474b": "SCR0474",
         "SCR0366v": "SCR0366",
         "SCR0005b": "SCR0005",
-        "SCR0092b": "SCR0092"
+        "SCR0092b": "SCR0092",
+        # disable confirmations use uppercase
+        "SCR0602A": "SCR0602a",
+        "SCR0602B": "SCR0602b",
+        # segment home isn't standard
+        "SCR0104P": "SCR0104a",
+        "SCR0104S": "SCR0104b"
     }
     screen = re.search("SCR[0-9]{4}[a-z]?", page).group(0)
-
-    # Segment home is special
-    if screen == "SCR0104":
-        if page == "SCR0104SegmentHome":
-            screen = "SCR0104b"
-        elif page == "SCR0104ProjectHome":
-            screen = "SCR0104a"
-
+    exceptions = ["SCR0104", "SCR0602"]
+    if screen in exceptions:
+        screen = page[:8]
     if screen in map:
         screen = map[screen]
 
     return screen
+
+if __name__ == "__main__":
+    print pagemap("SCR0104SegmentHome")

@@ -11,7 +11,6 @@ class Page(GMWebElement):
     """
     Page object class
     """
-
     def __init__(self, driver):
         """
         Parameters: webdriver object
@@ -32,7 +31,13 @@ class Page(GMWebElement):
 
     @property
     def scr(self):
-        return self.get_current_page()[0:7]
+        # return self.get_current_page()[0:7]
+        from pagemap import pagemap
+        return pagemap(self.get_current_page())
+
+    @property
+    def page_title(self):
+        return self.find_element("css=.title").text
 
     def get_current_page(self):
         elems = self.find_elements("css=td.footer")
@@ -56,13 +61,12 @@ class Page(GMWebElement):
 
     def load_page(self):
         import importlib
-        from pagemap import pagemap
         #TODO: this method assumes we can match based on the footer names. Need to account for any exceptions
 
         # make sure we aren't on the wait screen
         self.w.until(lambda e: len(e.find_elements_by_css_selector("script[src$='waitScreen.js']")) == 0)
         self.w.until(lambda d: d.find_element_by_css_selector("td.footer"))
-        page = pagemap(self.get_current_page())
+        page = self.scr
         cls = getattr(importlib.import_module("pages.%s" % (page)), page)
         return cls(self.driver)
 
