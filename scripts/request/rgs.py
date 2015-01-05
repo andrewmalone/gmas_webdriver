@@ -304,7 +304,7 @@ def rgs(p, f=None, finish="request", stop=None):
             return p
         p = p.ok()
 
-    # SCR_0098 (and SCR_0365) 
+    # SCR_0098 (and SCR_0365)
     p = p.edit_pi()
     p.human_subjects = f["pi_hs"]
     p = p.ok()
@@ -327,7 +327,7 @@ def rgs(p, f=None, finish="request", stop=None):
                 p.person = person["huid"]
             p.key = person["key"]
             p.human_subjects = person["hs"]
-            if person["key"] == "false" and p.investigator is not False:
+            if p.investigator is not False:
                 p.investigator = person["investigator"]
             p = p.ok()
     if checkstop(p, stop):
