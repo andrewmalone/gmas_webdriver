@@ -6,10 +6,11 @@ class SCR0309(Page):
     SCR_0309 Notice Home
     """
     locators = {
-        "review completed": "name=ReviewCompletedEvent",
-        "revise project": "name=CreateNewRevisionEvent",
+        "review completed": "ReviewCompletedEvent",
+        "revise project": "CreateNewRevisionEvent",
         "documents": "link=Documents",
-        "status": "xpath=//td[contains(text(), 'Notice status')]"
+        "status": "xpath=//td[contains(text(), 'Notice status')]",
+        "edit_attributes": "EditNoticeAttributesEvent"
     }
 
     @property
@@ -39,3 +40,10 @@ class SCR0309(Page):
         Goes to SCR_0433
         """
         return self.go("documents")
+
+    def edit_attributes(self):
+        """
+        Clicks the <Edit notice attributes> button
+        Goes to SCR_0453
+        """
+        return self.go("edit_attributes")
