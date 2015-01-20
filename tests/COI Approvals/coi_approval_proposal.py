@@ -28,6 +28,13 @@ request.update({
         {
             "huid": data.random_huid()[0],
             "role": "Consultant",
+            "key": "true",
+            "investigator": "false",
+            "hs": "false"
+        },
+        {
+            "huid": data.random_huid()[0],
+            "role": "Consultant",
             "key": "false",
             "investigator": "true",
             "hs": "false"
@@ -45,7 +52,7 @@ request.update({
             "key": "false",
             "investigator": "false",
             "hs": "false"
-        }
+        },
         # 10604826
     ]
 })
@@ -81,8 +88,7 @@ def add_person(huid, key="true", investigator="true"):
     p.human_subjects = "false"
     p.role = "Analyst"
     p.set_key(key)
-    if key == "false":
-        p.phs = investigator
+    p.phs = investigator
     p.set_effort("0")
     p.appt = "12"
     p = p.ok().back()
@@ -103,6 +109,7 @@ class test_coi_approval_creation(unittest.TestCase):
     def assertOAR(self):
         self.get_approval_counts()
         for person in people:
+            # print person, people[person], people[person]["OAR"], people[person]["investigator"]
             self.assertEqual(people[person]["OAR"], 1 if people[person]["investigator"] == "true" else 0)
             self.assertEqual(people[person]["FCOI"], 0)
 
@@ -128,12 +135,13 @@ class test_coi_approval_creation(unittest.TestCase):
     def test_02_change_to_key(self):
         global p
         p = p.goto_research_team()
-        p = p.goto_role(4)
+        p = p.goto_role(5)
         p = p.edit_personnel()
         p.set_key("true")
+        p.phs = "true"
         p.appt = "12"
-        request["research team"][2]["key"] = "true"
-        request["research team"][2]["investigator"] = "true"
+        request["research team"][3]["key"] = "true"
+        request["research team"][3]["investigator"] = "true"
         init_people()
         p = p.ok().back(2)
         self.assertOAR()
@@ -141,11 +149,11 @@ class test_coi_approval_creation(unittest.TestCase):
     def test_03_change_to_investigator(self):
         global p
         p = p.goto_research_team()
-        p = p.goto_role(5)
+        p = p.goto_role(6)
         p = p.edit_personnel()
         p.phs = "true"
         p.appt = "12"
-        request["research team"][3]["investigator"] = "true"
+        request["research team"][4]["investigator"] = "true"
         init_people()
         p = p.ok().back(2)
         self.assertOAR()

@@ -40,8 +40,7 @@ def add_person(huid, key="true", investigator="true"):
     r = p.row(p.count_rows())
     r.role = "Consultant"
     r.key = key
-    if key == "No":
-        r.phs = investigator
+    r.phs = investigator
     r.hs = "No"
     r.cal = 10
     r.effective_date = "1-1-2014"
@@ -59,7 +58,7 @@ def add_person(huid, key="true", investigator="true"):
 class test_coi_edit_team_existing(unittest.TestCase):
     @classmethod
     def setUpClass(self):
-        database = init_db("gdev11")
+        database = init_db("gdev")
         query = """
         select
           s.segment_id

@@ -44,7 +44,14 @@ def request():
                 "key": "false",
                 "investigator": "false",
                 "hs": "false"
-            }
+            },
+            {
+                "huid": data.random_huid()[0],
+                "role": "Consultant",
+                "key": "true",
+                "investigator": "false",
+                "hs": "false"
+            },
             # 10604826
         ]
     })
@@ -136,6 +143,7 @@ class test_coi_confirm_team(unittest.TestCase):
         self.create_to_confirm(r)
         # change flag from nonkey to key
         p.person(4).key = "Yes"
+        p.person(4).investigator = "Yes"
         r["research team"][2]["key"] = "true"
         r["research team"][2]["investigator"] = "true"
         init_people(r)
@@ -154,7 +162,9 @@ class test_coi_confirm_team(unittest.TestCase):
         self.create_to_confirm(r)
         # change flag from nonkey to key
         p.person(4).investigator = "Yes"
+        p.person(5).investigator = "Yes"
         r["research team"][2]["investigator"] = "true"
+        r["research team"][3]["investigator"] = "true"
         init_people(r)
         count = p.person_count
         for i in range(count):
@@ -178,10 +188,10 @@ class test_coi_confirm_team(unittest.TestCase):
         self.create_to_confirm(r)
 
         p.new_person = new_person
-        p.person(5).role = "Analyst"
-        p.person(5).key = "Yes"
-        #p.person(5).investigator = "Analyst"
-        p.person(5).human_subjects = "No"
+        p.person(6).role = "Analyst"
+        p.person(6).key = "Yes"
+        p.person(6).investigator = "Yes"
+        p.person(6).human_subjects = "No"
 
         count = p.person_count
         for i in range(count):
@@ -205,10 +215,10 @@ class test_coi_confirm_team(unittest.TestCase):
         self.create_to_confirm(r)
 
         p.new_person = new_person
-        p.person(5).role = "Analyst"
-        p.person(5).key = "No"
-        p.person(5).investigator = "No"
-        p.person(5).human_subjects = "No"
+        p.person(6).role = "Analyst"
+        p.person(6).key = "No"
+        p.person(6).investigator = "No"
+        p.person(6).human_subjects = "No"
 
         count = p.person_count
         for i in range(count):
@@ -232,10 +242,10 @@ class test_coi_confirm_team(unittest.TestCase):
         self.create_to_confirm(r)
 
         p.new_person = new_person
-        p.person(5).role = "Analyst"
-        p.person(5).key = "No"
-        p.person(5).investigator = "Yes"
-        p.person(5).human_subjects = "No"
+        p.person(6).role = "Analyst"
+        p.person(6).key = "No"
+        p.person(6).investigator = "Yes"
+        p.person(6).human_subjects = "No"
 
         count = p.person_count
         for i in range(count):

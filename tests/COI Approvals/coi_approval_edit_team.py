@@ -79,7 +79,6 @@ def request():
     })
     return request
 
-
 def init_people(request):
     global people
     people = {}
@@ -111,8 +110,7 @@ def add_person(huid, key="true", investigator="true"):
     r = p.row(p.count_rows())
     r.role = "Consultant"
     r.key = key
-    if key == "No":
-        r.phs = investigator
+    r.phs = investigator
     r.hs = "No"
     r.cal = 10
     r.effective_date = "1-1-2014"
@@ -234,6 +232,7 @@ class test_coi_edit_team(unittest.TestCase):
         p = p.goto_research_team()
         p = p.edit_team()
         p.row(4).key = "Yes"
+        p.row(4).phs = "Yes"
         self.request["research team"][2]["key"] = "true"
         self.request["research team"][2]["investigator"] = "true"
         p.row(5).phs = "Yes"
@@ -245,7 +244,9 @@ class test_coi_edit_team(unittest.TestCase):
 
 if __name__ == '__main__':
     sponsor = "nih"
-    unittest.main(verbosity=2, exit=False)
+    #unittest.main(verbosity=2, exit=False)
+    #test_coi_edit_team().setup()
+    setup()
 
     # suite = unittest.TestSuite()
     # suite.addTest(test_coi_confirm_team("test_confirm_team_change_key_flag"))

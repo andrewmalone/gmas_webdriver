@@ -156,8 +156,7 @@ def add_person(huid, key="true", investigator="true"):
     p.human_subjects = "false"
     p.role = "Analyst"
     p.set_key(key)
-    if key == "false":
-        p.phs = investigator
+    p.phs = investigator
     p.set_effort("0")
     p.appt = "12"
     p = p.ok().back()
@@ -237,7 +236,7 @@ class test_coi_supplement(unittest.TestCase):
 
     def assertOARSegment(self):
         global p
-        if p.scr != "SCR0104":
+        if p.scr != "SCR0104b":
             p = p.project_snapshot.goto_segment_home()
         self.get_approval_counts()
         for person in people:
@@ -302,6 +301,7 @@ class test_coi_supplement(unittest.TestCase):
         p = p.edit_personnel()
         p.set_key("true")
         p.appt = "12"
+        p.phs = "true"
         self.request["research team"][2]["key"] = "true"
         self.request["research team"][2]["investigator"] = "true"
         p = p.ok().back()
@@ -333,6 +333,6 @@ if __name__ == '__main__':
     unittest.main(verbosity=2, exit=False)
 
     # suite = unittest.TestSuite()
-    # suite.addTest(test_coi_supplement("test_supplement_basic"))
+    # suite.addTest(test_coi_supplement("test_award_supplement"))
     # runner = unittest.TextTestRunner()
     # runner.run(suite)
