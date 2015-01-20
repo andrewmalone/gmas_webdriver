@@ -36,6 +36,13 @@ class SCR0344(Page):
             "link": "css=a[href*=LinkEvent]"
         }
 
+        @property
+        def request_id(self):
+            """
+            Request ID
+            """
+            return self.cell_text(3)
+
         def go(self):
             """
             Clicks the request link
