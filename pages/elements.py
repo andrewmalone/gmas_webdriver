@@ -204,13 +204,29 @@ class File(Element):
 
 
 class Row(GMWebElement):
+    """
+    Base class for table rows
+    """
     def __init__(self, row, page):
+        """
+        Initialize with an existing <tr> webelement and the parent page object
+        """
         self.driver = row
         self.page = page
 
     def _go(self, locator):
+        """
+        Click a locator and return the resulting page
+        """
         self.find(locator).click()
         return self.page.load_page()
+
+    def cell_text(self, n):
+        """
+        Returns the text from the nth td element of the row
+        """
+        cell = self.find_element("css=td:nth-child(%s)" % n)
+        return cell.text
 
 
 class RText(Element):
