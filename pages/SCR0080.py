@@ -58,6 +58,13 @@ class SCR0080(Page):
             return self.find("link").text
 
         @property
+        def status(self):
+            """
+            Approval status
+            """
+            return self.cell_text(3)
+
+        @property
         def huid(self):
             """
             HUID for the approval (if it is a person approval)
