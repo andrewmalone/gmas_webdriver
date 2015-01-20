@@ -126,7 +126,7 @@ def supplement(p, f):
                 p.person = person["huid"]
             p.key = person["key"]
             p.human_subjects = person["hs"]
-            if person["key"] == "false" and p.investigator is not False:
+            if p.investigator is not False:
                 p.investigator = person["investigator"]
             p = p.ok()
     p = p.ok()
