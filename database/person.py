@@ -22,7 +22,21 @@ queries = {
           gmasprod.coi
         where
           university_policy = 1
-      """
+      """,
+    "huid_with_name": """
+        select huid, last_name || ', ' || first_name from gmasprod.persons where huid is not null
+        """,
+    "huid_with_data": """
+        select
+          p.huid,
+          p.last_name || ', ' || p.first_name,
+          nvl(coi.university_policy, 'null') as university_policy
+        from
+          persons p
+          left join gmasprod.coi coi on p.huid = coi.huid
+        where
+          p.huid is not null
+          """
 }
 
 
@@ -59,3 +73,11 @@ def get_gmas_users(database):
 
 def get_fcoi_university_policy(database):
     return query(database, "fcoi_university_policy")
+
+
+def get_huids_with_names(database):
+    return db.query(database, queries["huid_with_name"])
+
+
+def get_huids_with_data(database):
+    return db.query(database, queries["huid_with_data"])

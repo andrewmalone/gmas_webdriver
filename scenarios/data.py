@@ -84,6 +84,13 @@ def random_huid(n=1):
     return random.sample(get("huids"), n)
 
 
+def random_huid_with_name(n=1, university=None):
+    person_list = get("huids_with_data")
+    if university is not None:
+        person_list = [item for item in person_list if item[2] == university]
+    return random.choice(person_list)
+
+
 def random_nonhuid(n=1):
     return random.sample(get("non-huids"), n)
 
@@ -142,9 +149,16 @@ def random_date(start="1/1/08", end="1/1/14"):
     return datetime.strftime(dt, fmt)
 
 
-def random_research_team_role(n):
+def random_research_team_role(n=1):
+    """
+    Returns a list of n roles. If n is unspecified, returns a single role
+    """
     roles = get("research_team_roles")
-    return [random.choice(roles) for i in range(n)]
+    role_list = [random.choice(roles) for i in range(n)]
+    if n == 1:
+        return role_list[0]
+    else:
+        return role_list
 
 
 def random_admin_team_role(n):
@@ -157,13 +171,4 @@ def random_submitted_initial(n):
 
 
 if __name__ == "__main__":
-    fcoi_huids = get("fcoi_university_policy")
-    # https://gmasdev.ca.harvard.edu/gmas/dispatch?PersonNameLinkEvent=&ref=%2Fperson%2FSCR0065PersonSearch.jsp&hUID=30628233
-    # huid_list = [n for n in all_huids if n not in fcoi_huids]
-    # return random.sample(huid_list, n)
-    from gmas_webdriver.setup import init
-    p = init("Chrome", "gdev", True)
-    for huid in fcoi_huids:
-        p = p.global_header.goto_people()
-        p.name = huid
-        p = p.search().click_first_result()
+    print random_huid_with_name()
