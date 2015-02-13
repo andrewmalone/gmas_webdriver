@@ -72,6 +72,14 @@ class SCR0080(Page):
             link = self.find("link").get_attribute("href")
             return url.url_param(link, "HUID")
 
+        @property
+        def approval_id(self):
+            """
+            Approval ID (from the url)
+            """
+            link = self.find("link").get_attribute("href")
+            return url.url_param(link, "approvalId")
+
         def go(self):
             """
             Click the approval link
