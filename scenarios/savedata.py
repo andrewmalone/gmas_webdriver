@@ -28,8 +28,9 @@ queries = {
     # "closed_segments": segment_query.get_closed_segments(db, created=created),
     # "not_funded_segments": segment_query.get_not_funded_segments(db, created=created),
     # "submitted_initial": request_query.get_submitted_initial(db),
-    "huids_with_names": person_query.get_huids_with_names(db),
+    # "huids_with_names": person_query.get_huids_with_names(db),
     "huids_with_data": person_query.get_huids_with_data(db)
+    #"orgs_with_tub": org_query.get_orgs_with_tub(db)
 }
 
 

@@ -17,6 +17,20 @@ def get_all_orgs(database):
     return result
 
 
+def get_orgs_with_tub(database):
+    query = """
+        select
+          o.org,
+          o.tub
+        from
+          gmasprod.rf_orgs o
+          join GMASPROD.RF_COA_SEGMENT_STATUSES status on o.COA_SEGMENT_STATUS_ID = status.COA_SEGMENT_STATUS_ID
+        where
+          status.description = 'Enabled'
+    """
+    return db.query(database, query)
+
+
 def get_all_orgs_for_tub(database, tub):
     query = """
         select

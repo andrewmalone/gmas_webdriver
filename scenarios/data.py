@@ -64,8 +64,9 @@ def random_discipline():
     return random.choice(disciplines)
 
 
-def random_orgs(n=1):
-    return random.sample(get("orgs"), n)
+def random_orgs(n=1, tub=None):
+    org_list = get("orgs_with_tub")
+    return random.sample([org[0] for org in org_list if (tub is None or org[1] == tub)], n)
 
 
 def random_fed_sponsor(n=1):
@@ -171,4 +172,4 @@ def random_submitted_initial(n):
 
 
 if __name__ == "__main__":
-    print random_huid_with_name()
+    print random_orgs(1, tub='370')
