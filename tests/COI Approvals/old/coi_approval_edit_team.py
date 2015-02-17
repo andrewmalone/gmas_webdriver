@@ -244,9 +244,9 @@ class test_coi_edit_team(unittest.TestCase):
 
 if __name__ == '__main__':
     sponsor = "nih"
-    #unittest.main(verbosity=2, exit=False)
+    unittest.main(verbosity=2, exit=False)
     #test_coi_edit_team().setup()
-    setup()
+    #setup()
 
     # suite = unittest.TestSuite()
     # suite.addTest(test_coi_confirm_team("test_confirm_team_change_key_flag"))
