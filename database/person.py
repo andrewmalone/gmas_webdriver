@@ -34,8 +34,11 @@ queries = {
         from
           persons p
           left join gmasprod.coi coi on p.huid = coi.huid
+          join iddb_people idm on p.huid = idm.univ_id
         where
           p.huid is not null
+          and idm.EFFECTIVE_STATUS = 'A'
+          and idm.disabled_flag = 0
           """
 }
 
