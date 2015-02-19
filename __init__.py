@@ -1,1 +1,1 @@
-from gmas_webdriver.setup import init
+from gmas_webdriver.setup import init, init_db
