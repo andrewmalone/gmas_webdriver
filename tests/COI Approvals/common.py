@@ -3,7 +3,7 @@ import gmas_webdriver
 from gmas_webdriver.scenarios import data
 from gmas_webdriver.scripts.request import rgs, samples, initiate, submit
 from gmas_webdriver.scripts.notice import log_notice
-from gmas_webdriver.scripts.research_team import confirm_team
+from gmas_webdriver.scripts.research_team import confirm_team, fill_commitments
 
 standard_team = [
         {
@@ -209,16 +209,70 @@ class COI_Test:
         p.org = org
         p = p.ok()
 
+    def create_to_confirm(self, title, tub="520", submit_oar=False):
+        self.create_request(title, tub)
+        self.assert_approvals()
+        if submit_oar is True:
+            self.submit_oar_create()
+        p = initiate(self.p)
+        p = submit(p)
+        p = log_notice(p)
+        p = p.project_snapshot.goto_segment_home()
+        p = p.confirm_research_team()
+        self.p = p
+
+    def change_confirm_flags(self):
+        pass
+
+    def add_person_at_confirm(self, key, investigator, university):
+        """
+        Expects to already be on SCR_0645
+        Does not set commitment % or sponsor commitment flags
+        """
+        def map_value(value):
+            if value == "true":
+                return "Yes"
+            elif value == "false":
+                return "No"
+            return value
+
+        new_person = research_team_record(key, investigator, university)
+        self.team.append(new_person)
+
+        p = self.p
+        p.new_person = new_person["huid"]
+        count = p.person_count
+        p.person(count).role = new_person["role"]
+        p.person(count).key = map_value(new_person["key"])
+        p.person(count).investigator = map_value(new_person["investigator"])
+        p.person(count).human_subjects = map_value(new_person["hs"])
+        self.p = p
+
+    def add_standard_team_at_confirm(self):
+        for person in standard_team:
+            self.add_person_at_confirm(**person)
+
+    def delete_team_at_confirm(self):
+        pass
+
     def confirm_team(self):
         """
         From request home
         """
         p = self.p
-        p = initiate(p)
-        p = submit(p)
-        p = log_notice(p)
-        p = confirm_team(p)
+        if p.scr == "SCR0115":
+            p = initiate(p)
+            p = submit(p)
+            p = log_notice(p)
+            p = confirm_team(p)
+        if p.scr == "SCR0645":
+            fill_commitments(p)
+            p = p.ok()
         self.p = p
+
+    def submit_oar_create(self):
+        from gmas_webdriver.interfaces.oar import submit_oar_create
+        submit_oar_create(self.p)
 
     def get_approvals(self):
         """
@@ -306,3 +360,4 @@ class COI_Test:
 
         # self.assertEqual(len(keys), 0)
         assert len(keys) == 0
+
