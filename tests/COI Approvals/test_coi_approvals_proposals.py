@@ -118,4 +118,6 @@ class Test_COI_RGS(common.COI_Test):
 
 
 if __name__ == "__main__":
-    pytest.main(['-m combined', '-v', ''])
+    import os
+    filename = os.path.basename(__file__)
+    pytest.main(['%s' % filename, '-m combined'])
