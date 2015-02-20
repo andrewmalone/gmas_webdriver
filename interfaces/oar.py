@@ -2,6 +2,10 @@ import time
 
 
 def submit_oar_create(p, db=None):
+    """
+    Submits the OAR create job, waits for the job to finish, then returns to the calling GMAS screen.
+    p should be a valid GMAS page object
+    """
     url = "{}/gmas/monitor/index.xhtml".format(p.env_url)
     p.driver.get(url)
 
@@ -35,7 +39,19 @@ def submit_oar_create(p, db=None):
 
     p.driver.back()
 
-if __name__ == "__main__":
-    import gmas_webdriver
-    p = gmas_webdriver.init("Chrome", "gdev")
-    submit_oar_create(p)
+
+def removal_queue_for_segment(segment_id, p, db=None):
+    """
+    Returns a list of approvals in the oar removal queue for a specific segment
+    p should be a valid GMAS page object
+    """
+    if db is None:
+        from gmas_webdriver import init_db
+        db = init_db(p.env)
+
+    import gmas_webdriver.database.db as database
+    query = """
+        select approval_requirement_id from gmasprod.oar_removal_queue where segment_id = {}
+    """.format(segment_id)
+
+    return [str(item) for item in database.get_list(db, query)]
