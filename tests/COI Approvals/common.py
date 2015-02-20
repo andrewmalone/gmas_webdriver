@@ -87,10 +87,12 @@ class COI_Test:
     @classmethod
     def setup_class(self):
         self.p = gmas_webdriver.init("Chrome", "gdev", "true")
+        self.approvals = {}
 
     @classmethod
     def teardown_class(self):
         self.p.quit()
+        # pass
 
     def setup_method(self, method):
         # print "setup"
@@ -106,10 +108,12 @@ class COI_Test:
             "hs": "false",
             "university": pi[2]
         }]
+        self.deleted_approvals = {}
 
     def teardown_method(self, method):
         # return to GMAS home
         self.p = self.p.global_header.goto_home()
+        # pass
 
     def add_person_to_team(self, key, investigator, university=None):
         # only adds in test's "team" object - not in GMAS
@@ -150,6 +154,7 @@ class COI_Test:
         p.phs = new_flag
         p.appt = "12"
         self.team[index]["investigator"] = new_flag
+        self.flag_deleted_approval(self.team[index]["huid"], True)
         p = p.ok().back(2)
         self.p = p
 
@@ -160,6 +165,21 @@ class COI_Test:
         for i in range(1, len(self.team)):
             self.change_flag_for_request_person(i)
 
+    def flag_deleted_approval(self, huid, db_delete):
+        if huid in self.approvals:
+            # check the existing approval status to see if the approval should be in the delete queue
+            for approval in self.approvals[huid]:
+                if approval["type"] == "FCOI":
+                    approval["queue"] = False
+                if approval["type"] == "OAR":
+                    if approval["status"] in ["Pending", "Withdrawn"]:
+                        approval["queue"] = False
+                    else:
+                        approval["queue"] = True
+                approval["db_delete"] = db_delete
+                approval["huid"] = huid
+                self.deleted_approvals[approval["id"]] = approval
+
     def delete_all_request_people(self):
         """
         Removes everyone from the request research team except the PI
@@ -168,8 +188,11 @@ class COI_Test:
         request_id = p.get_id("request")
         segment_id = p.get_id("segment")
         p = p.goto_research_team()
-        while p.people_count > 1:
+        for person in self.team[1:]:
             p = p.goto_role(2).delete().ok()
+            self.flag_deleted_approval(person["huid"], True)
+        # while p.people_count > 1:
+        #     p = p.goto_role(2).delete().ok()
         p = p.goto_request(segment_id, request_id)
         self.p = p
         # reset the internal variable
@@ -180,6 +203,7 @@ class COI_Test:
         self.org = data.random_orgs(1, tub=tub)[0]
         self.p = rgs(self.p, req_with_team(self.pi_huid, self.team[1:], title, org=self.org))
         # p = rgs(self.p, req_with_team(self.pi_huid, self.team[1:], title))
+        self.segment_id = self.p.get_id("segment")
         print "Created segment {}".format(self.p.get_id("segment"))
 
     def change_request_pi(self):
@@ -195,7 +219,6 @@ class COI_Test:
             "hs": "false",
             "university": pi[2]
         }
-
         p = self.p
         p = p.edit_info()
         p.pi = pi[0]
@@ -211,9 +234,9 @@ class COI_Test:
 
     def create_to_confirm(self, title, tub="520", submit_oar=False):
         self.create_request(title, tub)
-        self.assert_approvals()
         if submit_oar is True:
             self.submit_oar_create()
+        self.assert_approvals()
         p = initiate(self.p)
         p = submit(p)
         p = log_notice(p)
@@ -222,7 +245,20 @@ class COI_Test:
         self.p = p
 
     def change_confirm_flags(self):
-        pass
+        def map_value(value):
+            if value == "true":
+                return "Yes"
+            elif value == "false":
+                return "No"
+            return value
+
+        p = self.p
+        for i, person in enumerate(self.team[1:], 2):
+            current_flag = person["investigator"]
+            new_flag = "true" if current_flag == "false" else "false"
+            self.team[i - 1]["investigator"] = new_flag
+            self.flag_deleted_approval(person["huid"], False)
+            p.person(i).investigator = map_value(new_flag)
 
     def add_person_at_confirm(self, key, investigator, university):
         """
@@ -253,7 +289,11 @@ class COI_Test:
             self.add_person_at_confirm(**person)
 
     def delete_team_at_confirm(self):
-        pass
+        p = self.p
+        for person in self.team[1:]:
+            p.person(2).delete()
+            self.flag_deleted_approval(person["huid"], False)
+        self.team = self.team[:1]
 
     def confirm_team(self):
         """
@@ -340,7 +380,7 @@ class COI_Test:
         if output:
             self.print_team()
 
-        # check the approvals
+        # check the approvals for people currently on the team
         approvals = self.approvals
         keys = approvals.keys()
         for person in self.team:
@@ -350,14 +390,34 @@ class COI_Test:
             if huid in approvals:
                 for approval in approvals[huid]:
                     if approval["type"] == "OAR":
-                        oar_count += 1
+                        if approval["id"] in self.deleted_approvals:
+                            assert self.deleted_approvals[approval["id"]]["db_delete"] is False
+                        else:
+                            oar_count += 1
                     if approval["type"] == "FCOI":
-                        fcoi_count += 1
+                        if approval["id"] in self.deleted_approvals:
+                            assert self.deleted_approvals[approval["id"]]["db_delete"] is False
+                        else:
+                            fcoi_count += 1
                 keys.remove(huid)
-            # self.assertEqual(count, 1 if person["investigator"] == "true" else 0)
+
             assert oar_count == (1 if (person["investigator"] == "true" and self.tub == "520") else 0)
             assert fcoi_count == (1 if (self.tub != "520" and (person["investigator"] == "true" or person["university"] == "1")) else 0)
 
-        # self.assertEqual(len(keys), 0)
-        assert len(keys) == 0
+        # check on any leftover approvals
+        for huid in keys:
+            for approval in approvals[huid]:
+                # check that this should be here...
+                assert approval["id"] in self.deleted_approvals and self.deleted_approvals[approval["id"]]["db_delete"] is False
+                # print self.deleted_approvals[approval["id"]]
 
+        self.assert_removal_queue()
+
+    def assert_removal_queue(self):
+        local_removals = [approval_id for approval_id in self.deleted_approvals if self.deleted_approvals[approval_id]["queue"] is True]
+        from gmas_webdriver.interfaces.oar import removal_queue_for_segment
+        database_removals = removal_queue_for_segment(self.segment_id, self.p)
+        for removal in local_removals:
+            assert removal in database_removals
+            database_removals.remove(removal)
+        assert len(database_removals) == 0
