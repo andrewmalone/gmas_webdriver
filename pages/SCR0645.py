@@ -9,7 +9,7 @@ class SCR0645(Page):
     """
     locators = {
         "ok": "name=ConfirmResearchTeamOkEvent",
-        "person row": "css=#dataRow",
+        "person row": "css=tr#dataRow:not([style*='display: none'])",
         "add person": "personName"
     }
 
@@ -45,7 +45,8 @@ class SCR0645(Page):
             "role": "css=select[name$=role]",
             "key": "css=select[name$=isKeyPerson]",
             "investigator": "css=select[name$=isMemberPHSInvestigator]",
-            "human subjects": "css=select[name$=isMemberInvolvedWithHumanSubjects]"
+            "human subjects": "css=select[name$=isMemberInvolvedWithHumanSubjects]",
+            "delete": "id=delIcon"
         }
 
         cal_effort = Text("cal_effort", "Calendar effort")
@@ -54,3 +55,9 @@ class SCR0645(Page):
         key = Select("key", "Key person flag")
         investigator = Select("investigator", "PHS investigator flag")
         human_subjects = Select("human subjects", "Human Subjects flag")
+
+        def delete(self):
+            """
+            Click the delete icon for the row
+            """
+            self.find("delete").click()
