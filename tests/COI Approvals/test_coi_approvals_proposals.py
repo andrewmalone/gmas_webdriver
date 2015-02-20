@@ -63,8 +63,15 @@ class Test_COI_RGS(common.COI_Test):
         self.change_all_request_flags()
         self.assert_approvals()
 
+    @pytest.mark.dev
     def test_delete_people_from_rgs(self):
-        pass
+        title = "COI Test delete proposal team"
+        self.add_standard_team()
+        self.create_request(title)
+        # self.submit_oar_create()
+        self.assert_approvals()
+        self.delete_all_request_people()
+        self.assert_approvals()
 
     def test_delete_people_from_after_rgs(self):
         pass
@@ -120,4 +127,4 @@ class Test_COI_RGS(common.COI_Test):
 if __name__ == "__main__":
     import os
     filename = os.path.basename(__file__)
-    pytest.main(['%s' % filename, '-m combined'])
+    pytest.main(['%s' % filename, '-m dev', '-s'])
