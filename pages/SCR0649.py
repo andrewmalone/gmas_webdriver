@@ -1,7 +1,6 @@
-# @todo - refactor using the Row element class
-from pages.Page import Page, GMWebElement
+from pages.Page import Page
 from pages.lookups import Lookup_person
-from pages.elements import Text, Select
+from pages.elements import Text, RText, Select, Row
 
 
 class SCR0649(Page):
@@ -18,17 +17,19 @@ class SCR0649(Page):
     add_member_text = Text("add input", "Text box for adding a new person")
     add_member = Lookup_person(add_member_text, "personLookupImage", "Lookup for adding a research team member")
 
-    def count_rows(self):
+    @property
+    def person_count(self):
         """
-        test1
+        Number of people in the research team list
         """
         return len(self.finds("row"))
 
-    def row(self, rownum):
+    def person(self, n):
         """
-        test2
+        Returns row for the nth person on the screen
+        //Person_Row
         """
-        return self.Row(self.finds("row")[rownum - 1], self)
+        return self.Person_Row(self.finds("row")[n - 1], self)
 
     def cancel(self):
         """
@@ -44,10 +45,7 @@ class SCR0649(Page):
         """
         return self.go("ok")
 
-    class Row(GMWebElement):
-        """
-        test3
-        """
+    class Person_Row(Row):
         locators = {
             "name": "id=personName",
             "role": "css=#roleText select",
@@ -61,39 +59,52 @@ class SCR0649(Page):
             "sum": "id=summerEffortId",
             "eff_date": "css=input[name$=committedEffortEffectivedate]",
             "sc": "css=[name$=sponsorCommitmentFlag]",
+            "delete": "id=delIcon",
             # I think this locator is iffy - very structure dependent
             "current": "css=td > #datatable td"
         }
 
-        role = Select("role")
-        other_role = Text("other role")
-        key = Select("key")
-        phs = Select("phs")
-        hs = Select("hs")
-        cal = Text("cal")
-        acad = Text("acad")
-        summer = Text("sum")
-        effective_date = Text("eff_date")
-        sponsor_commitment = Select("sc")
-
-        def __init__(self, row, page):
-            self.driver = row
-            self.name = self.find("name").text
-            self.current_effort = self.find("current").text
+        name = RText("name", "Team member name")
+        current_effort = RText("current", "Current effort")
+        role = Select("role", "Role")
+        other_role = Text("other role", "Other role edit box")
+        key = Select("key", "Key flag")
+        phs = Select("phs", "PHS Investigator flag")
+        hs = Select("hs", "Human subjects flag")
+        cal = Text("cal", "Calendar effort")
+        acad = Text("acad", "Academic effort")
+        summer = Text("sum", "Summer effort")
+        effective_date = Text("eff_date", "Effective date")
+        sponsor_commitment = Select("sc", "Sponsor commitment")
 
         def is_phs_editable(self):
+            """
+            returns True/False if the investigator flag is editable
+            """
             return True if self.find("phs").is_displayed() else False
 
         def is_key_editable(self):
+            """
+            returns True/False if the key flag is editable
+            """
             return True if self.find("key").is_displayed() else False
 
         def is_role_editable(self):
+            """
+            returns True/False if the role is editable
+            """
             return True if self.find("role").is_displayed() else False
 
         def is_sponsor_commitment_editable(self):
+            """
+            returns True/False if the sponsor commitment flag is editable
+            """
             return True if self.find("sc").is_displayed() else False
 
         def is_commitment_editable(self):
+            """
+            returns True/False if the commitment is editable
+            """
             from selenium.common.exceptions import NoSuchElementException
             try:
                 self.find("cal")
@@ -101,10 +112,17 @@ class SCR0649(Page):
                 return False
             return True
 
+        def delete(self):
+            """
+            Delete the person
+            """
+            self.find("delete").click()
+
         # This is here to ovveride the __get__ method of the select if the select
         # is not actually displayed. I'm sure there is a better way to do it, but
         # this works for now.
         def __getattribute__(self, key):
+            # print key
             # special case for sponsor commitment if it is not a select
             if key == "sponsor_commitment" and self.find("sc").tag_name == "input":
                 return self.find("sc").find_element_by_xpath("..").text
@@ -113,10 +131,10 @@ class SCR0649(Page):
 
             # override the return value if the select is not displayed
             if key in ["role", "key", "phs"] and v.is_displayed() is False:
+                # print "override"
                 return self.find(key).find_element_by_xpath("..").text
 
             if hasattr(v, '__get__'):
-                    #print "inside (%s)" % key
+                    # print "inside (%s)" % key
                     return v.__get__(None, self)
             return v
-
