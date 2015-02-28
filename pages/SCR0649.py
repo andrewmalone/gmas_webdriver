@@ -9,7 +9,7 @@ class SCR0649(Page):
     SCR_0649 Edit research team
     """
     locators = {
-        "row": "css=#dataRow",
+        "row": "css=#dataRow:not([style*='display: none'])",
         "add input": "name=personName",
         "cancel": "EditResearchTeamCancelEvent",
         "ok": "EditResearchTeamOkEvent"

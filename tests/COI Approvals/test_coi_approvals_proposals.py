@@ -63,7 +63,7 @@ class Test_COI_RGS(common.COI_Test):
         self.change_all_request_flags()
         self.assert_approvals()
 
-    @pytest.mark.dev
+    @pytest.mark.shallow
     def test_delete_people_from_rgs(self):
         title = "COI Test delete proposal team"
         self.add_standard_team()
@@ -86,6 +86,7 @@ class Test_COI_RGS(common.COI_Test):
         self.create_request(title)
         self.assert_approvals()
         self.add_standard_team_after_rgs()
+        # self.submit_oar_create()
         self.assert_approvals()
         self.change_all_request_flags()
         self.assert_approvals()
