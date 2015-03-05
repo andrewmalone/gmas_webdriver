@@ -1,10 +1,11 @@
 import pytest
-import common
+from classes.COI_Initial import COI_Initial
+from classes.common import standard_team
 
 
-class Test_COI_RGS(common.COI_Test):
+class Test_COI_RGS(COI_Initial):
     @pytest.mark.deep
-    @pytest.mark.parametrize('team_member', common.standard_team)
+    @pytest.mark.parametrize('team_member', standard_team)
     def test_rgs_individual(self, team_member):
         """
         Add research team people in RGS
@@ -34,7 +35,7 @@ class Test_COI_RGS(common.COI_Test):
         """
         title = "COI_test_add_people_after_rgs"
         self.create_request(title)
-        # self.assert_approvals()
+        self.assert_approvals()
         self.add_standard_team_after_rgs()
         self.assert_approvals()
 
@@ -84,9 +85,9 @@ class Test_COI_RGS(common.COI_Test):
         title = "COI Combined proposal test"
         self.add_standard_team()
         self.create_request(title)
+        self.submit_oar_create()
         self.assert_approvals()
         self.add_standard_team_after_rgs()
-        # self.submit_oar_create()
         self.assert_approvals()
         self.change_all_request_flags()
         self.assert_approvals()
@@ -100,10 +101,12 @@ class Test_COI_RGS(common.COI_Test):
         title = "COI Change org from hms"
         self.add_standard_team()
         self.create_request(title)
+        self.submit_oar_create()
         self.assert_approvals()
         self.change_request_org("370")
         self.assert_approvals()
 
+    @pytest.mark.dev
     @pytest.mark.combined
     def test_change_org_to_hms(self):
         title = "COI Change org to hms"
@@ -120,6 +123,7 @@ class Test_COI_RGS(common.COI_Test):
         """
         title = "COI Change request PI"
         self.create_request(title)
+        self.submit_oar_create()
         self.assert_approvals()
         self.change_request_pi()
         self.assert_approvals()
@@ -128,4 +132,4 @@ class Test_COI_RGS(common.COI_Test):
 if __name__ == "__main__":
     import os
     filename = os.path.basename(__file__)
-    pytest.main(['%s' % filename, '-m dev', '-s'])
+    pytest.main(['%s' % filename, '-m combined'])

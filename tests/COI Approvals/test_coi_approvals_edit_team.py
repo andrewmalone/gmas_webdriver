@@ -1,8 +1,8 @@
 import pytest
-import common
+from classes.COI_Edit import COI_Edit
 
 
-class Test_COI_Edit(common.COI_Test):
+class Test_COI_Edit(COI_Edit):
     @pytest.mark.combined
     def test_edit_basic(self):
         """
@@ -24,11 +24,27 @@ class Test_COI_Edit(common.COI_Test):
         self.edit_team_add_standard_team()
         self.assert_approvals()
 
-    @pytest.mark.dev
-    def test_edit_remove(self):
+    @pytest.mark.combined
+    @pytest.mark.parametrize('oar', [True, False])
+    def test_edit_remove(self, oar):
+        """
+        Test editing a confirmed team - deleting all people
+        """
         title = "COI Test edit remove people"
         self.add_standard_team()
+        self.create_confirmed(title, submit_oar=oar)
+        self.edit_team_remove_team()
+        self.assert_approvals()
+
+    @pytest.mark.dev
+    @pytest.mark.parametrize('oar', [True, False])
+    def test_edit_add_then_remove(self, oar):
+        title = "COI Test edit add and remove"
         self.create_confirmed(title)
+        self.edit_team_add_standard_team()
+        if oar:
+            self.submit_oar_create()
+        self.assert_approvals()
         self.edit_team_remove_team()
         self.assert_approvals()
 
@@ -36,4 +52,4 @@ class Test_COI_Edit(common.COI_Test):
 if __name__ == "__main__":
     import os
     filename = os.path.basename(__file__)
-    pytest.main(['%s' % filename, '-m dev', '-s'])
+    pytest.main(['%s' % filename, '-m dev'])

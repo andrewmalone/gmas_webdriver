@@ -1,8 +1,8 @@
 import pytest
-import common
+from classes.COI_Confirm import COI_Confirm
 
 
-class Test_COI_Confirm(common.COI_Test):
+class Test_COI_Confirm(COI_Confirm):
     @pytest.mark.combined
     def test_confirm_basic(self):
         """
@@ -51,4 +51,4 @@ if __name__ == "__main__":
     # pytest.main(['-m combined', '-v', ''])
     import os
     filename = os.path.basename(__file__)
-    pytest.main(['%s' % filename, '-m combined', '-s'])
+    pytest.main(['%s' % filename, '-m combined'])
