@@ -68,7 +68,7 @@ def get_methods(cls, subclass=False):
     for meth in inspect.getmembers(cls, inspect.ismethod):
         m_lookup = {}
         m = meth[1]
-        if get_class(m) != "Page" and get_class(m) != "GMWebElement" and m.__name__[0] != "_":
+        if get_class(m) not in ["Page", "GMWebElement", "Row"] and m.__name__[0] != "_":
             name = m.__name__
             args = inspect.formatargspec(*inspect.getargspec(m))
             args = args.replace("self, ", "").replace("self", "")
@@ -131,4 +131,4 @@ if __name__ == "__main__":
     #padding = '000'
     #num = re.match(r'[0-9]{1,3}', scr).group(0)
     #scr = "SCR%s%s" % (padding[:4 - len(num)], scr)
-    print get_method_list("SCR0360")
+    print get_method_list("SCR0560")
