@@ -83,9 +83,15 @@ class Page(GMWebElement):
         return cls(self.driver)
 
     def get_id(self, id_name):
-        # This will only work if the ID is in a hidden input field
         locator = "css=input[type='hidden'][name='%sId']" % (id_name)
-        return self.find_element(locator).get_attribute("value")
+        from selenium.common.exceptions import NoSuchElementException
+        try:
+            return self.find_element(locator).get_attribute("value")
+        except NoSuchElementException:
+            url = self.driver.current_url
+            param = "{}Id".format(id_name)
+            from utilities.url import url_param
+            return url_param(url, param)
 
     def get_ids(self, id_name):
         # Get a list of Ids from hidden inputs or from urls.
