@@ -228,6 +228,13 @@ class Row(GMWebElement):
         cell = self.find_element("css=td:nth-child(%s)" % n)
         return cell.text
 
+    @classmethod
+    def cell(self, n):
+        """
+        Returns a css locator for the nth cell of the row
+        """
+        return "css=td:nth-child({})".format(n)
+
 
 class RText(Element):
     """ (readonly text) """
