@@ -140,6 +140,13 @@ class Page(GMWebElement):
 
     # TODO: Figure out how to move all goto methods to a common class
 
+    def goto_url(self, url):
+        """
+        Go to any url and return the related page object
+        """
+        self.driver.get(url.format(self.env_url))
+        return self.load_page()
+
     def goto_segment(self, segment_id):
         url = "%s/gmas/project/SCR0104SegmentHome.jsp?segmentId=%s" % (self.env_url, segment_id)
         self.driver.get(url)
