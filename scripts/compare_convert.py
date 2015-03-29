@@ -81,6 +81,10 @@ class wrapper(object):
     def compare(self, formats={}):
         a = get_properties(self._a)
         b = get_properties(self._b)
+        load_a = self._a.get_page_load_time()
+        load_b = self._b.get_page_load_time()
+        perf = round(float(load_b) / load_a, 2)
+        print "Performance: {} ({},{})".format(perf, load_a, load_b)
         compare_properties(a, b, formats=formats)
 
 
