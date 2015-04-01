@@ -16,6 +16,9 @@ def pagemap(page):
         # disable confirmations use uppercase
         "SCR0602A": "SCR0602a",
         "SCR0602B": "SCR0602b",
+        # re-enables use uppercase
+        "SCR0625A": "SCR0625a",
+        "SCR0625B": "SCR0625b",
         # segment home isn't standard
         "SCR0104P": "SCR0104a",
         "SCR0104S": "SCR0104b"
