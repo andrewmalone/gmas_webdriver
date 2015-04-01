@@ -42,6 +42,10 @@ class SCR0191(Page):
     Agency = RText("Agency fund", "Agency fund")
     Gift = RText("Gift", "Gift or interest override")
     Keyword = RText("Keyword", "Keyword")
+    
+    @property
+    def gl_history(self):
+        return [self.GL_history(row, self) for row in self.finds("GL_history")]
      
     class GL_history(Row):
         locators = {
