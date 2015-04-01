@@ -11,6 +11,7 @@ class SCR0191(Page):
             "Disable_fund":"DisableFundEvent",
             "Reenable_fund":"ReenableFundEvent",
             "Fund_info": "xpath=//td[contains(text(), 'General ledger status')]/ancestor::table[1]//tr[@class='bg0'][position()>1]",
+            "GL_history": "xpath=//td[contains(text(), 'General ledger upload history')]/ancestor::table[1]//tr[@class='bg0'][position()>1]",
             "gl status": xpath.text_sibling("td", "General ledger status", 2),
             "owning tub": xpath.text_sibling("td", "Owning tub", 2),
             "owning org": xpath.text_sibling("td", "Owning org", 2),
@@ -42,9 +43,6 @@ class SCR0191(Page):
     Gift = RText("Gift", "Gift or interest override")
     Keyword = RText("Keyword", "Keyword")
      
-
- 
-        
     class GL_history(Row):
         locators = {
             "date": Row.cell(2),
