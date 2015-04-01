@@ -68,7 +68,7 @@ def get_methods(cls, subclass=False):
     for meth in inspect.getmembers(cls, inspect.ismethod):
         m_lookup = {}
         m = meth[1]
-        if get_class(m) != "Page" and get_class(m) != "GMWebElement" and m.__name__[0] != "_":
+        if get_class(m) not in ["Page", "GMWebElement", "Row"] and m.__name__[0] != "_" and m.__name__ not in ["cell"]:
             name = m.__name__
             args = inspect.formatargspec(*inspect.getargspec(m))
             args = args.replace("self, ", "").replace("self", "")
@@ -90,7 +90,7 @@ def get_methods(cls, subclass=False):
         if inspect.isdatadescriptor(cls.__dict__[obj]):
             o = cls.__dict__[obj]
             d_lookup["descriptor_name"] = obj
-            d_lookup["descriptor_doc"] = escape(inspect.getdoc(o))
+            d_lookup["descriptor_doc"] = replace_subclass(escape(inspect.getdoc(o)))
             if subclass is True:
                 lookup["descriptors"] += descriptor_subtemplate.format(**d_lookup)
             else:
