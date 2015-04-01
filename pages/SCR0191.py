@@ -22,7 +22,8 @@ class SCR0191(Page):
             "Keyword": xpath.text_sibling("td", "Keyword", 2)
     }
     #new locators
-    
+    #  _locators ={
+    #}
     @classmethod
     def url(cls, segment_id, account_id, fund):
         """
