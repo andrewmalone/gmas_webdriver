@@ -7,5 +7,3 @@ chromedriver.log
 pagegen.py
 
 ghostdriver.log
-
-tmp/

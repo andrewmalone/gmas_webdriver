@@ -213,8 +213,6 @@ class Row(GMWebElement):
         """
         self.driver = row
         self.page = page
-        if page.mode == "convert" and hasattr(self, "_locators"):
-            self.locators = self._locators
 
     def _go(self, locator):
         """
@@ -229,13 +227,6 @@ class Row(GMWebElement):
         """
         cell = self.find_element("css=td:nth-child(%s)" % n)
         return cell.text
-
-    @classmethod
-    def cell(self, n):
-        """
-        Returns a css locator for the nth cell of the row
-        """
-        return "css=td:nth-child({})".format(n)
 
 
 class RText(Element):

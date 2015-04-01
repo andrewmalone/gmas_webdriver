@@ -25,13 +25,6 @@ class SCR0360(Page):
         """
         return self.account_row(self.finds("account row")[num - 1], self)
 
-    @property
-    def accounts(self):
-        """
-        List of account rows
-        """
-        return [self.account_row(row, self) for row in self.finds("account row")]
-
     class account_row(Row):
         locators = {
             "link": "event=ViewAccountDetailsEvent"

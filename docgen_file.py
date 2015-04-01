@@ -131,4 +131,4 @@ if __name__ == "__main__":
     #padding = '000'
     #num = re.match(r'[0-9]{1,3}', scr).group(0)
     #scr = "SCR%s%s" % (padding[:4 - len(num)], scr)
-    print get_method_list("SCR0560")
+    print get_method_list("SCR0360")

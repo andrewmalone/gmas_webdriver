@@ -18,9 +18,9 @@ class Page(GMWebElement):
         self.env = driver.env
         self.env_url = driver.env_url
         self.driver = driver
-        # self.wait = 60
-        self.w = WebDriverWait(self.driver, 60)
-        # self.w.until(lambda d: d.find_element_by_css_selector("td.footer") or d.find_element_by_css_selector("footer"))
+        self.wait = 60
+        self.w = WebDriverWait(self.driver, self.wait)
+        self.w.until(lambda d: d.find_element_by_css_selector("td.footer"))
 
         # set up some includes
         #TODO: There must be a better way to do this!
@@ -37,15 +37,10 @@ class Page(GMWebElement):
 
     @property
     def page_title(self):
-        try:
-            return self.find_element("css=.title").text
-        except:
-            return ""
+        return self.find_element("css=.title").text
 
     def get_current_page(self):
         elems = self.find_elements("css=td.footer")
-        if len(elems) == 0:
-            elems = self.find_elements("css=footer li")
         for elem in elems:
             if "The screen you are on is" in elem.text:
                 return re.search('SCR.*', elem.text).group(0)
@@ -64,29 +59,16 @@ class Page(GMWebElement):
             setattr(self, key, value)
         return self
 
-    def set_mode(self):
-        if len(self.find_elements("css=td.footer")) > 0:
-            self.mode = "old"
-        elif len(self.find_elements("css=footer")) > 0:
-            self.mode = "convert"
-
     def load_page(self):
         import importlib
         #TODO: this method assumes we can match based on the footer names. Need to account for any exceptions
 
         # make sure we aren't on the wait screen
         self.w.until(lambda e: len(e.find_elements_by_css_selector("script[src$='waitScreen.js']")) == 0)
-        # self.w.until(lambda d: d.find_element_by_css_selector("td.footer"))
-        # self.w.until(lambda d: d.find_element_by_css_selector("td.footer") or d.find_element_by_css_selector("footer"))
-        self.w.until(lambda d: len(d.find_elements_by_css_selector("td.footer")) > 0 or len(d.find_elements_by_css_selector("footer")) > 0)
+        self.w.until(lambda d: d.find_element_by_css_selector("td.footer"))
         page = self.scr
         cls = getattr(importlib.import_module("pages.%s" % (page)), page)
-        p = cls(self.driver)
-        p.set_mode()
-        if p.mode == "convert" and hasattr(p, "_locators"):
-            p.locators = p._locators
-        return p
-
+        return cls(self.driver)
 
     def refresh(self):
         """
@@ -101,15 +83,9 @@ class Page(GMWebElement):
         return cls(self.driver)
 
     def get_id(self, id_name):
+        # This will only work if the ID is in a hidden input field
         locator = "css=input[type='hidden'][name='%sId']" % (id_name)
-        from selenium.common.exceptions import NoSuchElementException
-        try:
-            return self.find_element(locator).get_attribute("value")
-        except NoSuchElementException:
-            url = self.driver.current_url
-            param = "{}Id".format(id_name)
-            from utilities.url import url_param
-            return url_param(url, param)
+        return self.find_element(locator).get_attribute("value")
 
     def get_ids(self, id_name):
         # Get a list of Ids from hidden inputs or from urls.
@@ -157,13 +133,6 @@ class Page(GMWebElement):
         return self.load_page()
 
     # TODO: Figure out how to move all goto methods to a common class
-
-    def goto_url(self, url):
-        """
-        Go to any url and return the related page object
-        """
-        self.driver.get(url.format(self.env_url))
-        return self.load_page()
 
     def goto_segment(self, segment_id):
         url = "%s/gmas/project/SCR0104SegmentHome.jsp?segmentId=%s" % (self.env_url, segment_id)
