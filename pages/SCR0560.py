@@ -28,6 +28,7 @@ class SCR0560(Page):
     def rate_rows(self):
         """
         List of all rows from the "Account indirect cost rates" table
+        //Rate_row
         """
         return [self.Rate_row(row, self) for row in self.finds("rate_row")]
 
@@ -35,6 +36,7 @@ class SCR0560(Page):
     def history_rows(self):
         """
         List of all rows from the "History of general ledger feeds" table
+        //History_row
         """
         return [self.History_row(row, self) for row in self.finds("history_row")]
 
