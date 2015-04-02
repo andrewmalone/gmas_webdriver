@@ -21,7 +21,8 @@ locators = {
     "todos": "event=SegmentSummaryViewProjectToDosLinkEvent",
     "project_info": xpath.text_sibling("td", "Project Information", 2),
     "dates_dollars": "event=SegmentHomeViewDatesAndDollarsEvent",
-    "additional info": "event=AdditionalAwardInformationEvent"
+    "additional info": "event=AdditionalAwardInformationEvent",
+    "fin award info": "event=FinancialAwardInformationEvent"
 }
 
 
@@ -185,3 +186,10 @@ class SCR0104b(Page):
         Goes to SCR_0159
         """
         return self.go("todos")
+
+    def goto_financial_award_info(self):
+        """
+        Clicks the "Financial award information" link
+        Goes to SCR_0647
+        """
+        return self.go("fin award info")

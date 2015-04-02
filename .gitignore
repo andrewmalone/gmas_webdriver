@@ -7,3 +7,7 @@ chromedriver.log
 pagegen.py
 
 ghostdriver.log
+
+tmp/*.py
+
+tmp/tmp.py
