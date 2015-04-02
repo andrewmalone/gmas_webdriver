@@ -31,6 +31,13 @@ class SCR0344(Page):
             row = self.find("request row id", request_id)
         return self.request_row(row, self)
 
+    @property
+    def requests(self):
+        """
+        List of request rows
+        """
+        return [self.request_row(row, self) for row in self.finds("request row")]
+
     class request_row(Row):
         locators = {
             "link": "css=a[href*=LinkEvent]"
@@ -42,6 +49,13 @@ class SCR0344(Page):
             Request ID
             """
             return self.cell_text(3)
+
+        @property
+        def type(self):
+            """
+            Request type
+            """
+            return self.cell_text(11)
 
         def go(self):
             """

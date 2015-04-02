@@ -213,6 +213,8 @@ class Row(GMWebElement):
         """
         self.driver = row
         self.page = page
+        if page.mode == "convert" and hasattr(self, "_locators"):
+            self.locators = self._locators
 
     def _go(self, locator):
         """
