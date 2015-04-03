@@ -92,6 +92,7 @@ def get_properties(object):
     """
     Gets properties for a page object, returns a dictionary
     """
+    page_module = object.__class__.__module__
     properties = {}
     # exclude some properties that we don't need to compare
     exclusions = [
@@ -101,16 +102,21 @@ def get_properties(object):
         "scr",
         "locators",
         "_locators",
-        "page_title"
+        "page_title",
+        "page"
     ]
     for name, member in inspect.getmembers(object, lambda a: not(inspect.isroutine(a))):
-        if name[:2] == "__" or member.__class__.__module__ != '__builtin__' or type(member) is type or name in exclusions:
+        module = member.__class__.__module__
+        if name[:2] == "__" or (module != '__builtin__' and module != page_module) or type(member) is type or name in exclusions:
             continue
         attr = getattr(object, name)
         if type(attr) is list:
             properties[name] = []
             for i, item in enumerate(attr):
+                print item
                 properties[name].append(get_properties(item))
+        elif module == page_module:
+            properties[name] = get_properties(attr)
         else:
             properties[name] = attr
     return properties
