@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 import ConfigParser
 import os
-import sys
 import base64
 
 
@@ -59,7 +58,7 @@ def loginGMAS(driver):
 
 def init(browser, env, splitscreen=False, position="full", port=None, download_dir=None):
     # this is so that imports will work (there's probably a better way)
-    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+    # sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
     url = env_url(env)
 
@@ -104,7 +103,8 @@ def env_url(env):
         "gmasprod": "https://gmas.harvard.edu",
         "gdev": "https://gmasdev.ca.harvard.edu",
         "gtest": "https://gmastest.ca.harvard.edu",
-        "gint": "https://gmasint.ca.harvard.edu"
+        "gint": "https://gmasint.ca.harvard.edu",
+        "gsand": "https://gmassand.ca.harvard.edu"
     }
     try:
         return instances[env]
