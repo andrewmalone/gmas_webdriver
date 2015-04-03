@@ -34,7 +34,7 @@ class COI_Confirm(COI_Initial):
         Does not set commitment % or sponsor commitment flags
         """
         new_person = research_team_record(key, investigator, university)
-        new_person["source"] = "segment"
+        new_person["source"] = ("segment")
         self.team.append(new_person)
 
         p = self.p
@@ -54,7 +54,7 @@ class COI_Confirm(COI_Initial):
         p = self.p
         for person in self.team[1:]:
             p.person(2).delete()
-            if "source" in person and person["source"] == "segment":
+            if "source" in person and person["source"][0] == "segment":
                 db_delete = True
             else:
                 db_delete = False

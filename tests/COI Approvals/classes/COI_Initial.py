@@ -19,6 +19,7 @@ class COI_Initial(COI_Test):
         p.appt = "12"
         p = p.ok().back()
         self.p = p
+        person["source"] = ("request", self.request_type, self.request_id)
         self.team.append(person)
 
     def add_standard_team_after_rgs(self):
@@ -36,7 +37,8 @@ class COI_Initial(COI_Test):
         p.phs = new_flag
         p.appt = "12"
         self.team[index]["investigator"] = new_flag
-        self.flag_deleted_approval(self.team[index]["huid"], True)
+        if self.tub == "520" or self.team[index]["university"] != "1":
+            self.flag_deleted_approval(self.team[index]["huid"], True)
         p = p.ok().back(2)
         self.p = p
 
@@ -71,6 +73,11 @@ class COI_Initial(COI_Test):
         self.p = rgs(self.p, req_with_team(self.pi_huid, self.team[1:], title, org=self.org))
         # p = rgs(self.p, req_with_team(self.pi_huid, self.team[1:], title))
         self.segment_id = self.p.get_id("segment")
+        # add request id to all team members...
+        self.request_id = self.p.get_id("request")
+        self.request_type = "initial"
+        for person in self.team:
+            person["source"] = ("request", self.request_type, self.request_id)
         print "Created segment {}".format(self.p.get_id("segment"))
 
     def change_request_pi(self):
@@ -85,7 +92,8 @@ class COI_Initial(COI_Test):
             "key": "true",
             "investigator": "true",
             "hs": "false",
-            "university": pi[2]
+            "university": pi[2],
+            "source": ("request", self.request_type, self.request_id)
         }
         p = self.p
         p = p.edit_info()

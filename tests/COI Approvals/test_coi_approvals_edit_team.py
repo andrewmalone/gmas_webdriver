@@ -36,7 +36,7 @@ class Test_COI_Edit(COI_Edit):
         self.edit_team_remove_team()
         self.assert_approvals()
 
-    @pytest.mark.dev
+    @pytest.mark.combined
     @pytest.mark.parametrize('oar', [True, False])
     def test_edit_add_then_remove(self, oar):
         title = "COI Test edit add and remove"
@@ -48,8 +48,21 @@ class Test_COI_Edit(COI_Edit):
         self.edit_team_remove_team()
         self.assert_approvals()
 
+    @pytest.mark.combined
+    @pytest.mark.parametrize('oar', [True, False])
+    def test_edit_change_flags(self, oar):
+        title = "COI Test edit change flags"
+        self.add_standard_team()
+        self.create_confirmed(title)
+        self.edit_team_add_standard_team()
+        if oar:
+            self.submit_oar_create()
+        self.assert_approvals()
+        self.edit_team_change_flags()
+        self.assert_approvals()
+
 
 if __name__ == "__main__":
     import os
     filename = os.path.basename(__file__)
-    pytest.main(['%s' % filename, '-m dev'])
+    pytest.main(['%s' % filename, '-m combined'])
