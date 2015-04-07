@@ -61,5 +61,6 @@ class SCR0511(Page):
         date = RText("date", "GL date")
         type = RText("type", "GL action type")
         feed_status = RText("feed_status", "GL feed status")
+        
 
     
