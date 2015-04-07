@@ -217,14 +217,14 @@ class SCR0187(Page):
     class COA_row(Row):
         locators = {
             "segment":Row.cell(2),
-            "GL_status":Row.cell(6),
-            "GL_feed":Row.cell(10),
-            "Value_descriptor":Row.cell(14)
+            "gl_status":Row.cell(6),
+            "gl_feed":Row.cell(10),
+            "value_descriptor":Row.cell(14)
         }
         segment = RText("segment", "COA segment")
-        GL_status = RText("GL_status", "GL status")
-        GL_feed = RText("GL_feed", "GL feed")
-        Value_descriptor = RText("Value_descriptor", "value and descriptor")
+        gl_status = RText("gl_status", "GL status")
+        gl_feed = RText("gl_feed", "GL feed")
+        value_descriptor = RText("value_descriptor", "value and descriptor")
         
         
         
