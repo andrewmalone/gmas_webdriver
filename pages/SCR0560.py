@@ -12,8 +12,8 @@ class SCR0560(Page):
         "history_row": "xpath=//td[contains(text(), 'History of general ledger feeds')]/ancestor::table[1]//tr[@class='bg0'][position()>1]"
     }
     _locators = {
-        "rate_row": "css=[id*=j_idt117_data] tr",
-        "history_row": "css=[id*=j_idt128_data] tr"
+        "rate_row": "css=[id$=currentRates_content] tbody tr",
+        "history_row": "css=[id$=historicRates_content] tbody tr"
     }
 
     @classmethod

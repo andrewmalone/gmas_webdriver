@@ -1,13 +1,7 @@
 /config.ini
 *.pyc
-/tmp*.py
-
 chromedriver.log
-
 pagegen.py
-
 ghostdriver.log
-
-tmp/*.py
-
-tmp/tmp.py
+/tmp*.py
+tmp/

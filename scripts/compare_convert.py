@@ -1,16 +1,24 @@
 from gmas_webdriver.pages.Page import Page
 import inspect
 from datetime import datetime
+import csv
 
 
 class wrapper(object):
-    def __init__(self, a, b):
+    """
+    Wrapper class for running parallel tests for jsf conversion
+    """
+    def __init__(self, a, b, log=None):
         self._a = a
         self._b = b
+        if log is None:
+            self._log = [["Screen", "URL A", "URL B", "Result"]]
+        else:
+            self._log = log
 
     def __getattr__(self, attr):
         """
-        overrides tohe default getter. Used for getting page object attributes or calling
+        overrides the default getter. Used for getting page object attributes or calling
         page object methods
         """
         # get the desired attributes from each page object
@@ -32,7 +40,7 @@ class wrapper(object):
         # need to return a wrapper object if not a builtin
         # this is used for any sub objects that are GMWebElements or
         # something else(like rows within a page object)
-        return wrapper(a, b)
+        return wrapper(a, b, self._log)
 
     def __setattr__(self, attr, value):
         """
@@ -76,16 +84,39 @@ class wrapper(object):
                 return 0
 
         # need to return a wrapper object if not a Page or builtin
-        return wrapper(a, b)
+        return wrapper(a, b, self._log)
+
+    def add_to_log(self, item):
+        """
+        Adds to the internal log (should be a list for better csv output)
+        """
+        self._log.append(item)
+
+    def write_log(self, filename="log.csv"):
+        """
+        Write the comparison log to a csv file
+        """
+        with open(filename, "wb") as f:
+            writer = csv.writer(f)
+            writer.writerows(self._log)
 
     def compare(self, formats={}):
+        """
+        Compare all the readable properties of two page objects
+        """
         a = get_properties(self._a)
         b = get_properties(self._b)
         load_a = self._a.get_page_load_time()
         load_b = self._b.get_page_load_time()
         perf = round(float(load_b) / load_a, 2)
-        print "Performance: {} ({},{})".format(perf, load_a, load_b)
-        compare_properties(a, b, formats=formats)
+        # print "Performance: {} ({},{})".format(perf, load_a, load_b)
+        self.add_to_log([self._a.scr, self._a.driver.current_url, self._b.driver.current_url, "Performance", load_a, load_b, perf])
+        prefix = [self._a.scr, self._a.driver.current_url, self._b.driver.current_url]
+        results = compare_properties(a, b, formats=formats)
+        for result in results:
+            # print result
+            # print prefix + result
+            self.add_to_log(prefix + result)
 
 
 def get_properties(object):
@@ -113,7 +144,6 @@ def get_properties(object):
         if type(attr) is list:
             properties[name] = []
             for i, item in enumerate(attr):
-                print item
                 properties[name].append(get_properties(item))
         elif module == page_module:
             properties[name] = get_properties(attr)
@@ -122,10 +152,13 @@ def get_properties(object):
     return properties
 
 
-def compare_properties(a, b, formats={}, parent=None, index=None):
+def compare_properties(a, b, formats={}, parent=None, index=None, results=None):
     """
     Compare two dictionaries of properties
     """
+    # print results
+    if results is None:
+        results = []
     format_funcs = {
         "date": date_format,
         "percent": percent_format
@@ -141,10 +174,12 @@ def compare_properties(a, b, formats={}, parent=None, index=None):
                     vb = val_b[i]
                 except:
                     vb = None
-                compare_properties(item, vb, parent=name, index=i, formats=formats)
+                results = compare_properties(item, vb, parent=name, index=i, formats=formats, results=results)
             # check if b has extra rows
             for i, item in enumerate(val_b[len(val_a):]):
-                print "False {}[{}] not in a".format(name, i)
+                # print "False {}[{}] not in a".format(name, i)
+                # results.append(["False {}[{}] not in a".format(name, i)])
+                results.append([False, "{}[{}] not in a".format(name, i)])
         else:
             n = name
             if parent is not None:
@@ -162,7 +197,11 @@ def compare_properties(a, b, formats={}, parent=None, index=None):
             if parent is not None and index is not None:
                 name = "{}[{}].{}".format(parent, index, name)
             # check the values
-            print "{} {}: ({}, {})".format(compare, name, val_a, val_b)
+            # print "{} {}: ({}, {})".format(compare, name, val_a, val_b)
+            # s = "{} {}: ({}, {})".format(compare, name, val_a, val_b)
+            s = [compare, name, val_a, val_b]
+            results.append(s)
+    return results
 
 
 def date_format(string):

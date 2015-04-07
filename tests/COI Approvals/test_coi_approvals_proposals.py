@@ -77,14 +77,16 @@ class Test_COI_RGS(COI_Initial):
     def test_delete_people_from_after_rgs(self):
         pass
 
+    @pytest.mark.dev
     @pytest.mark.combined
-    def test_proposal_combined(self):
+    @pytest.mark.parametrize('tub', ['520', '275'])
+    def test_proposal_combined(self, tub):
         """
         Combined test for most scenarios
         """
         title = "COI Combined proposal test"
         self.add_standard_team()
-        self.create_request(title)
+        self.create_request(title, tub=tub)
         self.submit_oar_create()
         self.assert_approvals()
         self.add_standard_team_after_rgs()
@@ -97,6 +99,7 @@ class Test_COI_RGS(COI_Initial):
         self.assert_approvals()
 
     @pytest.mark.combined
+    @pytest.mark.tmp
     def test_change_org_from_hms(self):
         title = "COI Change org from hms"
         self.add_standard_team()
@@ -106,7 +109,6 @@ class Test_COI_RGS(COI_Initial):
         self.change_request_org("370")
         self.assert_approvals()
 
-    @pytest.mark.dev
     @pytest.mark.combined
     def test_change_org_to_hms(self):
         title = "COI Change org to hms"
@@ -132,4 +134,4 @@ class Test_COI_RGS(COI_Initial):
 if __name__ == "__main__":
     import os
     filename = os.path.basename(__file__)
-    pytest.main(['%s' % filename, '-m combined'])
+    pytest.main(['%s' % filename, '-m combined', '-v'])

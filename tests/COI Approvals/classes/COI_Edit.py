@@ -21,7 +21,7 @@ class COI_Edit(COI_Confirm):
         """
         p = self.p
         person = research_team_record(key, investigator, university)
-        person["source"] = "segment"
+        person["source"] = ("segment")
         self.team.append(person)
         p.add_member = person["huid"]
         count = p.person_count
@@ -46,4 +46,16 @@ class COI_Edit(COI_Confirm):
         self.finish_edit()
 
     def edit_team_change_flags(self):
-        pass
+        self.start_edit()
+        p = self.p
+        for i, person in enumerate(self.team[1:], 2):
+            current_flag = person["investigator"]
+            new_flag = "true" if current_flag == "false" else "false"
+            self.team[i - 1]["investigator"] = new_flag
+            if "source" in person and person["source"][0] == "segment":
+                db_delete = True
+            else:
+                db_delete = False
+            self.flag_deleted_approval(person["huid"], db_delete)
+            p.person(i).phs = map_value(new_flag)
+        self.finish_edit()

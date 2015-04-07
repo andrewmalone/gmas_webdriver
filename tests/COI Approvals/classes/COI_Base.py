@@ -6,9 +6,8 @@ from common import research_team_record, standard_team
 class COI_Test:
     @classmethod
     def setup_class(self):
-        self.should_teardown = False
-        self.p = gmas_webdriver.init("Chrome", "gdev", True)
-        self.approvals = {}
+        self.should_teardown = True
+        self.p = gmas_webdriver.init("Chrome", "gint", True)
 
     @classmethod
     def teardown_class(self):
@@ -31,6 +30,8 @@ class COI_Test:
             "university": pi[2]
         }]
         self.deleted_approvals = {}
+        self.approvals = {}
+        self.approval_context = None
 
     def teardown_method(self, method):
         # return to GMAS home
@@ -54,9 +55,14 @@ class COI_Test:
         """
         assume on request or segment home
         """
-        # p = self.p.goto_approvals()
         approvals = {}
         p = self.p.goto_approvals()
+        # get the approval context - request or segment
+        request_id = p.get_id("request")
+        if request_id is not None:
+            self.approval_context = ("request", self.request_type, request_id)
+        else:
+            self.approval_context = ("segment")
         for approval in p.approvals:
             if approval.type in ["OAR Conflict of Interest", "Conflict of Interest"]:
                 huid = approval.huid
@@ -74,6 +80,7 @@ class COI_Test:
 
     def flag_deleted_approval(self, huid, db_delete):
         if huid in self.approvals:
+            print "delete approval for {}".format(huid)
             # check the existing approval status to see if the approval should be in the delete queue
             for approval in self.approvals[huid]:
                 if approval["type"] == "FCOI":
@@ -153,14 +160,22 @@ class COI_Test:
                 keys.remove(huid)
 
             self.print_person(person)
-            assert oar_count == (1 if (person["investigator"] == "true" and self.tub == "520") else 0)
+            oar_assert = (1 if (person["investigator"] == "true" and self.tub == "520") else 0)
+            if self.approval_context[0] == "request" and self.approval_context[1] == "continuation":
+                # for continuations
+                if person["source"] != self.approval_context:
+                    oar_assert = 0
+
+            assert oar_count == oar_assert
             assert fcoi_count == (1 if (self.tub != "520" and (person["investigator"] == "true" or person["university"] == "1")) else 0)
 
         # check on any leftover approvals
         for huid in keys:
             for approval in approvals[huid]:
                 # check that this should be here...
-                assert approval["id"] in self.deleted_approvals and self.deleted_approvals[approval["id"]]["db_delete"] is False
+                print self.deleted_approvals.keys()
+                assert approval["id"] in self.deleted_approvals
+                assert self.deleted_approvals[approval["id"]]["db_delete"] is False
                 # print self.deleted_approvals[approval["id"]]
 
         self.assert_removal_queue()
