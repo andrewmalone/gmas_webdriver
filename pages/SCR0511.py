@@ -10,8 +10,7 @@ class SCR0511(Page):
     locators = {
             "disable": "DisableSubactivityEvent",
             "reenable": "ReenableSubactivityEvent",
-            "subactivity_information": "xpath=//td[contains(text(), 'Subactivity information')]/ancestor::table[1]//tr[@class='bg0'][position()>1]",
-            "gl_upload_history": "xpath=//td[contains(text(), 'General ledger upload history')]/ancestor::table[1]//tr[@class='bg0'][position()>1]",
+            "GL_upload_history": "xpath=//td[contains(text(), 'General ledger upload history')]/ancestor::table[1]//tr[@class='bg0'][position()>1]",
             "gl status": xpath.text_sibling("td", "General ledger status", 2),
             "owning tub": xpath.text_sibling("td", "Owning tub", 2),
             "description": xpath.text_sibling("td", "Description", 2),
