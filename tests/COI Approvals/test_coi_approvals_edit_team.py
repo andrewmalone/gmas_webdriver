@@ -65,4 +65,4 @@ class Test_COI_Edit(COI_Edit):
 if __name__ == "__main__":
     import os
     filename = os.path.basename(__file__)
-    pytest.main(['%s' % filename, '-m combined'])
+    pytest.main(['%s' % filename, '-m combined', '-v'])
