@@ -235,14 +235,7 @@ class SCR0187(Page):
               
                 
                     
-                    
-#                 "authorized tub": "xpath=//td[contains(text(), 'Chart of accounts')]/ancestor::table[1]//tr[@class='bg0'][position()>1]",
-#                 "authorized org": "xpath=//td[contains(text(), 'Chart of accounts')]/ancestor::table[1]//tr[@class='bg0'][position()>2]",
-#                 "fund": "xpath=//td[contains(text(), 'Chart of accounts')]/ancestor::table[1]//tr[@class='bg0'][position()>3]",
-#                 "activity": "xpath=//td[contains(text(), 'Chart of accounts')]/ancestor::table[1]//tr[@class='bg0'][position()>4]",
-#                 "subactivity": "xpath=//td[contains(text(), 'Chart of accounts')]/ancestor::table[1]//tr[@class='bg0'][position()>5]",
-#                 "authorized root": "xpath=//td[contains(text(), 'Chart of accounts')]/ancestor::table[1]//tr[@class='bg0'][position()>6]"
-        
+
         
             
         
