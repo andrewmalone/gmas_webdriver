@@ -13,6 +13,8 @@ class SCR0308(Page):
         "notice row": xpath.parent_row_of_event("ViewDetailsOfNoticeEvent")
     }
     
+    _locators
+    
     @classmethod
     def url(cls, segment_id):
         """
