@@ -152,6 +152,46 @@ def get_properties(object):
     return properties
 
 
+def test_properties(object, parent=None, index=None):
+        """
+        Gets properties for a page object, returns a dictionary
+        """
+        page_module = object.__class__.__module__
+        # properties = {}
+        # exclude some properties that we don't need to compare
+        exclusions = [
+            "env",
+            "env_url",
+            "mode",
+            "scr",
+            "locators",
+            "_locators",
+            "page_title",
+            "page"
+        ]
+        for name, member in inspect.getmembers(object, lambda a: not(inspect.isroutine(a))):
+            module = member.__class__.__module__
+            if name[:2] == "__" or (module != '__builtin__' and module != page_module) or type(member) is type or name in exclusions:
+                continue
+            # print name
+            attr = getattr(object, name)
+            if type(attr) is list:
+                # properties[name] = []
+                for i, item in enumerate(attr):
+                    # properties[name].append(get_properties(item))
+                    test_properties(item, parent=name, index=i)
+            elif module == page_module:
+                # properties[name] = get_properties(attr)
+                print "module?"
+                test_properties(attr)
+            else:
+                if parent is not None and index is not None:
+                    name = "{}[{}].{}".format(parent, index, name)
+                # properties[name] = attr
+                print "{}: {}".format(name, "ELEMENT NOT FOUND" if attr is None else attr)
+        # return properties
+
+
 def compare_properties(a, b, formats={}, parent=None, index=None, results=None):
     """
     Compare two dictionaries of properties
