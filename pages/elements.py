@@ -244,5 +244,9 @@ class RText(Element):
         pass
 
     def __get__(self, obj, cls=None):
-        elem = obj.find(self.locator)
+        from selenium.common.exceptions import NoSuchElementException
+        try:
+            elem = obj.find(self.locator)
+        except NoSuchElementException:
+            return None
         return elem.text
