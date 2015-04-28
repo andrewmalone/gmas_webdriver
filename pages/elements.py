@@ -93,7 +93,7 @@ class Text(Element):
             r.element = elem
             return r
         except NoSuchElementException:
-            return False
+            return None
 
 
 class Select(Element):

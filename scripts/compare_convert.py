@@ -124,6 +124,7 @@ def get_properties(object):
     Gets properties for a page object, returns a dictionary
     """
     page_module = object.__class__.__module__
+    # print page_module
     properties = {}
     # exclude some properties that we don't need to compare
     exclusions = [
@@ -138,7 +139,9 @@ def get_properties(object):
     ]
     for name, member in inspect.getmembers(object, lambda a: not(inspect.isroutine(a))):
         module = member.__class__.__module__
+        # print name, member, module
         if name[:2] == "__" or (module != '__builtin__' and module != page_module) or type(member) is type or name in exclusions:
+            print "Excluded"
             continue
         attr = getattr(object, name)
         if type(attr) is list:
@@ -171,7 +174,16 @@ def test_properties(object, parent=None, index=None):
         ]
         for name, member in inspect.getmembers(object, lambda a: not(inspect.isroutine(a))):
             module = member.__class__.__module__
-            if name[:2] == "__" or (module != '__builtin__' and module != page_module) or type(member) is type or name in exclusions:
+            # print name, member, module
+            if name[:2] == "__" or (module != '__builtin__' and module != page_module and module != "pages.elements") or type(member) is type or name in exclusions:
+                # if name[:2] == "__":
+                #     print "Excluded name=__"
+                # if (module != '__builtin__' and module != page_module):
+                #     print "Excluded module"
+                # if type(member) is type:
+                #     print "Excluded type"
+                # if name in exclusions:
+                #     print "Excluded ex"
                 continue
             # print name
             attr = getattr(object, name)
@@ -188,6 +200,7 @@ def test_properties(object, parent=None, index=None):
                 if parent is not None and index is not None:
                     name = "{}[{}].{}".format(parent, index, name)
                 # properties[name] = attr
+                # print attr is None, attr == None
                 print "{}: {}".format(name, "ELEMENT NOT FOUND" if attr is None else attr)
         # return properties
 
