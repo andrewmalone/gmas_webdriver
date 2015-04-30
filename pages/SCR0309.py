@@ -16,14 +16,31 @@ class SCR0309(Page):
         "sponsor award no": xpath.text_sibling("td", "Sponsor award no.", 2),
         "amendment no": xpath.text_sibling("td", "Amendment no.", 2),
         "form of notice": xpath.text_sibling("td", "Form of notice", 2),
-#         "date issued": xpath.text_sibling("td", "Date issued", 2),
         "date issued": "xpath=//span[contains(normalize-space(text()), 'Date issued')]/../following-sibling::td[2]",
         "date received": "xpath=//span[contains(normalize-space(text()), 'Date received by Harvard')]/../following-sibling::td[2]",
         "date fully executed": "xpath=//span[contains(normalize-space(text()), 'Date fully executed')]/../following-sibling::td[2]",
         "request row": "xpath=//a[contains(@href,'RequestHomeEvent')]/ancestor::tr[1]",
-        "document_count": "xpath=//*[contains(normalize-space(text()), 'Documents')]/ancestor::td[1]/following-sibling::td[2]"
+        "document_count": "xpath=//*[contains(normalize-space(text()), 'Documents')]/ancestor::td[1]/following-sibling::td[2]",
+        "edit_associates": "EditRequestNoticeAssociationEvent"
     }
     
+    _locators = {
+        "status": "css=[id$=summaryStatus]",
+        "edit_attributes": "css=div[id$=noticeAttributesPanel_header] div button",
+        "notice title": "css=[id$=noticeAttributesNoticeTitle]",
+        "sponsor award no": "css=[id$=noticeAttributesSponsorAwardNo]",
+        "amendment no": "css=[id$=noticeAttributesAmendmentNo]" ,
+        "form of notice": "css=[id$=noticeAttributesFormOfNotice]",
+        "date issued": "css=[id$=noticeAttributesDateIssued]",
+        "date received": "css=[id$=noticeAttributesDateReceivedBy]",
+        "date fully executed": "css=[id$=noticeAttributesDateFullyExecuted]",
+        "request row": "css=[id$=associatedRequestsPanel_content]",
+        "document_count": "css=div[id$=documentsPanel_header] li span",
+        "edit_associates": "css=[id$=associatedRequestsPanel_header] div button",
+        "action_memo": "css=[id$=actionMemoHistoryPanel_content]"
+    }      
+                 
+                
     @classmethod
     def url(cls, notice_id, segment_id):
         """
@@ -94,7 +111,6 @@ class SCR0309(Page):
     
     class Request_row(Row):
         locators = {
-            "link": "event = RequestHomeEvent",
             "request title": Row.cell(2),
             "request type": Row.cell(6),
             "proposed dates": Row.cell(10),
@@ -102,6 +118,14 @@ class SCR0309(Page):
             "submitted": Row.cell(18)
         }
         
+        _locators = {
+           
+            "request title": Row.cell(1),
+            "request type": Row.cell(2),
+            "proposed dates": Row.cell(3),
+            "proposed dollars": Row.cell(4),
+            "submitted": Row.cell(5)
+        }
         def go(self):
             """
             Click the request link
