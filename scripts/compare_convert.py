@@ -141,7 +141,7 @@ def get_properties(object):
         module = member.__class__.__module__
         # print name, member, module
         if name[:2] == "__" or (module != '__builtin__' and module != page_module) or type(member) is type or name in exclusions:
-            print "Excluded"
+            # print "Excluded"
             continue
         attr = getattr(object, name)
         if type(attr) is list:

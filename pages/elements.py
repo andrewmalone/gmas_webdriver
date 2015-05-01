@@ -127,39 +127,60 @@ class Select(Element):
 class Radio(Element):
     """ (Radio button) """
     def __set__(self, obj, val):
-        if "[value='REPLACE']" not in obj.locators[self.locator]:
-            obj.locators[self.locator] += "[value='REPLACE']"  # this is kind of a hack?
-        if self.mapping != None:
-            val = self.mapping[val]
-        elem = obj.find(self.locator, val)
-        elem.click()
+        if obj.mode == "old":
+            if "[value='REPLACE']" not in obj.locators[self.locator]:
+                obj.locators[self.locator] += "[value='REPLACE']"  # this is kind of a hack?
+            if self.mapping is not None:
+                val = self.mapping[val]
+            elem = obj.find(self.locator, val)
+            elem.click()
+        if obj.mode == "convert":
+            l = obj.locators[self.locator]
+            if self.mapping is not None:
+                val = self.mapping[val]
+            val = "".join([s.capitalize() if i > 0 else s for i, s in enumerate(val.split("-"))])
+            elem = obj.find_element("css=[id$={name}Panel] [id$={val}]".format(name=l, val=val))
+            elem.click()
 
     def __get__(self, obj, cls=None):
         """
         Get the value of a radio button (currently selected)
         returns False if the element is not on the page or isn't displayed
         """
-        l = obj.locators[self.locator]
-        l = l.replace("[value='REPLACE']", "")
-        # switch to try/catch
-        from selenium.common.exceptions import NoSuchElementException
-        try:
-            el = obj.find_element(l)
-        except NoSuchElementException:
-            return False
-        else:
-            if el.is_displayed():
-                elements = obj.find_elements(l)
-                value = ""
-                for e in elements:
-                    if e.get_attribute("checked") == "true":
-                        value = e.get_attribute("value")
-                r = self.returnObj(value)
-                r.element = el
-                r.elements = elements
-                r.parent = self
-                return r
-            return False
+        if obj.mode == "old":
+            l = obj.locators[self.locator]
+            l = l.replace("[value='REPLACE']", "")
+            # switch to try/catch
+            from selenium.common.exceptions import NoSuchElementException
+            try:
+                el = obj.find_element(l)
+            except NoSuchElementException:
+                return False
+            else:
+                if el.is_displayed():
+                    elements = obj.find_elements(l)
+                    value = ""
+                    for e in elements:
+                        if e.get_attribute("checked") == "true":
+                            value = e.get_attribute("value")
+                    r = self.returnObj(value)
+                    r.element = el
+                    r.elements = elements
+                    r.parent = self
+                    return r
+                return False
+        if obj.mode == "convert":
+            l = obj.locators[self.locator]
+            elements = obj.find_elements("css=input[type=radio][id$=clone][name$={}]".format(l))
+            for e in elements:
+                # print e.get_attribute("value"), e.get_attribute("checked"), e.get_attribute("disabled")
+                if e.get_attribute("checked") == "true":
+                    value = e.get_attribute("value")
+            r = self.returnObj(value)
+            r.element = elements[0]
+            r.elements = elements
+            r.parent = self
+            return r
 
 
 class Radio_refresh(Radio):
