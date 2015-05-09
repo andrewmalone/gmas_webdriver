@@ -214,7 +214,8 @@ def compare_properties(a, b, formats={}, parent=None, index=None, results=None):
         results = []
     format_funcs = {
         "date": date_format,
-        "percent": percent_format
+        "percent": percent_format,
+        "dollar": dollar_format
     }
     for name, val_a in a.iteritems():
         try:
@@ -269,3 +270,16 @@ def percent_format(string):
     if string == "":
         return string
     return string.rstrip("0").rstrip(".") + "%"
+def dollar_format(string):
+    negative = False
+    if string == "" or string == "None" or string == "NONE" or string is None:
+        return string
+    if string[0] == "(" and string[-1] == ")":
+        negative = True
+        string = string[1:-1]
+    if string[-3:] == ".00":
+        string = string[:-3]
+    string = "$" + string
+    if negative:
+        string = "(" + string + ")"
+    return string
