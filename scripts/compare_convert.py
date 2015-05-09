@@ -194,11 +194,13 @@ def test_properties(object, parent=None, index=None):
                     test_properties(item, parent=name, index=i)
             elif module == page_module:
                 # properties[name] = get_properties(attr)
-                print "module?"
-                test_properties(attr)
+                # print "module?", name
+                test_properties(attr, parent=name)
             else:
                 if parent is not None and index is not None:
                     name = "{}[{}].{}".format(parent, index, name)
+                if parent is not None and index is None:
+                    name = "{}.{}".format(parent, name)
                 # properties[name] = attr
                 # print attr is None, attr == None
                 print "{}: {}".format(name, "ELEMENT NOT FOUND" if attr is None else attr)
