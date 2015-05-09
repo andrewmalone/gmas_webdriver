@@ -269,7 +269,11 @@ def date_format(string):
 def percent_format(string):
     if string == "":
         return string
-    return string.rstrip("0").rstrip(".") + "%"
+    if "." in string:
+        string = string.rstrip("0").rstrip(".")
+    return string + "%"
+
+
 def dollar_format(string):
     negative = False
     if string == "" or string == "None" or string == "NONE" or string is None:
