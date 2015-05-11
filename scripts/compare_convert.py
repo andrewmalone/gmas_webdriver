@@ -220,6 +220,7 @@ def compare_properties(a, b, formats={}, parent=None, index=None, results=None):
         "dollar": dollar_format
     }
     for name, val_a in a.iteritems():
+        #print name, type(val_a)
         try:
             val_b = b[name]
         except:
@@ -236,6 +237,8 @@ def compare_properties(a, b, formats={}, parent=None, index=None, results=None):
                 # print "False {}[{}] not in a".format(name, i)
                 # results.append(["False {}[{}] not in a".format(name, i)])
                 results.append([False, "{}[{}] not in a".format(name, i)])
+        elif type(val_a) is dict:
+            results = compare_properties(val_a, val_b, parent=name, formats=formats, results=results)
         else:
             n = name
             if parent is not None:
@@ -252,10 +255,13 @@ def compare_properties(a, b, formats={}, parent=None, index=None, results=None):
                 compare = val_a == val_b
             if parent is not None and index is not None:
                 name = "{}[{}].{}".format(parent, index, name)
+            if parent is not None and index is None:
+                name = "{}.{}".format(parent, name)
             # check the values
             # print "{} {}: ({}, {})".format(compare, name, val_a, val_b)
             # s = "{} {}: ({}, {})".format(compare, name, val_a, val_b)
             s = [compare, name, val_a, val_b]
+            # print s
             results.append(s)
     return results
 
