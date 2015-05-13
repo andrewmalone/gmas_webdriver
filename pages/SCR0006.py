@@ -104,7 +104,7 @@ class SCR0006(Page):
         def go(self):
             """
             Click the subagreement link
-            Goes to SCR_00017
+            Goes to SCR_0017
             """
             return self._go("link")
 
