@@ -17,15 +17,26 @@ class SCR0192(Page):
             "OMB A-21 func.code": xpath.text_sibling("td", "OMB A-21 func. code", 2),
             "Keyword": xpath.text_sibling("td", "Keyword", 2)
     }
+    
+    _locators = {
+            "GL_upload_history": "css=[id$=GLUploadHistoryPanel_content] tbody tr",
+            "gl status": "css=[id$=GLStatus]",
+            "owning tub": "css=[id$=Tub]",
+            "owning org": "css=[id$=Org]",
+            "activity type": "css=[id$=Type]",
+            "OMB A-21 func.code": "css=[id$=A21Code]",
+            "Keyword": "css=[id$=Keyword]" 
+    }
 
     @classmethod
-    def url(cls, segment_id, account_id, activity):
+    def url(cls, account_id, segment_id, activity):
         """
         Direct navigate to SCR_0192
         """
         url = "{{}}/gmas/dispatch?ref=%2Faccount%2FSCR0187AccountDetail.jsp&accountId={}&ViewActivityDetailsEvent=&segmentId={}&formName=AccountDetailForm&activity={}&submit"
         return url.format(account_id, segment_id, activity)
-
+    
+    
     gl_status = RText("gl status", "General ledger status")
     owning_tub = RText("owning tub", "Owning tub")
     owning_org = RText("owning org", "Fund Owning org")
@@ -47,6 +58,13 @@ class SCR0192(Page):
             "type": Row.cell(6),
             "feed_status": Row.cell(10)
         }
+        
+        _locators = {
+            "date": Row.cell(1),
+            "type": Row.cell(2),
+            "feed_status": Row.cell(3)
+        }
+        
         date = RText("date", "GL date")
         type = RText("type", "GL action type")
         feed_status = RText("feed_status", "GL feed status")
