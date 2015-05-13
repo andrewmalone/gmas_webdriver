@@ -13,7 +13,11 @@ class SCR0308(Page):
         "notice row": xpath.parent_row_of_event("ViewDetailsOfNoticeEvent")
     }
     
-    _locators
+    _locators = {
+        "log notice": "css=[id$=LogNotice]",
+        "notice link": "css=a[href*='ViewDetailsOfNoticeEvent']",
+        "notice row": xpath.parent_row_of_event("ViewDetailsOfNoticeEvent")
+    }
     
     @classmethod
     def url(cls, segment_id):
@@ -71,6 +75,16 @@ class SCR0308(Page):
             "type": Row.cell(23)
         }
 
+        _locators = {
+            "link": "event=ViewDetailsOfNoticeEvent",
+            "title": Row.cell(1),
+            "sponsor award no": Row.cell(2),
+            "amendment": Row.cell(3),
+            "date received": Row.cell(4),
+            "status": Row.cell(5),
+            "type": Row.cell(6)
+        }
+        
         def go(self):
             """
             Click the notice link
