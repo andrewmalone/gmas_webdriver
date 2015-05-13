@@ -98,7 +98,8 @@ class wrapper(object):
         """
         with open(filename, "wb") as f:
             writer = csv.writer(f)
-            writer.writerows(self._log)
+            for row in self._log:
+                writer.writerow([r.encode('ascii', 'xmlcharrefreplace') if isinstance(r, unicode) else r for r in row])
 
     def compare(self, formats={}):
         """
@@ -250,7 +251,10 @@ def compare_properties(a, b, formats={}, parent=None, index=None, results=None):
                     format_func = format_funcs[formats[n]]
                 val_a_new = format_func(val_a)
                 compare = val_a_new == val_b
-                val_a = "{} => {}".format(val_a, val_a_new)
+                try:
+                    val_a = "{} => {}".format(val_a, val_a_new)
+                except UnicodeEncodeError:
+                    val_a = u"{} => {}".format(val_a, val_a_new)
             else:
                 compare = val_a == val_b
             if parent is not None and index is not None:
