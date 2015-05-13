@@ -47,6 +47,47 @@ class SCR0187(Page):
     
     }
     
+    
+    
+    _locators = {
+        "edit final figure": "css=span[id$=:finalFigure_display] div a ",
+        "expenses": 
+        "GL_history": 
+        "fund": 
+        "activity": 
+        "subactivity": 
+        "income": 
+        "transfers":
+        "description": "css=[id$=summaryDescription]"  
+        "status": "css=[id$=summaryStatus]"  
+        "type": "css=[id$=summaryType]" 
+        "year": "css=[id$=summaryYear]"  
+        "start date": 
+        "end date": 
+        "funds allocated": "css=[id = accountFinancialsFundsAllocated1]"
+        "expended": "css=[id=accountFinancialsExpended]"
+        "funds available": "css=[id = accountFinancialsFundsAvailable]"
+        "income": 
+        "non-operating transfers": "css=[id = accountFinancialsNoOperatingTransfers]"
+        "cash deficit": "css=[id = accountFinancialsCashDeficit]"
+        "final figure": 
+        "underspent": "css=[id = accountFinancialsUnderspend]"
+        "account group": "css=[id = additionalAccountInformationAccountGroup]"
+        "research country": 
+        "campus location": 
+        "affiliate exchange": 
+        "indirect cost": 
+        "at-risk amount": 
+        "at-risk startdate": 
+        "at-risk enddate": 
+        "authorized per-award startdate": 
+        "authorized pre-award direct cost amount": 
+        "associated indirect cost amount":
+        "coa_rows": 
+        "IDC_Rates": 
+        "comment_count": 
+    }
+    
     description = RText("description", "Account description")
     status = RText("status", "Account status")
     type = RText("type", "Account type")
@@ -203,6 +244,16 @@ class SCR0187(Page):
         """
         return [self.IDC_Rates(row, self) for row in self.finds("IDC_Rates")]
     
+    @property
+    def dates(self):
+        """
+        convert dates to range
+        """
+            element = self.find("start date")
+            if self.page.mode == "old":
+                return  date_range = concatenate(start_date - end_date)
+            else self.page.mode == "convert":
+                return element
    
     class IDC_Rates(Row): 
         locators = {
