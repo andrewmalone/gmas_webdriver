@@ -16,16 +16,30 @@ class SCR0191(Page):
             "gl status": xpath.text_sibling("td", "General ledger status", 2),
             "owning tub": xpath.text_sibling("td", "Owning tub", 2),
             "owning org": xpath.text_sibling("td", "Owning org", 2),
-            "Title": xpath.text_sibling("td", "Title", 2),
-            "Funding category": xpath.text_sibling("td", "Funding category", 2),
-            "Funding type":  xpath.text_sibling("td", "Funding type", 2),
-            "Agency fund":  xpath.text_sibling("td", "Agency fund", 2),
-            "Gift":  xpath.text_sibling("td", "Gift or interest override", 2),
-            "Keyword": xpath.text_sibling("td", "Keyword", 2)
+            "funding category": xpath.text_sibling("td", "Funding category", 2),
+            "funding type":  xpath.text_sibling("td", "Funding type", 2),
+            "agency fund":  xpath.text_sibling("td", "Agency fund", 2),
+            "gift":  xpath.text_sibling("td", "Gift or interest override", 2),
+            "keyword": xpath.text_sibling("td", "Keyword", 2)
     }
-
+        
+    _locators = {
+                 
+                 "Fund_title": "css=[id=actionbar_content] tbody tr",
+                 "descriptor": "css=[id$=descriptor]",
+                 "gl status": "css=[id$=GLStatus]",
+                 "owning tub": "css=[id$=tubDescriptor]",
+                 "owning org": "css=[id$=orgDescriptor]",
+                 "funding category": "css=[id$=fundcategory]",
+                 "funding type": "css=[id$=fundType]",
+                 "agency fund": "css=[id$=agencyFund]",
+                 "gift": "css=[id$=giftOrInterestOverride]",
+                 "keyword": "css=[id$=keyWord]",
+                 "GL_history": "css=[id$=GLUploadHistory_content] tbody tr"
+    }
+    
     @classmethod
-    def url(cls, segment_id, account_id, fund):
+    def url(cls, account_id, segment_id, fund):
         """
         Direct navigation to SCR_0191
         """
@@ -35,12 +49,11 @@ class SCR0191(Page):
     gl_status = RText("gl status", "General ledger status")
     owning_tub = RText("owning tub", "Owning tub")
     owning_org = RText("owning org", "Fund Owning org")
-    title = RText("Title", "Fund Title")
-    catogery = RText("Funding category", "Funding category")
-    type = RText("Funding type", "Funding type")
-    agency = RText("Agency fund", "Agency fund")
-    gift = RText("Gift", "Gift or interest override")
-    keyword = RText("Keyword", "Keyword")
+    catogery = RText("funding category", "Funding category")
+    type = RText("funding type", "Funding type")
+    agency = RText("agency fund", "Agency fund")
+    gift = RText("gift", "Gift or interest override")
+    keyword = RText("keyword", "Keyword")
 
     @property
     def gl_history(self):
@@ -55,6 +68,12 @@ class SCR0191(Page):
             "date": Row.cell(2),
             "type": Row.cell(6),
             "feed_status": Row.cell(10)
+        }
+        
+        _locators = {
+            "date": Row.cell(1),      
+            "type": Row.cell(2),  
+            "feed_status": Row.cell(3)  
         }
         date = RText("date", "GL date")
         type = RText("type", "GL action type")
