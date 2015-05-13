@@ -7,7 +7,7 @@ class COI_Test:
     @classmethod
     def setup_class(self):
         self.should_teardown = True
-        self.p = gmas_webdriver.init("Chrome", "gint", True)
+        self.p = gmas_webdriver.init("Chrome", "gdev", True)
 
     @classmethod
     def teardown_class(self):

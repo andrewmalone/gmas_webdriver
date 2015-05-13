@@ -48,8 +48,8 @@ class Test_COI_Edit(COI_Edit):
         self.edit_team_remove_team()
         self.assert_approvals()
 
-    @pytest.mark.combined
-    @pytest.mark.parametrize('oar', [True, False])
+    @pytest.mark.combinedx
+    @pytest.mark.parametrize('oar', [False])
     def test_edit_change_flags(self, oar):
         title = "COI Test edit change flags"
         self.add_standard_team()
@@ -65,4 +65,4 @@ class Test_COI_Edit(COI_Edit):
 if __name__ == "__main__":
     import os
     filename = os.path.basename(__file__)
-    pytest.main(['%s' % filename, '-m combined', '-v'])
+    pytest.main(['%s' % filename, '-m combinedx', '-v'])

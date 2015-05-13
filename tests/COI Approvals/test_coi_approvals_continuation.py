@@ -7,10 +7,8 @@ class Test_COI_Continuation(COI_Continuation):
     def test_continuation_basic(self):
         title = "COI Test Continuation basic"
         self.add_standard_team()
-        self.create_awarded(title)
-        self.assert_approvals()
+        self.create_awarded(title, tub="370")
         self.create_continuation()
-        self.assert_approvals()
 
     @pytest.mark.combined
     def test_continuation_add_people(self):
@@ -33,4 +31,4 @@ if __name__ == "__main__":
     # pytest.main(['-m combined', '-v', ''])
     import os
     filename = os.path.basename(__file__)
-    pytest.main(['%s' % filename, '-m dev'])
+    pytest.main(['%s' % filename, '-m tmp'])
