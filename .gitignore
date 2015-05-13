@@ -5,3 +5,5 @@ pagegen.py
 ghostdriver.log
 /tmp*.py
 tmp/
+
+tmp/tmp.py
