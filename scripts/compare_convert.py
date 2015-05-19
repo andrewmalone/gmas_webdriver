@@ -204,7 +204,10 @@ def test_properties(object, parent=None, index=None):
                     name = "{}.{}".format(parent, name)
                 # properties[name] = attr
                 # print attr is None, attr == None
-                print "{}: {}".format(name, "ELEMENT NOT FOUND" if attr is None else attr)
+                try:
+                    print "{}: {}".format(name, "ELEMENT NOT FOUND" if attr is None else attr)
+                except UnicodeError:
+                    print "{}: {}".format(name, "ELEMENT NOT FOUND" if attr is None else attr.encode('ascii', 'xmlcharrefreplace'))
         # return properties
 
 
@@ -271,7 +274,7 @@ def compare_properties(a, b, formats={}, parent=None, index=None, results=None):
 
 
 def date_format(string):
-    if string == "":
+    if string == "" or string is None:
         return string
     d = datetime.strptime(string, "%m-%d-%Y")
     d2 = "{dt:%b} {dt.day}, {dt.year}".format(dt=d)
