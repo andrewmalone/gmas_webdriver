@@ -2,6 +2,7 @@ from pages.Page import Page
 from pages.elements import Row
 import utilities.xpath as xpath
 
+
 class SCR0233(Page):
     """
     SCR_0233 Subagreement home
@@ -12,6 +13,11 @@ class SCR0233(Page):
         "amendment": "event=ViewAmendmentEvent",
         "amendment row": xpath.parent_row_of_event("ViewAmendmentEvent")
     }
+
+    @classmethod
+    def url(cls, segment_id, subagreement_id, subagreement_status_id):
+        url = "{{}}/gmas/dispatch?ref=%2Fsubagreement%2FSCR0232SubagreementListWithinSegment.jsp&subagreementId={}&ViewSubagreementEvent=&segmentId={}&formName=SubagreementListForm&subagreementStatus={}"
+        return url.format(subagreement_id, segment_id, subagreement_status_id)
 
     @property
     def amendment_count(self):
