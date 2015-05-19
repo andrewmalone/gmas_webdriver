@@ -20,7 +20,7 @@ class SCR0309(Page):
         "date received": "xpath=//span[contains(normalize-space(text()), 'Date received by Harvard')]/../following-sibling::td[2]",
         "date fully executed": "xpath=//span[contains(normalize-space(text()), 'Date fully executed')]/../following-sibling::td[2]",
         "request row": "xpath=//a[contains(@href,'RequestHomeEvent')]/ancestor::tr[1]",
-        "document_count": "xpath=//*[contains(normalize-space(text()), 'Documents')]/ancestor::td[1]/following-sibling::td[2]",
+        "document count": "xpath=//*[contains(normalize-space(text()), 'Documents')]/ancestor::td[1]/following-sibling::td[2]",
         "edit_associates": "EditRequestNoticeAssociationEvent"
     }
     
@@ -35,7 +35,7 @@ class SCR0309(Page):
         "date received": "css=[id$=noticeAttributesDateReceivedBy]",
         "date fully executed": "css=[id$=noticeAttributesDateFullyExecuted]",
         "request row": "css=[id$=associatedRequestsPanel_content]",
-        "document_count": "css=div[id$=documentsPanel_header] li span",
+        "document count": "css=div[id$=documentsPanel_header] li",
         "edit_associates": "css=[id$=associatedRequestsPanel_header] div button",
         "action_memo": "css=[id$=actionMemoHistoryPanel_content]"
     }      
@@ -48,7 +48,7 @@ class SCR0309(Page):
         """
         url = "{{}}/gmas/dispatch?ref=%2Fnotice%2FSCR0308ListofNoticesInASegment.jsp&noticeId={}&segmentId={}&formName=ListOfNoticesForm&ViewDetailsOfNoticeEvent=&submit"
         return url.format(notice_id, segment_id)
-    
+ 
     notice_title = RText("notice title", "Notice Title")
     sponsor_awardno = RText("sponsor award no", "Sponsored award no")
     amendment_no = RText("amendment no", "Amendment no.")
@@ -56,7 +56,7 @@ class SCR0309(Page):
     date_issued = RText("date issued", "Date issued")
     date_received = RText("date received", "Date received by harvard")
     date_fullyexecuted = RText("date fully executed", "Date fully executed")
-    document_count = RText("document_count", "Documents count")
+    document_count = RText("document count", "Documents count")
 
     @property
     def notice_status(self):
@@ -92,6 +92,14 @@ class SCR0309(Page):
         Goes to SCR_0453
         """
         return self.go("edit_attributes")
+
+    @property
+    def document_count(self):
+        """
+        Number of documents showing in the document component
+        """
+        count = self.find("document count").text
+        return int(count[:count.find(" ")])
     
     def request(self, n):
         """
