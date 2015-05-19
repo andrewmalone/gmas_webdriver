@@ -19,7 +19,7 @@ class SCR0187(Page):
         "description": xpath.text_sibling("td", "Description", 2),
         "status": xpath.text_sibling("td", "Status", 2),
         "type": xpath.text_sibling("td", "Type", 2),
-        "year": xpath.text_sibling("td", "Year", 2),
+        "year": xpath.text_sibling("td[@class='strong']", "Year", 2, "td"),
         "start date": "xpath=//*[contains(normalize-space(text()), 'Start date')]/ancestor::td[1]/following-sibling::td[2]",
         "end date": "xpath=//span[contains(normalize-space(text()), 'End date')]/../following-sibling::td[2]",
         "funds allocated": "xpath=//span[contains(normalize-space(text()), 'Funds allocated')]/../following-sibling::td[2]",
@@ -48,7 +48,8 @@ class SCR0187(Page):
         "coa_rows": "xpath=//td[contains(text(),'Segment')]/../following-sibling::tr[@class='bg0']",
         "IDC_Rates": "xpath=//td[contains(text(), 'Indirect cost rates')]/ancestor::table[1]//tr[@class='bg0'][position()>2]",
         "comment_count": "xpath=//*[contains(normalize-space(text()), 'Comments')]/ancestor::td[1]/following-sibling::td[4]",
-        "old_number": xpath.text_sibling("td", "Old number", 4)
+        "old_number": xpath.text_sibling("td", "Old number", 4),
+        "restricted": "css=img[src$='i_lock.gif'][title='Restricted account']"
     }
 
     _locators = {
@@ -67,7 +68,7 @@ class SCR0187(Page):
         # "start date": "xpath=//*[contains(normalize-space(text()), 'Start date')]/ancestor::td[1]/following-sibling::td[2]",
         # "end date": "xpath=//span[contains(normalize-space(text()), 'End date')]/../following-sibling::td[2]",
         "dates": "id=summaryDates",
-        "funds allocated": "id=accountFinancialsFundsAllocated1",
+        "funds allocated": "css=[id^=accountFinancialsFundsAllocated]:not([id$=Label]",
         "expended": "id=accountFinancialsExpended",
         "funds available": "id=accountFinancialsFundsAvailable",
         "income": "xpath=//a[contains(normalize-space(text()), 'Income')]/../following-sibling::td[1]",
@@ -92,7 +93,8 @@ class SCR0187(Page):
         "coa_rows": "css=#chartOfAccountsGrid tr:nth-child(n+2)",
         "IDC_Rates": "css=#indirectCostRatesDatatable tbody tr",
         "comment_count": "css=a[id^=commentsLinkForm]",
-        "old_number": xpath.text_sibling_child("td", "Old number", 4)
+        "old_number": xpath.text_sibling_child("td", "Old number", 1),
+        "restricted": "css=#accountFinancialsFundsAllocated.restricted-label"
     }
 
     description = RText("description", "Account description")
@@ -177,6 +179,13 @@ class SCR0187(Page):
             return self.find("comment_count").text.split(" ")[0]
         if self.mode == "convert":
             return self.find("comment_count").text.split(" (")[1][:-1]
+
+    @property
+    def restricted(self):
+        if len(self.finds("restricted")) == 0:
+            return False
+        else:
+            return True
 
     @property
     def tub(self):
