@@ -21,7 +21,7 @@ class SCR0453(Page):
     }
 
     _locators = {
-       "title": "css=[id$=noticeTitle]",
+        "title": "css=[id$=noticeTitle]",
        "sponsor award no.": "css=[id$=sponsorAward]",
        "number type": "sponsorAward",
        "purchase order": "css=[id$=purchaseOrder]",
