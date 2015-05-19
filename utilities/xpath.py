@@ -1,5 +1,7 @@
-def text_sibling(element, text, num):
-    return "xpath=//%s[contains(normalize-space(text()), '%s')]/following-sibling::%s[%s]" % (element, text, element, num)
+def text_sibling(element1, text, num, element2=None):
+    if element2 is None:
+        element2 = element1
+    return "xpath=//%s[contains(normalize-space(text()), '%s')]/following-sibling::%s[%s]" % (element1, text, element2, num)
 
 
 def text_sibling_child(element, text, num):
