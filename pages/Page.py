@@ -54,6 +54,10 @@ class Page(GMWebElement):
         # Doesn't work in PhantomJS yet, fine in Firefox and Chrome
         return self.driver.execute_script("return window.performance.timing.loadEventEnd - window.performance.timing.navigationStart")
 
+    def get_page_load_details(self):
+        # window.performance.timing.
+        pass
+
     def switch_to_popup(self):
         self.w.until(lambda d: len(d.window_handles) == 2)
         popup_win = self.driver.window_handles[1]
@@ -97,8 +101,9 @@ class Page(GMWebElement):
         page = self.__class__.__name__
         module = "pages.%s" % self.__class__.__name__
         reload(sys.modules[module])
+        reload(sys.modules['pages.elements'])
         cls = getattr(importlib.import_module("pages.%s" % (page)), page)
-        return cls(self.driver)
+        return cls(self.driver).load_page()
 
     def get_id(self, id_name):
         locator = "css=input[type='hidden'][name='%sId']" % (id_name)
