@@ -55,8 +55,11 @@ class Page(GMWebElement):
         return self.driver.execute_script("return window.performance.timing.loadEventEnd - window.performance.timing.navigationStart")
 
     def get_page_load_details(self):
-        # window.performance.timing.
-        pass
+        # total = self.driver.execute_script("return window.performance.timing.loadEventEnd - window.performance.timing.navigationStart")
+        server = self.driver.execute_script("return window.performance.timing.responseStart - window.performance.timing.requestStart")
+        download = self.driver.execute_script("return window.performance.timing.responseEnd - window.performance.timing.responseStart")
+        render = self.driver.execute_script("return window.performance.timing.loadEventEnd - window.performance.timing.responseEnd")
+        return "{}|{}|{}".format(server, download, render)
 
     def switch_to_popup(self):
         self.w.until(lambda d: len(d.window_handles) == 2)
