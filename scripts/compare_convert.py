@@ -107,10 +107,12 @@ class wrapper(object):
         a = get_properties(self._a)
         b = get_properties(self._b)
         load_a = self._a.get_page_load_time()
+        load_a_detail = self._a.get_page_load_details()
         load_b = self._b.get_page_load_time()
+        load_b_detail = self._b.get_page_load_details()
         perf = round(float(load_b) / load_a, 2)
         # print "Performance: {} ({},{})".format(perf, load_a, load_b)
-        self.add_to_log([self._a.scr, self._a.driver.current_url, self._b.driver.current_url, "Performance", load_a, load_b, perf])
+        self.add_to_log([self._a.scr, self._a.driver.current_url, self._b.driver.current_url, "Performance", load_a, load_a_detail, load_b, load_b_detail, perf])
         prefix = [self._a.scr, self._a.driver.current_url, self._b.driver.current_url]
         results = compare_properties(a, b, formats=formats)
         for result in results:
@@ -201,7 +203,10 @@ def test_properties(object, parent=None, index=None):
                     name = "{}[{}].{}".format(parent, index, name)
                 # properties[name] = attr
                 # print attr is None, attr == None
-                print "{}: {}".format(name, "ELEMENT NOT FOUND" if attr is None else attr)
+                try:
+                    print "{}: {}".format(name, "ELEMENT NOT FOUND" if attr is None else attr)
+                except UnicodeError:
+                    print "{}: {}".format(name, "ELEMENT NOT FOUND" if attr is None else attr.encode('ascii', 'xmlcharrefreplace'))
         # return properties
 
 
@@ -214,7 +219,9 @@ def compare_properties(a, b, formats={}, parent=None, index=None, results=None):
         results = []
     format_funcs = {
         "date": date_format,
-        "percent": percent_format
+        "percent": percent_format,
+        "dollar": dollar_format,
+        "name": name_format
     }
     for name, val_a in a.iteritems():
         try:
@@ -258,7 +265,7 @@ def compare_properties(a, b, formats={}, parent=None, index=None, results=None):
 
 
 def date_format(string):
-    if string == "":
+    if string == "" or string is None:
         return string
     d = datetime.strptime(string, "%m-%d-%Y")
     d2 = "{dt:%b} {dt.day}, {dt.year}".format(dt=d)
@@ -268,4 +275,37 @@ def date_format(string):
 def percent_format(string):
     if string == "":
         return string
+<<<<<<< HEAD
     return string.rstrip("0").rstrip(".") + "%"
+=======
+    if "." in string:
+        string = string.rstrip("0").rstrip(".")
+    return string + "%"
+
+
+def dollar_format(string):
+    negative = False
+    if string == "" or string == "None" or string == "NONE" or string is None:
+        return string
+    if string[0] == "(" and string[-1] == ")":
+        negative = True
+        string = string[1:-1]
+    if string[-3:] == ".00":
+        string = string[:-3]
+    if string[0] != "$":
+        string = "$" + string
+    if negative:
+        string = "(" + string + ")"
+    return string
+
+
+def name_format(string):
+    if string == "" or string is None:
+        return string
+    names = string.split(",")
+    first_name = names[1].strip()
+    last_name = names[0].strip()
+    if " " in first_name:
+        first_name = first_name.split(" ")[0]
+    return first_name + " " + last_name
+>>>>>>> 87b33908ff6f02dc23b83dce8294c9b33c113e8a
