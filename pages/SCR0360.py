@@ -88,6 +88,8 @@ class SCR0360(Page):
             "At risk":Row.cell(27)
         } 
         
+
+   
         def go(self):
             """
             Clicks the account link
