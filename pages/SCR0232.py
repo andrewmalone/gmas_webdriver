@@ -11,7 +11,11 @@ class SCR0232(Page):
         "subagreement row":  xpath.parent_row_of_event("SubagreementEvent")
     }
     
-    
+    _locators = {
+        "subagreement link": "css=a[href*='SubagreementEvent']",
+        "subagreement row":  xpath.parent_row_of_event("SubagreementEvent")
+    }       
+                 
     @classmethod
     def url(cls, segment_id):
         """
@@ -61,6 +65,18 @@ class SCR0232(Page):
             "pi": Row.cell(19),
             "dates": Row.cell(23),
             "dollars": Row.cell(27)
+        }
+        
+        _locators = {
+                     
+            "link": "event=SubagreementEvent",
+            "subrecipient": Row.cell(1),
+            "Description": Row.cell(2),
+            "id": Row.cell(3),
+            "status": Row.cell(4),
+            "pi": Row.cell(5),
+            "dates": Row.cell(6),
+            "dollars": Row.cell(7)           
         }
 
         subrecipient = RText("subrecipient", "Subrecipient")
