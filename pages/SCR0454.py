@@ -16,7 +16,7 @@ class SCR0454(Page):
     
     _locators = {
         "request row": "css=[id$=editListOfAssociatedRequest_content] tbody tr",
-        "check_box": "css=[class=div.ui-chkbox-icon]"
+        "check_box": "xpath=//*[contains(@class,'ui-icon-check')]"
     }
     
     
@@ -92,7 +92,11 @@ class SCR0454(Page):
                 # If yes - return "Yes"
                 # If no - return "No"
             elif self.page.mode == "convert":
-                return element
+                disabled = element.find_elements_by_css_selector("div.ui-state-disabled")
+                if len(disabled) == 0:
+                    return "No"
+                else:
+                    return "Yes"
             
             
         
