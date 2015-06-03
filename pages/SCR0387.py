@@ -1,7 +1,6 @@
 from pages.Page import Page
 from gmas_webdriver.pages.SCR0472 import request_type_doc
 from pages.elements import Row, RText, Radio 
-from gmas_webdriver.scripts.compare_convert import date_format
 import utilities.xpath as xpath
 
 
@@ -15,7 +14,7 @@ class SCR0387(Page):
     }
     
     _locators = {
-        "request row": "css=[id$=j_idt59] tbody tr"
+        "request row": "css=[id$=associatedRequestsFieldset] tbody tr"
     }
 
     def check_first(self):
@@ -68,7 +67,7 @@ class SCR0387(Page):
             "status": Row.cell(7)    
     }
         
-        checkbox = Radio('Checkbox', 'Check box')
+        checkbox = Radio("Checkbox", "Check box")
         request_title = RText("request title", "Request title")
         request_type =  RText("request type", "Request type")
         proposed_dates = RText("proposed dates", "Proposed dates")
@@ -76,9 +75,7 @@ class SCR0387(Page):
         date_submitted = RText("date submitted", "Date submitted")
         status = RText("status", "Status")
          
-    def date_range(D):
-        dates = d.split(" - ") 
-        return u"{} - {}".format(date_format(dates[0]), date_format(dates[1]))
+    
 
 
     
