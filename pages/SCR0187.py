@@ -91,7 +91,7 @@ class SCR0187(Page):
         "authorized pre-award direct cost amount": xpath.text_sibling_child("td", "Pre-award direct costs", 1),
         "associated indirect cost amount": xpath.text_sibling_child("td", "Pre-award indirect costs", 1),
         "coa_rows": "css=#chartOfAccountsGrid tr:nth-child(n+2)",
-        "IDC_Rates": "css=#indirectCostRatesDatatable tbody tr",
+        "IDC_Rates": "css=.ui-panel-content:not([style='display:none']) #indirectCostRatesDatatable tbody tr",
         "comment_count": "css=a[id^=commentsLinkForm]",
         "old_number": xpath.text_sibling_child("td", "Old number", 1),
         "restricted": "css=#accountFinancialsFundsAllocated.restricted-label"
