@@ -221,7 +221,8 @@ def compare_properties(a, b, formats={}, parent=None, index=None, results=None):
         "date": date_format,
         "percent": percent_format,
         "dollar": dollar_format,
-        "name": name_format
+        "name": name_format,
+        "case": sentence_case_format
     }
     for name, val_a in a.iteritems():
         try:
@@ -308,4 +309,13 @@ def name_format(string):
     if " " in first_name:
         first_name = first_name.split(" ")[0]
     return first_name + " " + last_name
+<<<<<<< HEAD
 >>>>>>> 87b33908ff6f02dc23b83dce8294c9b33c113e8a
+=======
+
+
+def sentence_case_format(string):
+    if string == "" or string is None:
+        return string
+    return " ".join([word if i == 0 else word.lower() for i, word in enumerate(string.split(" "))])
+>>>>>>> 673cf50115aadf9b6b729ebe3b3a3bddc65a9d03

@@ -8,3 +8,7 @@ def text_sibling_child(element, text, num):
 
 def parent_row_of_event(event):
     return "xpath=//a[contains(@href,'%s')]/ancestor::tr[1]" % event
+
+
+if __name__ == "__main__":
+    print text_sibling("td[@class='strong']", "Indirect basis", 2)
