@@ -23,8 +23,9 @@ class SCR0240(Page):
 		"anticipated end date": "xpath=//span[contains(normalize-space(text()), 'Anticipated end date')]/../following-sibling::td[2]",
 		"subrecipient amt. to be issued": "xpath=//span[contains(normalize-space(text()), 'Subrecipient amt. to be issued')]/../following-sibling::td[2]",
 		"subrecipient anticipated": "xpath=//span[contains(normalize-space(text()), 'Subrecipient anticipated')]/../following-sibling::td[2]",
-		"subrecipient indirect": "xpath=//*[contains(normalize-space(text()), 'Subrecipient indirect')]/ancestor::table[1]/tbody/tr[3]/td[2]",
-		"expiration date": "xpath=//*[contains(normalize-space(text()), 'Subrecipient indirect')]/ancestor::table[1]/tbody/tr[3]/td[3]",
+# 		"subrecipient indirect": "xpath=//*[contains(normalize-space(text()), 'Subrecipient indirect')]/ancestor::table[1]/tbody/tr[3]/td[2]",
+		"sub_IDC": "xpath=//*[contains(normalize-space(text()), 'Subrecipient indirect')]/ancestor::table[1]/tbody/tr[3]",
+ 		"expiration date": "xpath=//*[contains(normalize-space(text()), 'Subrecipient indirect')]/ancestor::table[1]/tbody/tr[3]/td[3]",
 		"indirect basis": xpath.text_sibling("td", "Indirect basis", 1),
 		"comments": "xpath=//*[contains(normalize-space(text()), 'Comments')]/../following-sibling::td[2]",
 		"documents": "xpath=//*[contains(normalize-space(text()), 'Documents')]/../following-sibling::td[2]",
@@ -45,9 +46,10 @@ class SCR0240(Page):
 		"subrecipient amt. to be issued": "xpath=//span[contains(normalize-space(text()), 'Subrecipient amt. to be issued')]/../following-sibling::td[1]",
 		"subrecipient anticipated": "xpath=//span[contains(normalize-space(text()), 'Subrecipient anticipated')]/../following-sibling::td[1]",
 		"indirect basis": "xpath=//span[contains(normalize-space(text()), 'Subrecipient indirect')]/../following-sibling::td[1]",
+		"sub_IDC": "css=[id='subrecipientIndirectDatatable_data']",
 		"subrecipient indirect": "xpath=//tbody[@id='subrecipientIndirectDatatable_data']/tr/td",
 		"expiration date": "xpath=//tbody[@id='subrecipientIndirectDatatable_data']/tr/td[2]",
-		"documents": "xpath=//div[@id='j_idt189_header']/ul/li"		
+		"documents": "xpath=//div[@id='documentsPanel_header']/ul/li"		
 	}
 	
 	subrecipient_name = RText("subrecipient name", "Subrecipient name")
@@ -63,12 +65,13 @@ class SCR0240(Page):
 	anticipated_enddate = RText("anticipated end date", "Anticipated end date")
 # 	subrecipient_amt = RText("subrecipient amt. to be issued", "Subrecipient amt. to be issued")
 	sub_anticipated = RText("subrecipient anticipated", "Subrecipient anticipated")
-	sub_indirect = RText("subrecipient indirect", "Subrecipient indirect")
-	exp_date = RText("expiration date", "Expiration date")
+#  	sub_indirect = RText("subrecipient indirect", "Subrecipient indirect")
+# 	exp_date = RText("expiration date", "Expiration date")
 	indirect_basis = RText("indirect basis", "Indirect basis")
 # 	comments = RText("comments", "Comments")
 	documents = RText("documents", "Documents")
 # 	req_sign = RText("required signatures", "Required signatures")
+	sub_IDC = RText("sub_IDC", "Sub_IDC")
 	
 	@classmethod
 	def url(cls, subagreement_Id, segment_Id, amendment_Id):
@@ -78,13 +81,35 @@ class SCR0240(Page):
 		url = "{{}}/gmas/dispatch?ref=%2Fsubagreement%2FSubagreementHomeAmendmentsInclude.jsp&subagreementId={}&segmentId={}&formName=SubagreementHomeForm&amendmentId={}&ViewAmendmentEvent"
 		return url.format(subagreement_Id, segment_Id, amendment_Id)
 	
+	@property
+	def documents(self):
+		"""
+		Number of documents showing in the document component
+		"""
+		count = self.find("documents").text
+		return int(count[:count.find(" ")])
 	
 # 	@property
-# 	def documents(self):
-# 		if self.mode == "old":
-# 			return self.find("documents").text.split("")[0]
-# 		if self.mode == "convert":
-# 			return self.find("documents").text.split(" ")[0]
+# 	def sub_idc(self):
+# 		"""
+# 		Returns a list of sub idc rates
+# 		//IDC_row
+# 		"""
+# 		return [self.IDC_row(row, self) for row in self.finds("sub_IDC") if "indirect basis" not in row.text]
+#  	
+# 	class IDC_row(Row):
+# 		locators = {
+#             "rate": Row.cell(2),
+#             "date": Row.cell(3)
+#         }
+#         _locators = {
+#             "rate": Row.cell(1),
+#             "date": Row.cell(2)
+#         }
+#   
+#         rate = RText("rate")
+#         date = RText("date")
+
 	
 # 	def goto_documents(self):
 #         """
@@ -92,13 +117,28 @@ class SCR0240(Page):
 #         Goes to SCR_0433
 #         """
 #         return self.go("documents")
-#        
+#         
 #     def goto_comments(self):
 #         """
 #         Clicks the "comments" link
 #         Goes to "add comments"
 #         """
 #         return self.go("comments")
+#        
+# 	def goto_subrecipient(self):
+# 		"""
+# 		Clicks the "Subrecipient" link
+# 		Goes to scr_134b
+# 		"""
+# 		return self.go("subrecipient name")
+# 	
+# 	def goto_subrecipient_PI(self):
+# 		"""
+# 		Clicks the "Subrecipient" link
+# 		Goes to scr_25 (Person profile)
+# 		"""
+# 		return self.go("subrecipient principal investigator")
+# 		    
 
 # 	@property
 # 	def university_authorized(self):
