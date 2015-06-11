@@ -12,7 +12,7 @@ class wrapper(object):
         self._a = a
         self._b = b
         if log is None:
-            self._log = [["Screen", "URL A", "URL B", "Result"]]
+            self._log = [["Screen", "URLS", "URL A", "URL B", "Result"]]
         else:
             self._log = log
 
@@ -113,8 +113,9 @@ class wrapper(object):
         load_b_detail = self._b.get_page_load_details()
         perf = round(float(load_b) / load_a, 2)
         # print "Performance: {} ({},{})".format(perf, load_a, load_b)
-        self.add_to_log([self._a.scr, self._a.driver.current_url, self._b.driver.current_url, "Performance", load_a, load_a_detail, load_b, load_b_detail, perf])
-        prefix = [self._a.scr, self._a.driver.current_url, self._b.driver.current_url]
+        urls = "* [GDEV|{}]\n* [GSAND|{}]".format(self._a.driver.current_url, self._b.driver.current_url)
+        self.add_to_log([self._a.scr, urls, self._a.driver.current_url, self._b.driver.current_url, "Performance", load_a, load_a_detail, load_b, load_b_detail, perf])
+        prefix = [self._a.scr, urls, self._a.driver.current_url, self._b.driver.current_url]
         results = compare_properties(a, b, formats=formats)
         for result in results:
             # print result
