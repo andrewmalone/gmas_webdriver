@@ -12,6 +12,12 @@ class SCR0083(Page):
         "award number": "name=sponsorAwardNumber",
         "next": "name=EnterNoticeAttributesNextEvent"
     }
+    _locators = {
+        "date issued": "css=[id$=dateIssued_input]",
+        "date received": "css=[id$=dateReceivedBy_input]",
+        "award number": "css=[id$=sponsorAwardNo]",
+        "next": "css=[id$=Done]"
+    }
 
     date_issued = Text("date issued", "Date issued")
     date_received = Text("date received", "Date received")

@@ -11,7 +11,8 @@ class SCR0387(Page):
         "request row": "xpath=//a[contains(text(), 'Request title')]/ancestor::table[1]//tr[not (@class ='bg3')][position()>2]"
     }
     _locators = {
-        "request row": "css=[id$=associatedRequestsFieldset] tbody tr"
+        "next": "css=[id$=Next]",
+        "request row": "css=[id$=associatedRequestsFieldset] tbody tr",
     }
 
     def check_first(self):
