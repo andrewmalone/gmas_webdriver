@@ -171,7 +171,7 @@ class Radio(Element):
                 return False
         if obj.mode == "convert":
             l = obj.locators[self.locator]
-            elements = obj.find_elements("css=input[type=radio][id$=clone][name$={}]".format(l))
+            elements = obj.find_elements("css=input[type=radio][name$={}]:not(:disabled)".format(l))
             for e in elements:
                 # print e.get_attribute("value"), e.get_attribute("checked"), e.get_attribute("disabled")
                 if e.get_attribute("checked") == "true":
