@@ -8,7 +8,7 @@ class SCR0647(Page):
     SCR_0647 Financial award information
     """
     locators = {
-        "Edit all": "css=[name$=projectForm]",
+        "Edit_all": "xpath=//input[@name='projectForm:j_idt168']",
         "contact name": xpath.text_sibling("td", "Contact name:", 1),
         "address": xpath.text_sibling("td", "Address:", 1),
         "phone number": xpath.text_sibling("td", "Phone number:", 1),
@@ -25,7 +25,7 @@ class SCR0647(Page):
 
     _locators = {
 #         "contact name": "xpath=//span[@id='contactName']/.."
-        "Edit all": "css=[name$=projectForm]",
+        "Edit_all": "css=[id$=editButton]",
         "contact name": xpath.text_sibling_child("td", "Contact name", 1),
         "address": xpath.text_sibling_child("td", "Address", 1),
         "phone number": xpath.text_sibling_child("td", "Phone number", 1),
@@ -49,6 +49,13 @@ class SCR0647(Page):
         """
         url = "{{}}/gmas/dispatch?ref=%2Fproject%2Fincludes%2Fsegmenthome%2FSegmentHomeBody.jsp&FinancialAwardInformationEvent=&segmentId={}&formName=SegmentHomeForm"
         return url.format(segment_id)
+    
+    def goto_editall(self):
+            """
+            Click the revision link
+            Goes to SCR_0648
+            """
+            return self.go("Edit_all")
 
 
     contact_name = RText("contact name", "Financial contact name")
