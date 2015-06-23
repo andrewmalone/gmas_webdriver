@@ -37,25 +37,28 @@ class SCR0648(Page):
     _locators = {
         "Edit_all": "css=[id$='editButton']",
         "contact search": "css=[id='editFinancialAwardInfoForm:financialContact_input']",
-        "salutation": "id=editFinancialAwardInfoForm:contactSalutation_label",
+        "salutation": "css=[id='editFinancialAwardInfoForm:contactSalutation_label']",
         "first name": "css=[id='editFinancialAwardInfoForm:contactFirstName']",
         "middle name": "css=[id='editFinancialAwardInfoForm:contactMiddleName']",
         "last name": "css=[id='editFinancialAwardInfoForm:contactLastName']",
         "suffix": "css=[id='editFinancialAwardInfoForm:contactSuffix_label']",
-        "address": "id=editFinancialAwardInfoForm:contactAddress_label",
+        "address": "css=[id='editFinancialAwardInfoForm:contactAddress_label']",
         "phone number": "css=[id='editFinancialAwardInfoForm:contactPhone']",
         "fax number": "id=editFinancialAwardInfoForm:contactFax",
         "reporting email": "css=[id='editFinancialAwardInfoForm:contactReportingEmail']",
         "contact email": "css=[id='editFinancialAwardInfoForm:contactContactEmail']",
         "contact search": "xpath=//input[@id='editFinancialAwardInfoForm:contName_input']",
         "PO number": "css=[id='editFinancialAwardInfoForm:poNumber']",
+        "reportable interest": "reportableInterest",
         "refund of balances required": "refundOfBalancesRequired",
-        "report submission method": "xpath=//*[contains(@class,'ui-chkbox')]", 
-        "report submission comments": "id=editFinancialAwardInfoForm:electronicSubmissionMethodDropdown_label",
+        "report submission method_mail": "xpath=//*[contains(@class,'ui-chkbox')]", 
+#         "report submission method_email":
+#         "report submission method_electronic submission":
+        "report submission comments": "id=editFinancialAwardInfoForm:electronicSubmissionMethodDropdown_input",
         "sponsor's approval required for carryfoward": "automaticCarryforward",
         "deliverable schedule": "deliverableSchedule",
-        "deliverable must be met before billing": "deliverableScheduleNestedPanel",
-        "deliverable must be met before payment is issued": "deliverableScheduleMetBilling",
+        "deliverable must be met before billing": "deliverableScheduleMetBilling",
+        "deliverable must be met before payment is issued": "deliverableScheduleMetPayment",
         "deliverable schedule comments": "id=editFinancialAwardInfoForm:deliverableScheduleComments",
         "reportable cost share": "reportableCostShare",
         "budget restrictions": "budgetRestrictions",
@@ -72,31 +75,6 @@ class SCR0648(Page):
         
         return url.format(segment_Id)
     
-    contact_search = Text("contact search", "Contact search")
-    salutation = Select("salutation", "Salutation")
-    first_name = Text("first name", "First name")
-    middle_name = Text("middle name", "Middle name")
-    last_name = Text("last name", "Last name")
-    suffix = Text("suffix", "Suffix")
-    address = Select("address", "Address")
-    phone_number = Text("phone number", "Phone number")
-    fax_number = Text("fax number", "Fax number")
-    reporting_email = Text("reporting email", "Reporting email")
-    contact_email = Text("contact email", "Contact email")
-    PO_number = Text("PO number", "PO number")
-    refund_balances = Select("refund of balances required", "Refund of balances required")
-    report_submission = Checkbox("report submission method", "Report submission method")
-    report_comment = Select("report submission comments", "Report submission method comments")
-    sponsor_approval = Select("sponsor's approval required for carryfoward", "Sponsor's approval required for carryfoward")
-    deliverable_schedule = Select("deliverable schedule", "Deliverable schedule")
-    delivery_billing = Select("deliverable must be met before billing", "Deliverable must be met before billing")
-    delivery_issued = Select("deliverable must be met before payment is issued", "Deliverable must be met before payment is issued")
-    delivery_comment = Select("deliverable schedule comment", "Deliverable schedule comment")
-    reportable_costshare = Select("reportable cost share", "Reportable cost share")
-    budget_restrictions = Select("budget restrictions", "Budget restrictions")
-    sponsor_withholds = Select("sponsor withholds a retention", "Sponsor withholds a retention")
-#     
-    
 #     contact_search = Text("contact search", "Contact search")
 #     salutation = Select("salutation", "Salutation")
 #     first_name = Text("first name", "First name")
@@ -109,17 +87,43 @@ class SCR0648(Page):
 #     reporting_email = Text("reporting email", "Reporting email")
 #     contact_email = Text("contact email", "Contact email")
 #     PO_number = Text("PO number", "PO number")
-#     refund_balances = Radio("refund of balances required", "Refund of balances required")
+#     refund_balances = Select("refund of balances required", "Refund of balances required")
 #     report_submission = Checkbox("report submission method", "Report submission method")
 #     report_comment = Select("report submission comments", "Report submission method comments")
-#     sponsor_approval = Radio("sponsor's approval required for carryfoward", "Sponsor's approval required for carryfoward")
-#     deliverable_schedule = Radio("deliverable schedule", "Deliverable schedule")
-#     delivery_billing = Radio("deliverable must be met before billing", "Deliverable must be met before billing")
-#     delivery_issued = Radio("deliverable must be met before payment is issued", "Deliverable must be met before payment is issued")
-#     delivery_comment = Text("deliverable schedule comment", "Deliverable schedule comment")
+#     sponsor_approval = Select("sponsor's approval required for carryfoward", "Sponsor's approval required for carryfoward")
+#     deliverable_schedule = Select("deliverable schedule", "Deliverable schedule")
+#     delivery_billing = Select("deliverable must be met before billing", "Deliverable must be met before billing")
+#     delivery_issued = Select("deliverable must be met before payment is issued", "Deliverable must be met before payment is issued")
+#     delivery_comment = RText("deliverable schedule comment", "Deliverable schedule comment")
+# #     reportable_costshare = Select("reportable cost share", "Reportable cost share")
+#     budget_restrictions = Select("budget restrictions", "Budget restrictions")
+#     sponsor_withholds = Select("sponsor withholds a retention", "Sponsor withholds a retention")
+      
+     
+    contact_search = Text("contact search", "Contact search")
+    salutation = RText("salutation", "Salutation")
+    first_name = Text("first name", "First name")
+    middle_name = Text("middle name", "Middle name")
+    last_name = Text("last name", "Last name")
+    suffix = RText("suffix", "Suffix")
+    address = RText("address", "Address")
+    phone_number = Text("phone number", "Phone number")
+    fax_number = Text("fax number", "Fax number")
+    reporting_email = Text("reporting email", "Reporting email")
+    contact_email = Text("contact email", "Contact email")
+    PO_number = Text("PO number", "PO number")
+#     reportable_interest = Radio("reportable interest", "Reportable interest")
+    refund_balances = Radio("refund of balances required", "Refund of balances required")
+    report_submission = Checkbox("report submission method", "Report submission method")
+    report_comment = Select("report submission comments", "Report submission method comments")
+    sponsor_approval = Radio("sponsor's approval required for carryfoward", "Sponsor's approval required for carryfoward")
+    deliverable_schedule = Radio("deliverable schedule", "Deliverable schedule")
+    delivery_billing = Radio("deliverable must be met before billing", "Deliverable must be met before billing")
+    delivery_issued = Radio("deliverable must be met before payment is issued", "Deliverable must be met before payment is issued")
+    delivery_comment = Text("deliverable schedule comments", "Deliverable schedule comment")
 #     reportable_costshare = Radio("reportable cost share", "Reportable cost share")
-#     budget_restrictions = Radio("budget restrictions", "Budget restrictions")
-#     sponsor_withholds = Radio("sponsor withholds a retention", "Sponsor withholds a retention")
+    budget_restrictions = Radio("budget restrictions", "Budget restrictions")
+    sponsor_withholds = Radio("sponsor withholds a retention", "Sponsor withholds a retention")
 
     
 
