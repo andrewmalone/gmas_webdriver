@@ -173,7 +173,9 @@ class Radio(Element):
             l = obj.locators[self.locator]
             # print l
             elements = obj.find_elements("css=input[type=radio][name$={}]:not(:disabled)".format(l))
+
             # print len(elements)
+
             if len(elements) == 0:
                 return None
             for e in elements:
