@@ -1,6 +1,7 @@
 from pages.Page import Page
 from pages.elements import Row, RText, Text, Select, Checkbox, Radio 
 import utilities.xpath as xpath
+import datetime
 
 class SCR0241(Page):
     """
@@ -10,11 +11,11 @@ class SCR0241(Page):
         "subrecipient name": xpath.text_sibling("td", "Subrecipient name", 2),
         "subrecipient PI": "name=vendorPI",
         "description": "name=description",
-        "status": xpath.text_sibling("td", "Status", 2),
+        "status": "xpath=//td[contains(text(), 'Status')]/following-sibling::td[2]//tr/td[1]",
+        "status date": "xpath=//td[contains(text(), 'Status')]/following-sibling::td[2]//tr/td[3]",
         "subagreement number":  xpath.text_sibling("td", "Subagreement number", 2),
         "subagreement type": "name=subagreementType",
         "date sent to subrecipient": "name=dateSentToSubrecipient",
-#         "amount row": "xpath=//span[contains(text(), 'Dates')]/ancestor::table[1]//tr[not (@class='bg1')][position()  mod 2 =1 and position()>2]",
         "Total issued to date": "xpath=//span[contains(text(), 'Dates')]/ancestor::table[1]//tr[not (@class ='bg3')][position() = 4]",
         "authorized for subrecipient": "xpath=//span[contains(text(), 'Dates')]/ancestor::table[1]//tr[not (@class ='bg3')][position() = 6]",
         "Should the start date be the new start date of the overall subagreement?": xpath.text_sibling("td", "Should the start date be the new start date of the overall subagreement?", 2),
@@ -35,13 +36,12 @@ class SCR0241(Page):
         "subrecipient PI": "id=editAmendmentForm:subrecipientPrincipalInvestigator_input",
         "description": "id=editAmendmentForm:description",
         "status": "xpath=//span[@id='editAmendmentForm:status']",
+        "status date": "xpath=//span[@id='editAmendmentForm:date']",
         "subagreement number":  xpath.text_sibling("td", "Subagreement number", 2),
         "subagreement type": "id=editAmendmentForm:subagreementType_input",
         "date sent to subrecipient": "id=editAmendmentForm:dateSent_input",
-#         "amount row": "xpath=//span[contains(text(), 'Dates')]/ancestor::table[1]//tr[not (@class='bg1')][position()  mod 2 =1 and position()>2]",
-        "Total issued to date": "xpath=//table[@id='editAmendmentForm:j_idt96']/tbody/tr",
-        "authorized for subrecipient": "xpath=//table[@id='editAmendmentForm:j_idt96']/tbody/tr[2]",
-#         "amount row": "xpath=//span[contains(text(), 'Dates')]/ancestor::table[1]/tbody/tr[5]",
+        "Total issued to date": "xpath=//table[@id='editAmendmentForm:j_idt126']/tbody/tr",
+        "authorized for subrecipient": "xpath=//table[@id='editAmendmentForm:j_idt126']/tbody/tr[2]",
         "Should the start date be the new start date of the overall subagreement?": xpath.text_sibling("td", "Should the start date be the new start date of the overall subagreement?", 2),
         "start date": "id=editAmendmentForm:startDate_input",
         "end date": "id=editAmendmentForm:endDate_input",
@@ -49,24 +49,24 @@ class SCR0241(Page):
         "sub amount": "id=editAmendmentForm:subrecipientAmountIssued",
         "sub anticipated": "xpath=//span[@id='editAmendmentForm:subrecipientAnticipated']",
         "sub row": "xpath=//tbody[@id='editAmendmentForm:indirectCostRatesDatatable_data']/tr",
-        "indirect basis": "xpath=//input[@id='editAmendmentForm:indirectbasis_input']"
+        "indirect basis": "id=editAmendmentForm:indirectbasis_input"
     }
     
     
     @classmethod
-    def url(cls, segment_id, subagreement_id, amendment_id, request_id, budget_id):
+    def url(cls, segment_id, subagreement_id, amendment_id, request_id, proposed_parent_budget_id):
         """
         Direct navigation to SCR_0241
         """
         url = "{{}}/gmas/dispatch?submitTime=1434747262937&segmentId={}&subagreementId={}&amendmentId={}&requestId={}&budgetId={}&pageName=subagreements&ReviseFullyExecutedAmendmentEvent.x=38&ReviseFullyExecutedAmendmentEvent.y=11&ref=%2Fsubagreement%2FSCR0240ViewAmendment.jsp&formName=AmendmentForm"
-        return url.format(segment_id, subagreement_id, amendment_id, request_id, budget_id)
+        return url.format(segment_id, subagreement_id, amendment_id, request_id, proposed_parent_budget_id)
     
     subrecipient_name = RText("subrecipient name", "Subrecipient name")
     subrecipient_PI = Text("subrecipient PI", "Subrecipient principal investigator")
     description = Text("description", "Description")
     status = RText("status", "Status")
-#     subagreement_number = RText("subagreement number", "Subagreement number")
-    subagreement_type = RText("subagreement type", "Subagreement type")
+    status_date = RText("status date", "Date")
+    subagreement_type = Text("subagreement type", "Subagreement type")
     date_sent = Text("date sent to subrecipient", "Date sent to subrecipient")
     start_date = Text("start date", "Start date")
     end_date = Text("end date", "End date")
@@ -83,7 +83,6 @@ class SCR0241(Page):
         """
         return [self.Total_row(row, self) for row in self.finds("Total issued to date")]
     
-
     class Total_row(Row):
         locators = {
             "value": Row.cell(2),

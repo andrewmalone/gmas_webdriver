@@ -1,7 +1,7 @@
 from pages.Page import Page
 from pages.elements import Row, RText 
 import utilities.xpath as xpath
-from lxml.html._diffcommand import description
+
 from telnetlib import STATUS
 
 
@@ -30,7 +30,7 @@ class SCR0240(Page):
 		"comments": "xpath=//*[contains(normalize-space(text()), 'Comments')]/../following-sibling::td[2]",
 		"documents": "xpath=//*[contains(normalize-space(text()), 'Documents')]/../following-sibling::td[2]",
 		"required signatures": xpath.text_sibling("td", "Required signatures", 2),
-# 		"university authorized": "xpath=//td[contains(text(), 'Name')]/ancestor::table[1]//tr[not (@class='bg3')][position()>1]"
+		"signature_panel": "xpath=//td[contains(text(), 'Name')]/ancestor::table[1]//tr[not (@class='bg3')][position()=2]"
 	}
 	
 	_locators = {
@@ -49,7 +49,8 @@ class SCR0240(Page):
 		"sub_IDC": "css=[id='subrecipientIndirectDatatable_data']",
 		"subrecipient indirect": "xpath=//tbody[@id='subrecipientIndirectDatatable_data']/tr/td",
 		"expiration date": "xpath=//tbody[@id='subrecipientIndirectDatatable_data']/tr/td[2]",
-		"documents": "xpath=//div[@id='documentsPanel_header']/ul/li"		
+		"documents": "xpath=//div[@id='documentsPanel_header']/ul/li",
+		"signature_panel": "css=[id=signaturePanel_content]  tbody tr"		
 	}
 	
 	subrecipient_name = RText("subrecipient name", "Subrecipient name")
@@ -89,14 +90,14 @@ class SCR0240(Page):
 		count = self.find("documents").text
 		return int(count[:count.find(" ")])
 	
-# 	@property
-# 	def sub_idc(self):
-# 		"""
-# 		Returns a list of sub idc rates
-# 		//IDC_row
-# 		"""
-# 		return [self.IDC_row(row, self) for row in self.finds("sub_IDC") if "indirect basis" not in row.text]
-#  	
+	@property
+	def sub_idc(self):
+		"""
+		Returns a list of sub idc rates
+		//IDC_row
+		"""
+		return [self.IDC_row(row, self) for row in self.finds("sub_IDC") if "indirect basis" not in row.text]
+  	
 # 	class IDC_row(Row):
 # 		locators = {
 #             "rate": Row.cell(2),
@@ -106,18 +107,18 @@ class SCR0240(Page):
 #             "rate": Row.cell(1),
 #             "date": Row.cell(2)
 #         }
-#   
+#    
 #         rate = RText("rate")
 #         date = RText("date")
-
-	
+  
+  	
 # 	def goto_documents(self):
 #         """
 #         Clicks the "Documents" link
 #         Goes to SCR_0433
 #         """
 #         return self.go("documents")
-#         
+        
 #     def goto_comments(self):
 #         """
 #         Clicks the "comments" link
@@ -138,25 +139,31 @@ class SCR0240(Page):
 # 		Goes to scr_25 (Person profile)
 # 		"""
 # 		return self.go("subrecipient principal investigator")
-# 		    
 
-# 	@property
-# 	def university_authorized(self):
-# 		"""
-# 		List of all rows from the "University_authorized" table
-# 		"""
-# 		return [self.University_authorized(row, self) for row in self.finds("university authorized")]
-# 		 
-# 	class University_authorized(Row):
-# 		locators = {
-# 		"name": Row.cell(2),
-# 		"signature": Row.cell(6),
-# 		"signature date": Row.cell(10)
-# 		}	
-# 		name = RText("name", "Name"),
-# 		signature = RText("signature", "Signature"),
-# 		signature_date = RText("signature date", "Signature date")
-		
+	@property
+	def signature_panel(self):
+		"""
+		List of all rows from the "Signature_panel" table
+		"""
+		return [self.Signature_panel(row, self) for row in self.finds("signature_panel")]
+ 		 
+	class Signature_panel(Row):
+		locators = {
+			"name": Row.cell(2),
+			"signature": Row.cell(6),
+			"signature date": Row.cell(10)
+		}	
+		name = RText("name", "Name")
+		signature = RText("signature", "Signature")
+		signature_date = RText("signature date", "Signature date")
+ 
+ 	@property
+	def signature_data(self):
+		if self.mode == "old":
+			return self.find("signature_panel").text.split(" ")[:10]
+		if self.mode == "convert":
+			return self.find("signature_panel").text.split(" ")[1][20:11]
+				
 			
 			
 			
