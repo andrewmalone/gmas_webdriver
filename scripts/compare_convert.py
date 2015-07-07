@@ -278,10 +278,10 @@ def compare_properties(a, b, formats={}, parent=None, index=None, results=None):
     return results
 
 
-def date_format(string):
+def date_format(string, fmt="%m-%d-%Y"):
     if string == "" or string is None:
         return string
-    d = datetime.strptime(string, "%m-%d-%Y")
+    d = datetime.strptime(string, fmt)
     d2 = "{dt:%b} {dt.day}, {dt.year}".format(dt=d)
     return d2
 
