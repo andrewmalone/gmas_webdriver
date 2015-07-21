@@ -22,9 +22,9 @@ class SCR0453(Page):
 
     _locators = {
         "title": "css=[id$=noticeTitle]",
-       "sponsor award no.": "css=[id$=sponsorAward]",
-       "number type": "sponsorAward",
-       "purchase order": "css=[id$=purchaseOrder]",
+       "sponsor award no.": "css=[id$=sponsorAwardNo]",
+       "number type": "sponsorAwardNoExtra",
+       "purchase order": "css=[id$=purchaseOrderNo]",
        "form of notice": "formOfNotice",
        "date issued": "css=[id$=dateIssued_input]",
        "date received": "css=[id$=dateReceivedBy_input]",
@@ -32,13 +32,13 @@ class SCR0453(Page):
     }
     
     @classmethod
-    def url(cls, segment_id, notice_id):
+    def url(cls, segment_id, notice_id, version):
  
         """
         Direct navigation to SCR_0453
         """
-        url = "{{}}/gmas/dispatch?&segmentId={}&noticeId={}&version=3&EditNoticeAttributesEvent.x=109&EditNoticeAttributesEvent.y=11&ref=%2Fnotice%2FSCR0309NoticeDetailsInclude.jsp&formName=NoticeForm"
-        return url.format(segment_id, notice_id)
+        url = "{{}}/gmas/dispatch?&segmentId={}&noticeId={}&version={}&EditNoticeAttributesEvent.x=109&EditNoticeAttributesEvent.y=11&ref=%2Fnotice%2FSCR0309NoticeDetailsInclude.jsp&formName=NoticeForm"
+        return url.format(segment_id, notice_id, version)
 
     title = Text("title", "Notice title")
     sponsor_award = Text("sponsor award no.", "Sponsor award no.")

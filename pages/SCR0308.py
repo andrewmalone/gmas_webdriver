@@ -77,12 +77,12 @@ class SCR0308(Page):
 
         _locators = {
             "link": "event=ViewDetailsOfNoticeEvent",
-            "title": Row.cell(1),
+#             "title": Row.cell(1),
             "sponsor award no": Row.cell(2),
             "amendment": Row.cell(3),
-            "date received": Row.cell(4),
-            "status": Row.cell(5),
-            "type": Row.cell(6)
+            "date received": Row.cell(1),
+            "status": Row.cell(4),
+            "type": Row.cell(5)
         }
         
         def go(self):
@@ -91,7 +91,7 @@ class SCR0308(Page):
             Goes to SCR_0309
             """
             return self._go("link")
-        title = RText("title", "Title")
+#         title = RText("title", "Title")
         sponsor_award_no = RText("sponsor award no", "Sponsor award no")
         amendment = RText("amendment", "Amendment/modification no.")
         date_received = RText("date received", "Date received by Harvard")

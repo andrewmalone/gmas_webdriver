@@ -35,7 +35,7 @@ class SCR0309(Page):
         "date received": "css=[id$=noticeAttributesDateReceivedBy]",
         "date fully executed": "css=[id$=noticeAttributesDateFullyExecuted]",
         "request row": "css=[id$=associatedRequestsPanel_content]",
-        "document count": "css=div[id$=documentsPanel_header] li",
+        "document count": "xpath=//div[@id='j_idt118:documentsPanel_header']/ul/li/span",
         "edit_associates": "css=[id$=associatedRequestsPanel_header] div button",
         "action_memo": "css=[id$=actionMemoHistoryPanel_content]"
     }      
@@ -93,13 +93,22 @@ class SCR0309(Page):
         """
         return self.go("edit_attributes")
 
+#     @property
+#     def document_count(self):
+#         """
+#         Number of documents showing in the document component
+#         """
+#         count = self.find("document count").text
+#         return int(count[:count.find(" ")])
+
+
     @property
     def document_count(self):
-        """
-        Number of documents showing in the document component
-        """
-        count = self.find("document count").text
-        return int(count[:count.find(" ")])
+        if self.mode == "old":
+            text = self.find("document count").text
+            return text[:2]
+        if self.mode == "convert":
+            return self.find("document count").text
     
     def request(self, n):
         """

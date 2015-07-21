@@ -15,7 +15,8 @@ class SCR0454(Page):
     }
     
     _locators = {
-        "request row": "css=[id$=editListOfAssociatedRequest_content] tbody tr",
+#         "request row": "css=[id$=editListOfAssociatedRequest_content] tbody tr",
+        "request row": "xpath=//tbody[@id='j_idt49:associatedRequestsDatatable_data']/tr",
         "check_box": "xpath=//*[contains(@class,'ui-icon-check')]"
     }
     

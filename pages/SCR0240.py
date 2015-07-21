@@ -30,7 +30,10 @@ class SCR0240(Page):
 		"comments": "xpath=//*[contains(normalize-space(text()), 'Comments')]/../following-sibling::td[2]",
 		"documents": "xpath=//*[contains(normalize-space(text()), 'Documents')]/../following-sibling::td[2]",
 		"required signatures": xpath.text_sibling("td", "Required signatures", 2),
-		"signature_panel": "xpath=//td[contains(text(), 'Name')]/ancestor::table[1]//tr[not (@class='bg3')][position()=2]"
+		"signature_panel": "xpath=//td[contains(text(), 'Name')]/ancestor::table[1]",
+		"name": "xpath=//td[contains(normalize-space(text()), 'Name')]/ancestor::table[1]/tbody/tr//td[2]",
+		"subrecipient": "xpath=//table[9]/tbody/tr/td/table/tbody/tr[2]/td[6]"
+		
 	}
 	
 	_locators = {
@@ -50,7 +53,10 @@ class SCR0240(Page):
 		"subrecipient indirect": "xpath=//tbody[@id='subrecipientIndirectDatatable_data']/tr/td",
 		"expiration date": "xpath=//tbody[@id='subrecipientIndirectDatatable_data']/tr/td[2]",
 		"documents": "xpath=//div[@id='documentsPanel_header']/ul/li",
-		"signature_panel": "css=[id=signaturePanel_content]  tbody tr"		
+		"signature_panel": "css=[id=signaturePanel_content] tbody tr",
+		"university authorized signature": "xpath=//tbody[@id='dlgSignForm:signaturesDatatable_data']/tr/td/div[2]"	,
+		"name": "xpath=//tbody[@id='dlgSignForm:signaturesDatatable_data']/tr/td/div[2]",
+		"subrecipient": "xpath=//tbody[@id='dlgSignForm:signaturesDatatable_data']/tr[2]/td/div[2]"
 	}
 	
 	subrecipient_name = RText("subrecipient name", "Subrecipient name")
@@ -73,6 +79,8 @@ class SCR0240(Page):
 	documents = RText("documents", "Documents")
 # 	req_sign = RText("required signatures", "Required signatures")
 	sub_IDC = RText("sub_IDC", "Sub_IDC")
+	name = RText("name", "name")
+	subrecipient = RText("subrecipient", "subrecipient")
 	
 	@classmethod
 	def url(cls, subagreement_Id, segment_Id, amendment_Id):
@@ -107,38 +115,44 @@ class SCR0240(Page):
 #             "rate": Row.cell(1),
 #             "date": Row.cell(2)
 #         }
-#    
+#     
 #         rate = RText("rate")
 #         date = RText("date")
-  
-  	
+#   
+#   	
 # 	def goto_documents(self):
 #         """
 #         Clicks the "Documents" link
 #         Goes to SCR_0433
 #         """
 #         return self.go("documents")
-        
+#         
 #     def goto_comments(self):
 #         """
 #         Clicks the "comments" link
 #         Goes to "add comments"
 #         """
 #         return self.go("comments")
-#        
+#         
 # 	def goto_subrecipient(self):
 # 		"""
 # 		Clicks the "Subrecipient" link
 # 		Goes to scr_134b
 # 		"""
 # 		return self.go("subrecipient name")
-# 	
+#  	
 # 	def goto_subrecipient_PI(self):
 # 		"""
 # 		Clicks the "Subrecipient" link
 # 		Goes to scr_25 (Person profile)
 # 		"""
 # 		return self.go("subrecipient principal investigator")
+# 	@property
+# 	def subrecipient(self):
+# 		if self.mode == "old":
+# 			return self.find("subrecipient").text.split(" ")[23:10]
+# 		if self.mode == "convert":
+# 			return self.find("subrecipient").text
 
 	@property
 	def signature_panel(self):
@@ -146,23 +160,48 @@ class SCR0240(Page):
 		List of all rows from the "Signature_panel" table
 		"""
 		return [self.Signature_panel(row, self) for row in self.finds("signature_panel")]
- 		 
+  		 
 	class Signature_panel(Row):
 		locators = {
-			"name": Row.cell(2),
-			"signature": Row.cell(6),
-			"signature date": Row.cell(10)
+			"role": "css=table.bg0 > tbody > tr > td.strong",
+			"name": "css=table.bg0 td:nth-of-type(1) tr:nth-of-type(2) td:nth-of-type(2)",
+			"signature": "css=table.bg0 td:nth-of-type(1) tr:nth-of-type(2) td:nth-of-type(6)",
+# 			"signature date": "css=table.bg0 td:nth-of-type(1) tr:nth-of-type(2) td:nth-of-type(10)"
+			
 		}	
+ 		
+ 		
+		_locators = {
+# 			"role": "xpath=//tbody[@id='dlgSignForm:signaturesDatatable_data']/tr/td/div/strong",
+			"role": "css=strong",
+			"name": "css=table td:nth-of-type(1) div:nth-of-type(2)",
+			"signature": "xpath=//tbody[@id='dlgSignForm:signaturesDatatable_data']/tr/td[2]/div",
+# 			"signature date": "css=table.bg0 td:nth-of-type(1) tr:nth-of-type(2) td:nth-of-type(10)"
+		}
+		
+		role = RText("role", "Role")
 		name = RText("name", "Name")
 		signature = RText("signature", "Signature")
-		signature_date = RText("signature date", "Signature date")
- 
- 	@property
-	def signature_data(self):
-		if self.mode == "old":
-			return self.find("signature_panel").text.split(" ")[:10]
-		if self.mode == "convert":
-			return self.find("signature_panel").text.split(" ")[1][20:11]
+# 		signature_date = RText("signature date", "Signature date")
+
+		@property
+		def log_person(self):
+			element = self.find_elements_by_css_selector("signature").text
+			if "logged by " in text:
+			# return element.text.split(" | ")
+				return text.split("logged by ")[1][:11]
+			else:
+				return " "
+		
+		@property
+		def signature_person(self):
+			element = self.find_elements_by_css_selector("signature").text
+			if "signature of " in text:
+				return text.split("signature of ")[1].split("logged by ")[0]
+			else :
+				return ""	
+
+		
 				
 			
 			

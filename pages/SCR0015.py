@@ -1,6 +1,7 @@
 from pages.Page import Page
+from pages.elements import Row
+from pages.elements import RText
 import utilities.xpath as xpath
-
 
 class SCR0015(Page):
     """
@@ -12,10 +13,19 @@ class SCR0015(Page):
         "add team member": "name=AddTeamMemberEvent",
         "PI link": "link=Principal Investigator",
         "edit team": "name=EditResearchTeamButton",
-        "person row": xpath.parent_row_of_event("ResearchPersonNameLinkEvent"),
+#         "person row": xpath.parent_row_of_event("ResearchPersonNameLinkEvent"),
+        "person row": "xpath=//td[contains(text(), 'Name')]/ancestor::table[1]//tr[@class='bg0'][position()>0]",
         "person links": "event=ResearchPersonNameLinkEvent",
         "role links": "event=ResearchTeamMemberViewEvent"
     }
+
+    @classmethod
+    def url(cls, segment_id):
+        """
+        Direct navigation to SCR_0015
+        """
+        url = "{{}}/gmas/dispatch?ref=%2Fproject%2Fincludes%2Fsegmenthome%2FSegmentHomeBody.jsp&ResearchStaffLinkEvent=&requestId=&segmentId={}&formName=SegmentHomeForm&requestFromPage=segmentPage&segmentResearchPerson=true"
+        return url.format(segment_id)
 
     @property
     def people_count(self):
@@ -60,3 +70,28 @@ class SCR0015(Page):
         Goes to SCR_0649
         """
         return self.go("edit team")
+    
+    @property
+    def person_row(self):
+       
+        return [self.Person_row(row, self) for row in self.finds("person row")]
+    
+    
+    class Person_row(Row):
+        locators = {
+            "name": Row.cell(2),
+            "role": Row.cell(6),
+            "key personnel": Row.cell(10),
+            "investigator": Row.cell(14),
+            "human subjects": Row.cell(18),
+            "committed effort": Row.cell(22),
+            "peoplesoft costing": Row.cell(26)
+        }
+        
+        name = RText("name", "Name")
+        role = RText("role", "Role")
+        Key_personnel = RText("key personnel", "Key personnel")
+        investigator = RText("investigator", "Investigator")
+        human_subjects = RText("human subjects", "Human subjects")
+        committed_effort = RText("committed effort", "Committed effort")
+        peoplesoft_costing = RText("peoplesoft costing", "Peoplesoft costing")
