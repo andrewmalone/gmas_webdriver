@@ -14,7 +14,8 @@ class SCR0015(Page):
         "PI link": "link=Principal Investigator",
         "edit team": "name=EditResearchTeamButton",
 #         "person row": xpath.parent_row_of_event("ResearchPersonNameLinkEvent"),
-        "person row": "xpath=//td[contains(text(), 'Name')]/ancestor::table[1]//tr[@class='bg0'][position()>0]",
+        "research person row": "xpath=//table[@id='researchTeamDataTable']/tbody//tr[@class='bg0'][position()>0]",
+        "non research person row": "xpath=//table[@id='nonResearchTeamDataTable']/tbody//tr[@class='bg0'][position()>1]",
         "person links": "event=ResearchPersonNameLinkEvent",
         "role links": "event=ResearchTeamMemberViewEvent"
     }
@@ -72,12 +73,15 @@ class SCR0015(Page):
         return self.go("edit team")
     
     @property
-    def person_row(self):
-       
-        return [self.Person_row(row, self) for row in self.finds("person row")]
-    
-    
-    class Person_row(Row):
+    def research_person(self):
+       return [self.Research_Person(row, self) for row in self.finds("research person row")]
+   
+   
+    @property
+    def nonResearch_person(self):
+       return [self.NonResearch_Person(row, self) for row in self.finds("non research person row")]
+   
+    class Research_Person(Row):
         locators = {
             "name": Row.cell(2),
             "role": Row.cell(6),
@@ -88,10 +92,19 @@ class SCR0015(Page):
             "peoplesoft costing": Row.cell(26)
         }
         
-        name = RText("name", "Name")
+        name = RText("name", "Research person Name")
         role = RText("role", "Role")
         Key_personnel = RText("key personnel", "Key personnel")
         investigator = RText("investigator", "Investigator")
         human_subjects = RText("human subjects", "Human subjects")
         committed_effort = RText("committed effort", "Committed effort")
         peoplesoft_costing = RText("peoplesoft costing", "Peoplesoft costing")
+        
+    class NonResearch_Person(Row):
+        locators = {
+            "name": Row.cell(2),
+            "costing": Row.cell(5)
+        }
+        
+        name = RText("name", "Non-Research person Name")
+        costing = RText("costing", "Costing%")
