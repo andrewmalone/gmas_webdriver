@@ -1,7 +1,16 @@
 from pages.Page import Page
+from pages.elements import Row, RText
 import utilities.xpath as xpath
 
-locators = {
+
+
+class SCR0104b(Page):
+    """
+    SCR_0104b Segment Home
+    """
+
+    
+    locators = {
     "make revision": 'css=a[href*=SegmentHomeMakeRevisionEvent]',
     "continue revision": "css=a[href*='SegmentHomeEditRevisionEvent']",
     "confirm research team": "css=img[alt='Confirm research team']",
@@ -22,15 +31,15 @@ locators = {
     "project_info": xpath.text_sibling("td", "Project Information", 2),
     "dates_dollars": "event=SegmentHomeViewDatesAndDollarsEvent",
     "additional info": "event=AdditionalAwardInformationEvent",
-    "fin award info": "event=FinancialAwardInformationEvent"
-}
+    "fin award info": "event=FinancialAwardInformationEvent",
+    "obligated dates": xpath.text_sibling("td", "Obligated dates", 2),
+    "anticipated dates": xpath.text_sibling("td", "Anticipated dates", 2),
+    "dates_dollars row": "xpath=//td[contains(text(), 'Obligated ($.00)')]/ancestor::table[1]//tr[@class='bg0'][position()>4]",
+    "open all": "link=open all"
+    }
 
-
-class SCR0104b(Page):
-    """
-    SCR_0104b Segment Home
-    """
-    locators = locators
+    obligated_dates = RText("obligated dates", "Obligated dates")
+    anticipated_dates = RText("anticipated dates", "Anticipated dates")
 
     @property
     def document_count(self):
@@ -48,13 +57,21 @@ class SCR0104b(Page):
         text = self.find("project_info").text
         return text[text.index("|") + 2:]
 
-    def nav_to(self, segment_id):
+#     def nav_to(self, segment_id):
+#         """
+#         Direct navigation to a segment home (based on segment id)
+#         """
+#         url = "https://%s.harvard.edu/gmas/project/SCR0104SegmentHome.jsp?segmentId=%s" % (self.env, segment_id)
+#         self.driver.get(url)
+#         return SCR0104b(self.driver)
+
+    @classmethod
+    def url(cls, segment_id, project_id):
         """
-        Direct navigation to a segment home (based on segment id)
+        Direct navigation to segmenthome
         """
-        url = "https://%s.harvard.edu/gmas/project/SCR0104SegmentHome.jsp?segmentId=%s" % (self.env, segment_id)
-        self.driver.get(url)
-        return SCR0104b(self.driver)
+        url = "{{}}/gmas/dispatch?ref=%2Fuser%2FSCR0270GMASHomePage.jsp&segmentId={}&formName=SegmentHomeForm&projectId={}&ProjectListSegmentHomeEvent"
+        return url.format( segment_id, project_id)
 
     def make_revision(self):
         """
@@ -186,6 +203,13 @@ class SCR0104b(Page):
         Goes to SCR_0159
         """
         return self.go("todos")
+    
+    @property
+    def open_all(self):
+        """
+        Click the open all 
+        """
+        self.find("open all").click()
 
     def goto_financial_award_info(self):
         """
@@ -193,3 +217,24 @@ class SCR0104b(Page):
         Goes to SCR_0647
         """
         return self.go("fin award info")
+    
+    @property
+    def dates_dollars_row(self):
+        """
+        List of all rows from the "dates and dollars" table
+        """
+        return [self.Dates_dollars_row(row, self) for row in self.finds("dates_dollars row")]
+    
+    class Dates_dollars_row(Row):
+        locators = {
+            "type": Row.cell(2),
+            "obligated": Row.cell(6),
+            "anticipated": Row.cell(10),
+            "expenses": Row.cell(14),
+            "balance": Row.cell(18)
+        }
+        type = RText("type", "Type")
+        obligated = RText("obligated", "Obligated")
+        anticipated = RText("anticipated", "Anticipated")
+        expenses = RText("expenses", "Expenses")
+        balance = RText("balance", "Balance")
