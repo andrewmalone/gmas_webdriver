@@ -164,6 +164,13 @@ class Page(GMWebElement):
         self.find(locator, replace).click()
         return self.load_page()
 
+    def action(self, locator):
+        element = self.find(locator)
+        if not element.is_displayed():
+            self.find_element("css=button[id^=actionbuttonForm]").click()
+        element.click()
+        return self.load_page()
+
     # TODO: Figure out how to move all goto methods to a common class
 
     def goto_url(self, url):
