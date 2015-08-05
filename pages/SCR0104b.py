@@ -34,30 +34,54 @@ class SCR0104b(Page):
     "fin award info": "event=FinancialAwardInformationEvent",
     "obligated dates": xpath.text_sibling("td", "Obligated dates", 2),
     "anticipated dates": xpath.text_sibling("td", "Anticipated dates", 2),
-    "dates_dollars row": "xpath=//td[contains(text(), 'Obligated ($.00)')]/ancestor::table[1]//tr[@class='bg0'][position()>4]",
-    "open all": "link=open all"
+    "dates_dollars direct": "xpath=//td[contains(text(), 'Obligated ($.00)')]/ancestor::table[1]//tr[@class='bg0'][position()=5]",
+    "dates_dollars indirect" : "xpath=//td[contains(text(), 'Obligated ($.00)')]/ancestor::table[1]//tr[@class='bg0'][position()=6]",
+    "dates_dollars total": "xpath=//td[contains(text(), 'Obligated ($.00)')]/ancestor::table[1]//tr[@class='bg0'][position()=7]",
+    "open all": "link=open all",
+    "new segment home": "xpath=//a[contains(@href, '/gmas/project/SCR0104SegmentHome')]"
+    
     }
 
+    _locators = {
+                 
+    "obligated dates": "xpath=//table[@id='segmentDatesGrid']/tbody/tr/td[2]",
+    "anticipated dates": "xpath=//table[@id='segmentDatesGrid']/tbody/tr[2]/td[2]",
+    "dates_dollars direct": "xpath=//table[@id='segmentDollarsGrid']/tbody/tr[2]",
+    "dates_dollars indirect" : "xpath=//table[@id='segmentDollarsGrid']/tbody/tr[3]",
+    "dates_dollars total": "xpath=//table[@id='segmentDollarsGrid']/tbody/tr",
+    }
+      
+      
+      
     obligated_dates = RText("obligated dates", "Obligated dates")
     anticipated_dates = RText("anticipated dates", "Anticipated dates")
 
-    @property
-    def document_count(self):
-        """
-        Number of documents showing in the document component
-        """
-        count = self.find("document count").text
-        return int(count[:count.find(" ")])
+#     @property
+#     def document_count(self):
+#         """
+#         Number of documents showing in the document component
+#         """
+#         count = self.find("document count").text
+#         return int(count[:count.find(" ")])
 
-    @property
-    def status(self):
-        """
-        Segment status
-        """
-        text = self.find("project_info").text
-        return text[text.index("|") + 2:]
-
-#     def nav_to(self, segment_id):
+#     @property
+#     def status(self):
+#         """
+#         Segment status
+#         """
+#         text = self.find("project_info").text
+#         return text[text.index("|") + 2:]
+    
+    def segment_home(self):
+        try:
+            return self.go("new segment home")
+        except:
+            self.find("open all").click()
+            return self
+        
+        
+#     @classmethod
+#     def url(self, segment_id):
 #         """
 #         Direct navigation to a segment home (based on segment id)
 #         """
@@ -73,23 +97,28 @@ class SCR0104b(Page):
         url = "{{}}/gmas/dispatch?ref=%2Fuser%2FSCR0270GMASHomePage.jsp&segmentId={}&formName=SegmentHomeForm&projectId={}&ProjectListSegmentHomeEvent"
         return url.format( segment_id, project_id)
 
-    def make_revision(self):
-        """
-        Click the <Make revision> button
-        Goes to SCR_0105 (through the wait screen)
-        """
-        #self.driver.find_element_by_css_selector(locators["make revision"]).click()
-        self.find_element(locators["make revision"]).click()
-        self.w.until(lambda d: d.find_element_by_css_selector("input[name=ref][value*=SCR0105]"))
-        from pages.SCR0105 import SCR0105
-        return SCR0105(self.driver)
+#     def make_revision(self):
+#         """
+#         Click the <Make revision> button
+#         Goes to SCR_0105 (through the wait screen)
+#         """
+#         #self.driver.find_element_by_css_selector(locators["make revision"]).click()
+#         self.find_element(locators["make revision"]).click()
+#         self.w.until(lambda d: d.find_element_by_css_selector("input[name=ref][value*=SCR0105]"))
+#         from pages.SCR0105 import SCR0105
+#         return SCR0105(self.driver)
+# 
+#     def create_request(self):
+#         """
+#         Clicks the <Create request> button
+#         Goes to SCR_0472
+#         """
+#         return self.go("create request")
 
-    def create_request(self):
-        """
-        Clicks the <Create request> button
-        Goes to SCR_0472
-        """
-        return self.go("create request")
+
+  
+
+        
 
     def continue_revision(self):
         """
@@ -203,13 +232,20 @@ class SCR0104b(Page):
         Goes to SCR_0159
         """
         return self.go("todos")
-    
-    @property
+     
     def open_all(self):
         """
         Click the open all 
         """
         self.find("open all").click()
+        
+#     @property
+#     def new_segment(self):
+#         """
+#         Click the new segment home link 
+#         """
+#         return self.go("new segment home")
+    
 
     def goto_financial_award_info(self):
         """
@@ -219,13 +255,13 @@ class SCR0104b(Page):
         return self.go("fin award info")
     
     @property
-    def dates_dollars_row(self):
+    def dates_dollars_direct(self):
         """
         List of all rows from the "dates and dollars" table
         """
-        return [self.Dates_dollars_row(row, self) for row in self.finds("dates_dollars row")]
+        return [self.Dates_dollars_direct(row, self) for row in self.finds("dates_dollars direct")]
     
-    class Dates_dollars_row(Row):
+    class Dates_dollars_direct(Row):
         locators = {
             "type": Row.cell(2),
             "obligated": Row.cell(6),
@@ -233,8 +269,78 @@ class SCR0104b(Page):
             "expenses": Row.cell(14),
             "balance": Row.cell(18)
         }
+        
+        _locators = {
+            "type": Row.cell(1),
+            "obligated": Row.cell(2),
+            "anticipated": Row.cell(3),
+            "expenses": Row.cell(4),
+            "balance": Row.cell(5)
+        }
+        
         type = RText("type", "Type")
         obligated = RText("obligated", "Obligated")
         anticipated = RText("anticipated", "Anticipated")
         expenses = RText("expenses", "Expenses")
         balance = RText("balance", "Balance")
+        
+    @property
+    def dates_dollars_indirect(self):
+        """
+        List of all rows from the "dates and dollars" table
+        """
+        return [self.Dates_dollars_indirect(row, self) for row in self.finds("dates_dollars indirect")]
+    
+    class Dates_dollars_indirect(Row):
+        locators = {
+            "type": Row.cell(2),
+            "obligated": Row.cell(6),
+            "anticipated": Row.cell(10),
+            "expenses": Row.cell(14),
+            "balance": Row.cell(18)
+        }
+        
+        _locators = {
+            "type": Row.cell(1),
+            "obligated": Row.cell(2),
+            "anticipated": Row.cell(3),
+            "expenses": Row.cell(4),
+            "balance": Row.cell(5)
+        }
+        
+        type = RText("type", "Type")
+        obligated = RText("obligated", "Obligated")
+        anticipated = RText("anticipated", "Anticipated")
+        expenses = RText("expenses", "Expenses")
+        balance = RText("balance", "Balance")
+        
+    @property
+    def dates_dollars_total(self):
+        """
+        List of all rows from the "dates and dollars" table
+        """
+        return [self.Dates_dollars_total(row, self) for row in self.finds("dates_dollars total")]
+    
+    class Dates_dollars_total(Row):
+        locators = {
+            "type": Row.cell(2),
+            "obligated": Row.cell(6),
+            "anticipated": Row.cell(10),
+            "expenses": Row.cell(14),
+            "balance": Row.cell(18)
+        }
+        
+        _locators = {
+            "type": Row.cell(1),
+            "obligated": Row.cell(2),
+            "anticipated": Row.cell(3),
+            "expenses": Row.cell(4),
+            "balance": Row.cell(5)
+        }
+        
+        type = RText("type", "Type")
+        obligated = RText("obligated", "Obligated")
+        anticipated = RText("anticipated", "Anticipated")
+        expenses = RText("expenses", "Expenses")
+        balance = RText("balance", "Balance")
+
