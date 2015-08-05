@@ -20,8 +20,14 @@ class SCR0309(Page):
         "date received": "xpath=//span[contains(normalize-space(text()), 'Date received by Harvard')]/../following-sibling::td[2]",
         "date fully executed": "xpath=//span[contains(normalize-space(text()), 'Date fully executed')]/../following-sibling::td[2]",
         "request row": "xpath=//a[contains(@href,'RequestHomeEvent')]/ancestor::tr[1]",
-        "document count": "xpath=//*[contains(normalize-space(text()), 'Documents')]/ancestor::td[1]/following-sibling::td[2]",
-        "edit_associates": "EditRequestNoticeAssociationEvent"
+#         "document count": "xpath=//*[contains(normalize-space(text()), 'Documents')]/ancestor::td[1]/following-sibling::td[2]",
+        "edit_associates": "EditRequestNoticeAssociationEvent",
+#         "review completed": "name=ReviewCompletedEvent"
+       "review completed": "name=ReviewCompletedEvent",
+        "delete": "name=DeleteNoticeEvent",
+        "decline": "name=DeclineNoticeEvent",
+       "makerevision": "name=CreateNewRevisionEvent"
+        
     }
     
     _locators = {
@@ -35,12 +41,16 @@ class SCR0309(Page):
         "date received": "css=[id$=noticeAttributesDateReceivedBy]",
         "date fully executed": "css=[id$=noticeAttributesDateFullyExecuted]",
         "request row": "css=[id$=associatedRequestsPanel_content]",
-        "document count": "xpath=//div[@id='j_idt118:documentsPanel_header']/ul/li/span",
+#         "document count": "css=//div[id$='documentsPanel_header']ul li span",
         "edit_associates": "css=[id$=associatedRequestsPanel_header] div button",
-        "action_memo": "css=[id$=actionMemoHistoryPanel_content]"
+        "action_memo": "css=[id$=actionMemoHistoryPanel_content]",
+        "review completed ": "xpath=//a[contains(@id, 'actionbuttonForm:review')]/span",
+        "delete": "//a[contains(@id, 'actionbuttonForm:delete')]/span",
+        "decline": "xpath=//div[contains(@id,'actionbuttonForm')]/ul/li[3]/a/span",
+        "makerevision": "xpath=//button[contains(@id, 'actionbuttonForm')]"
     }      
-                 
-                
+        
+   
     @classmethod
     def url(cls, notice_id, segment_id):
         """
@@ -56,7 +66,8 @@ class SCR0309(Page):
     date_issued = RText("date issued", "Date issued")
     date_received = RText("date received", "Date received by harvard")
     date_fullyexecuted = RText("date fully executed", "Date fully executed")
-    document_count = RText("document count", "Documents count")
+    
+#     document_count = RText("document count", "Documents count")
 
     @property
     def notice_status(self):
@@ -65,19 +76,42 @@ class SCR0309(Page):
         """
         return self.find("status").text.replace("Notice status: ", "")
 
+    @property
     def review_completed(self):
         """
         Click <Review completed>
         Stays on SCR_0309
         """
-        return self.go("review completed")
-
+        return self.action("review completed")
+    
+    @property
+    def make_revision(self):
+        """
+        Click <make revision>
+        """
+        return self.action("makerevision")
+    
+    @property
     def revise_project(self):
         """
         Click <Revise project based on this notice>
         Goes to SCR_0328
         """
         return self.go("revise project")
+    
+    @property
+    def delete(self):
+        """
+        Click <delte the notice>
+        """
+        return self.go("delete")
+    
+    @property
+    def decline(self):
+        """
+        Click <decline the notice>
+        """
+        return self.go("decline")
 
     def goto_documents(self):
         """
@@ -101,14 +135,14 @@ class SCR0309(Page):
 #         count = self.find("document count").text
 #         return int(count[:count.find(" ")])
 
-
-    @property
-    def document_count(self):
-        if self.mode == "old":
-            text = self.find("document count").text
-            return text[:2]
-        if self.mode == "convert":
-            return self.find("document count").text
+# 
+#     @property
+#     def document_count(self):
+#         if self.mode == "old":
+#             text = self.find("document count").text
+#             return text[:2]
+#         if self.mode == "convert":
+#             return self.find("document count").text
     
     def request(self, n):
         """
