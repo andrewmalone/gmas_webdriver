@@ -140,20 +140,27 @@ class Page(GMWebElement):
 
         return result
 
+    def get_breadcrumbs(self):
+        if self.mode == "old":
+            locator = "css=a.bread"
+        elif self.mode == "convert":
+            locator = "css=section#breadcrumb a"
+        return self.find_elements(locator)
+
     def goto_breadcrumb(self, text):
-        crumbs = self.find_elements("css=a.bread")
+        crumbs = self.get_breadcrumbs()
         for crumb in crumbs:
             if crumb.text == text:
                 crumb.click()
                 return self.load_page()
 
     def goto_last_breadcrumb(self):
-        crumbs = self.find_elements("css=a.bread")
+        crumbs = self.get_breadcrumbs()
         crumbs[-1].click()
         return self.load_page()
 
     def goto_breadcrumb_number(self, number):
-        crumbs = self.find_elements("css=a.bread")
+        crumbs = self.get_breadcrumbs()
         crumbs[number * -1].click()
         return self.load_page()
 
@@ -162,6 +169,13 @@ class Page(GMWebElement):
 
     def go(self, locator, replace=False):
         self.find(locator, replace).click()
+        return self.load_page()
+
+    def action(self, locator):
+        element = self.find(locator)
+        if not element.is_displayed():
+            self.find_element("css=button[id^=actionbuttonForm]").click()
+        element.click()
         return self.load_page()
 
     # TODO: Figure out how to move all goto methods to a common class
