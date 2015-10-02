@@ -31,8 +31,11 @@ class SCR0426(Page):
         "associated internal request": "xpath=//td[contains(text(), 'Revise the segment based on an internal request')]",
         "request title": "xpath=//span[contains(normalize-space(text()), 'Request title')]/../following-sibling::td[2]",
         "request type": xpath.text_sibling("td", "Request type", 2),
-        "date submitted to central": xpath.text_sibling("td", "Date submitted to central", 2)
+        "date submitted to central": xpath.text_sibling("td", "Date submitted to central", 2),
+        "Award identifying row": "xpath=//td[contains(text(), 'Award identifying information')]/following::table[1]//tr[not (@class ='bg3')][position()  mod 2 =1 and position()>2]",
+        "sponsor_row": "xpath=//td[contains(text(), 'Sponsors')]/following::table[1]//tr[not (@class ='bg3')][position()  mod 2 =1 and position()>2]"
         }
+
         #"reason": "xpath=//*[contains(normalize-space(text()), 'Reason for administrative change or correction')]/ancestor::tr[1]/following-sibling::tr[3]",
 #         "sponsors": xpath.text_sibling("td", "Sponsors", 2),
 #         "awarded_row": "xpath=//td[contains(text(), 'Budget period (mm-dd-yyyy)')]/ancestor::table[1]//tr[not (@class ='bg3')][position()>2]",
@@ -45,8 +48,6 @@ class SCR0426(Page):
 #         "estimated Harvard University overhead for subagreements": xpath.text_sibling_child("td", "Estimated Harvard University overhead for subagreements", 2),
 #         "subagreements_row": "xpath=//td[contains(text(), 'Subagreements')]/ancestor::table[1]//tr[not (@class ='bg1')][position()  mod 2 =1 and position()>2]",
 #         "account_row": "xpath=//td[contains(text(), 'Description')]/ancestor::table[1]//tr[(@class ='bg0')][position()>1]",
-#         "Award identifying row": "xpath=//td[contains(text(), 'Field or value')]/ancestor::table[1]//tr[not (@class ='bg3')][position()  mod 2 =1 and position()>3]",
-#         "sponsor_row": "xpath=//td[contains(normalize-space(text()), 'Sponsors')]/ancestor::table[1]/following-sibling::table//tr[not (@class ='bg3')][position()  mod 2 =1 and position()>3]",
 #         "approvalattributes_row": "xpath=//td[contains(text(), 'Field or value')]/ancestor::table[1]//tr[not (@class ='bg3')][position()  mod 2 = 1 and position()>8]",
 #         "costsharing_row": "xpath=//td[contains(text(), 'Mandatory')]/ancestor::table[1]//tr[not (@class ='bg3')][position()  mod 2 =1 and position()>1]"
 
@@ -76,24 +77,12 @@ class SCR0426(Page):
         "associated internal request": "link=Associated internal request information",
         "request title": "xpath=//span[contains(normalize-space(text()), 'Request title')]/../following-sibling::td[1]",
         "request type": "xpath=//span[contains(normalize-space(text()), 'Request type')]/../following-sibling::td[1]",
-        "date submitted to central": "xpath=//span[contains(normalize-space(text()), 'Date submitted to central')]/../following-sibling::td[1]"
+        "date submitted to central": "xpath=//span[contains(normalize-space(text()), 'Date submitted to central')]/../following-sibling::td[1]",
+        "Award identifying row": "css=[id$=awardIdentifyingInformationPanel_content] tbody tr",
+        "sponsor_row": "css=[id$=sponsorPanel_content] tbody tr"
     }
-        #"reason": 
-#         "sponsors": 
-#         "awarded_row": 
-#         "allocation_row": 
-#         "allocation of awarded funds to accounts": 
-#         "accounts": 
-#         "cost sharing": 
-#         "approval attributes": 
-#         "total fund authorized to pending subagreements": 
-#         "estimated Harvard University overhead for subagreements": 
-#         "subagreements_row": 
-#         "account_row": 
-#         "Award identifying row": 
-#         "sponsor_row": 
-#         "approvalattributes_row": 
-#         "costsharing_row": 
+         
+
           
                  
                  
@@ -109,25 +98,25 @@ class SCR0426(Page):
     
     
     
-    date_initiated = RText("date initiated", "Date initiated")
-    date_committed = RText("date committed", "Date committed")
-    revision_id = RText("revision id", "Revision id")
-    created_by = RText("created by", "Created by")
-    committed_by = RText("committed by", "Committed by")
-    type = RText("type", "Type")
-    status = RText("status", "Status")
-    notification_recipients = RText("notification recipients", "Notification recipients")
-    actionmemo_comments = RText("action memo comments", "Action memo comments")
-    request_title = RText("request title", "Request title")
-    request_type = RText("request type", "Request type")
-    date_central = RText("date submitted to central", "Date submitted to central")
-    sponsor_title = RText("sponsor legal title", "Sponsor legal title")
-    sponsor_award = RText("sponsor award no", "Sponsor award no")
-    form_notice = RText("form of notice", "Form of notice")
-    date_issued = RText("date issued", "Date issued")
-    date_received = RText("date received by harvard", "Date received by harvard")
-    date_executed = RText("date fully executed", "Date fully executed")
-    amendment_no = RText("amendment no", "Amendment no")
+#     date_initiated = RText("date initiated", "Date initiated")
+#     date_committed = RText("date committed", "Date committed")
+#     revision_id = RText("revision id", "Revision id")
+#     created_by = RText("created by", "Created by")
+#     committed_by = RText("committed by", "Committed by")
+#     type = RText("type", "Type")
+#     status = RText("status", "Status")
+#     notification_recipients = RText("notification recipients", "Notification recipients")
+#     actionmemo_comments = RText("action memo comments", "Action memo comments")
+#     request_title = RText("request title", "Request title")
+#     request_type = RText("request type", "Request type")
+#     date_central = RText("date submitted to central", "Date submitted to central")
+#     sponsor_title = RText("sponsor legal title", "Sponsor legal title")
+#     sponsor_award = RText("sponsor award no", "Sponsor award no")
+#     form_notice = RText("form of notice", "Form of notice")
+#     date_issued = RText("date issued", "Date issued")
+#     date_received = RText("date received by harvard", "Date received by harvard")
+#     date_executed = RText("date fully executed", "Date fully executed")
+#     amendment_no = RText("amendment no", "Amendment no")
 #     reason = RText("reason", "Reason")
 #     sponsors = RText("sponsors", "Sponsors")
 #     allocation_awardedfunds = RText("allocation of awarded funds to accounts", "Allocation of awarded funds to accounts")
@@ -167,18 +156,18 @@ class SCR0426(Page):
 #         role = RText("role", "Role")
 
    
-#     def open_all(self):
-#         """
-#         Click "open all"
-#         """
-#         return self.go("open_all")
+    def open_all(self):
+        """
+        Click "open all"
+        """
+        return self.go("open_all")
 #     
-#     @property
-#     def award_identifying(self):
-#         """
-#         List of all rows from the "Award identifying informations" table
-#         """
-#         return [self.Award_identifying(row, self) for row in self.finds("Award identifying row")]
+    @property
+    def award_identifying(self):
+        """
+        List of all rows from the "Award identifying informations" table
+        """
+        return [self.Award_identifying(row, self) for row in self.finds("Award identifying row")]
 #     
 #     @property
 #     def award_row(self):
@@ -208,12 +197,12 @@ class SCR0426(Page):
 #         """
 #         return [self.Account_row(row, self) for row in self.finds("account_row")]
 #     
-#     @property
-#     def sponsor_row(self):
-#         """
-#         List of all rows from the "Sponsors" table
-#         """
-#         return [self.Sponsor_row(row, self) for row in self.finds("sponsor_row")]
+    @property
+    def sponsor_row(self):
+        """
+        List of all rows from the "Sponsors" table
+        """
+        return [self.Sponsor_row(row, self) for row in self.finds("sponsor_row")]
 #     
 #     @property
 #     def costsharing_row(self):
@@ -223,16 +212,22 @@ class SCR0426(Page):
 #         return [self.Costsharing_row(row, self) for row in self.finds("costsharing_row")]
     
     
-#     class Award_identifying(Row):
-#         locators = {
-#             "feild or value": Row.cell(2),
-#             "previous value": Row.cell(6),
-#             "new value": Row.cell(10)
-#         }
-#         
-#         feild_value = RText("feild or value", "Feild or value")
-#         previous_value = RText("previous value", "Previous value")
-#         new_value = RText("new value", "New value")
+    class Award_identifying(Row):
+        locators = {
+            "feild or value": Row.cell(2),
+            "previous value": Row.cell(6),
+            "new value": Row.cell(10)
+        }
+        
+        _locators = {
+            "feild or value": Row.cell(1),
+            "previous value": Row.cell(2),
+            "new value": Row.cell(3)
+        }
+         
+        feild_value = RText("feild or value", "Feild or value")
+        previous_value = RText("previous value", "Previous value")
+        new_value = RText("new value", "New value")
 #         
 #     class Awarded_row(Row):
 #         locators = {
@@ -319,16 +314,21 @@ class SCR0426(Page):
 #         revision_type = RText("type of revision", "Type of revision")
 #             
 #                     
-#     class Sponsor_row(Row):
-#         locators = {
-#             "field or value": Row.cell(2),
-#             "previous value": Row.cell(6),
-#             "new value": Row.cell(10)
-#         }
-#         
-#         field_value = RText("field or value", "Field or value")
-#         previous_value = RText("previous value", "Previous value")
-#         new_value =  RText("new value", "New value") 
+    class Sponsor_row(Row):
+        locators = {
+            "field or value": Row.cell(2),
+            "previous value": Row.cell(6),
+            "new value": Row.cell(10)
+        }
+        
+        _locators = {
+            "field or value": Row.cell(1),
+            "previous value": Row.cell(2),
+            "new value": Row.cell(3)
+        }
+        field_value = RText("field or value", "Field or value")
+        previous_value = RText("previous value", "Previous value")
+        new_value =  RText("new value", "New value") 
 #             
 #     class Costsharing_row(Row):
 #         
