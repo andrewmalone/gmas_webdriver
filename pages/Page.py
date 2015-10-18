@@ -4,6 +4,7 @@ Base class for Page objects
 from selenium.webdriver.support.wait import WebDriverWait
 from pages.modules import COM0500, GMAS_Header
 from pages.webelement import GMWebElement
+from selenium.common.exceptions import NoSuchElementException
 import re
 
 
@@ -110,7 +111,6 @@ class Page(GMWebElement):
 
     def get_id(self, id_name):
         locator = "css=input[type='hidden'][name='%sId']" % (id_name)
-        from selenium.common.exceptions import NoSuchElementException
         try:
             return self.find_element(locator).get_attribute("value")
         except NoSuchElementException:
@@ -187,8 +187,10 @@ class Page(GMWebElement):
         self.driver.get(url.format(self.env_url))
         return self.load_page()
 
-    def goto_segment(self, segment_id):
+    def goto_segment(self, segment_id, new=False):
         url = "%s/gmas/project/SCR0104SegmentHome.jsp?segmentId=%s" % (self.env_url, segment_id)
+        if new:
+            url = "%s/gmas/project/SCR0104SegmentHome.xhtml?segmentId=%s" % (self.env_url, segment_id)
         self.driver.get(url)
         return self.load_page()
 

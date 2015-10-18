@@ -25,12 +25,18 @@ locators = {
     "fin award info": "event=FinancialAwardInformationEvent"
 }
 
+_locators = {
+    "document_button": "css=.ui-menubutton.documents button",
+    "segment_repository": "event=RepositoryLinkEvent"
+}
+
 
 class SCR0104b(Page):
     """
     SCR_0104b Segment Home
     """
     locators = locators
+    _locators = _locators
 
     @property
     def document_count(self):
@@ -94,7 +100,11 @@ class SCR0104b(Page):
         Clicks the "Documents" link
         Goes to SCR_0433
         """
-        return self.go("documents")
+        if self.mode == "old":
+            return self.go("documents")
+        elif self.mode == "convert":
+            self.find("document_button").click()
+            return self.go("segment_repository")
 
     def goto_dates_dollars(self):
         """
