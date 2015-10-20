@@ -9,7 +9,7 @@ class SCR0610b(Page):
         "next": "name=GrantsGovAttachmentsNextEvent",
         "ok": "name=GrantsGovAttachmentsOkEvent",
         "locate all": "css=a[href*='GrantsGovAttachmentsLocateEvent']",
-        "locate form": "css=a[href*='GrantsGovAttachmentsLocateEvent'][href*='FORM'][href$='ATTACHMENT']"
+        "locate form": "css=a[href*='GrantsGovAttachmentsLocateEvent'][href*='FORM'][href*='ATTACHMENT']"
     }
 
     def locate_buttons(self, form_name, attachment_name):
