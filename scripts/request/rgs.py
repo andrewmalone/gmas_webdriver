@@ -207,9 +207,10 @@ def rgs(p, f=None, finish="request", stop=None):
     p.due_date = f["due_date"]
     if "s2s" not in f:
         f["s2s"] = "false"
-    if p.get_current_page() == "SCR0231bRequestSubmissionDetails":
+    if p.scr == "SCR0231b":
         p.s2s = f["s2s"]
-    if p.get_current_page() == "SCR0231RequestSubmissionDetails" or f["s2s"] == "false":
+        p = p.load_page()
+    if p.scr == "SCR0231" or f["s2s"] == "false":
         p.due_date_type = f["due_date_type"]
         p.copies = f["copies"]
         if "mailing" in f:
@@ -393,10 +394,12 @@ def rgs(p, f=None, finish="request", stop=None):
                 if form == "directory":
                     continue
                 for attachment in f["ggov_attachments"][form]:
-                    p = p.locate(form, attachment)
-                    p.set_file(os.path.join(base_dir, f["ggov_attachments"][form][attachment]))
-                    # print "%s%s" % (base_dir, f["ggov_attachments"][form][attachment])
-                    p = p.ok()
+                    # print form, attachment
+                    if len(p.locate_buttons(form, attachment)) > 0:
+                        p = p.locate(form, attachment)
+                        p.set_file(os.path.join(base_dir, f["ggov_attachments"][form][attachment]))
+                        # print "%s%s" % (base_dir, f["ggov_attachments"][form][attachment])
+                        p = p.ok()
         if checkstop(p, stop):
             return p
         p = p.ok()
