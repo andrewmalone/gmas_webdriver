@@ -40,22 +40,11 @@ class SCR0426(Page):
         "total fund authorized to pending subagreements": xpath.text_sibling_child("td", "Total funds authorized to pending subagreements", 2),
         "estimated Harvard University overhead for subagreements": xpath.text_sibling_child("td", "Estimated Harvard University overhead for subagreements", 2),
         "allocation_row": "xpath=//td[contains(text(), 'Grp.')]/ancestor::table[1]//tr[not (@class ='bg3')][position()>1]",
-        "account_row": "xpath=//td[contains(text(), 'Description')]/ancestor::table[1]//tr[(@class ='bg0')][position()>1]"
+        "account_row": "xpath=//td[contains(text(), 'Description')]/ancestor::table[1]//tr[(@class ='bg0')][position()>1]",
+        "costsharing_row": "xpath=//td[contains(text(), 'Mandatory')]/ancestor::table[1]//tr[not (@class ='bg3')][position()  mod 2 =1 and position()>1]",
+        "approvalattributes_row": "xpath=//td[contains(text(), 'Approval attributes')]/following::table[1]//tr[not (@class ='bg3')][position()  mod 2 =1 and position()>2]"
         }
 
-        #"reason": "xpath=//*[contains(normalize-space(text()), 'Reason for administrative change or correction')]/ancestor::tr[1]/following-sibling::tr[3]",
-#         "awarded_row": "xpath=//td[contains(text(), 'Budget period (mm-dd-yyyy)')]/ancestor::table[1]//tr[not (@class ='bg3')][position()>2]",
-#         "allocation_row": "xpath=//td[contains(text(), 'Grp.')]/ancestor::table[1]//tr[not (@class ='bg3')][position()>1]",
-#         "allocation of awarded funds to accounts": xpath.text_sibling("td", "Allocation of awarded funds to accounts", 2),
-#         "accounts": xpath.text_sibling("td", "Accounts", 2),
-#         "cost sharing": xpath.text_sibling("td", "Cost sharing", 2),
-#         "approval attributes": xpath.text_sibling("td", "Approval attributes", 2),
-#         "total fund authorized to pending subagreements": xpath.text_sibling_child("td", "Total funds authorized to pending subagreements", 2),
-#         "estimated Harvard University overhead for subagreements": xpath.text_sibling_child("td", "Estimated Harvard University overhead for subagreements", 2),
-#         "subagreements_row": "xpath=//td[contains(text(), 'Subagreements')]/ancestor::table[1]//tr[not (@class ='bg1')][position()  mod 2 =1 and position()>2]",
-#         "account_row": "xpath=//td[contains(text(), 'Description')]/ancestor::table[1]//tr[(@class ='bg0')][position()>1]",
-#         "approvalattributes_row": "xpath=//td[contains(text(), 'Field or value')]/ancestor::table[1]//tr[not (@class ='bg3')][position()  mod 2 = 1 and position()>8]",
-#         "costsharing_row": "xpath=//td[contains(text(), 'Mandatory')]/ancestor::table[1]//tr[not (@class ='bg3')][position()  mod 2 =1 and position()>1]"
 
     
     _locators = {
@@ -91,7 +80,9 @@ class SCR0426(Page):
         "total fund authorized to pending subagreements": "xpath=//span[contains(normalize-space(text()), 'Total funds authorized to pending subagreements')]/../following-sibling::td[1]",
         "estimated Harvard University overhead for subagreements": "xpath=//span[contains(normalize-space(text()), 'Estimated Harvard University overhead for subagreements')]/../following-sibling::td[1]",
         "allocation_row": "css=[id$=allocation_content_content] tbody tr",
-        "accounts_row": "css=[id$=accounts_content_content] tbody tr"
+        "account_row": "css=[id$=accounts_content_content] tbody tr",
+        "costsharing_row": "css=[id$=costSharing_content_content] tbody tr",
+        "approvalattributes_row": "css=[id$=j_idt351_content] tbody tr"
     }
          
 
@@ -135,119 +126,119 @@ class SCR0426(Page):
 #     accounts = RText("accounts", "Accounts")
 #     cost_sharing = RText("cost sharing", "Cost sharing")
 #     approval_attributes =  RText("approval attributes", "Approval attributes")
-    total_fund  = RText("total fund authorized to pending subagreements", "Total fund authorized to pending subagreements")
-    estimated_Harvard  = RText("estimated Harvard University overhead for subagreements", "Estimated Harvard University overhead for subagreements")
+#     total_fund  = RText("total fund authorized to pending subagreements", "Total fund authorized to pending subagreements")
+#     estimated_Harvard  = RText("estimated Harvard University overhead for subagreements", "Estimated Harvard University overhead for subagreements")
 #     
     
-#     @property
-#     def approvalattributes_row(self):
-#         """
-#         List of all rows from the "approval attributes" table
-#         """
-#         return [self.Approvalattributes_row(row, self) for row in self.finds("approvalattributes_row")]
+    @property
+    def approvalattributes_row(self):
+        """
+        List of all rows from the "approval attributes" table
+        """
+        return [self.Approvalattributes_row(row, self) for row in self.finds("approvalattributes_row")]
 
-#     @property
-#     def notification_recipients(self):
-#         """
-#         List of all rows from the "Notification recipients" table
-#         """
-#         return [self.Notification_recipients(row, self) for row in self.finds("notification recipients")] 
-#     
-#     class Notification_recipients(Row): 
-#         locators = {
-#             "name": Row.cell(1),
-#             "role": Row.cell(3)
-#         }  
-#     
-#         _locators = {
-#             "name": Row.cell(1),
-#             "role": Row.cell(2)                   
-#         }
-#         
-#         name = RText("name", "Name")
-#         role = RText("role", "Role")
+    @property
+    def notification_recipients(self):
+        """
+        List of all rows from the "Notification recipients" table
+        """
+        return [self.Notification_recipients(row, self) for row in self.finds("notification recipients")] 
+     
+    class Notification_recipients(Row): 
+        locators = {
+            "name": Row.cell(1),
+            "role": Row.cell(3)
+        }  
+     
+        _locators = {
+            "name": Row.cell(1),
+            "role": Row.cell(2)                   
+        }
+         
+        name = RText("name", "Name")
+        role = RText("role", "Role")
 
     def open_all(self):
         """
         Click "open all"
         """
         return self.go("open_all")
-#     
-#     @property
-#     def award_identifying(self):
-#         """
-#         List of all rows from the "Award identifying informations" table
-#         """
-#         return [self.Award_identifying(row, self) for row in self.finds("Award identifying row")]
-#      
-#     @property
-#     def award_row(self):
-#         """
-#         List of all rows from the "Award dates and dollars" table
-#         """
-#         return [self.Awarded_row(row, self) for row in self.finds("awarded_row")]
-#      
-#     @property
-#     def total_row(self):
-#         """
-#         List of all rows from the "total dates and dollars" table
-#         """
-#         return [self.Total_row(row, self) for row in self.finds("total_row")]
-
-
      
-#     @property
-#     def alloacation_row(self):
-#         """
-#         List of all rows from the "Allocation of awarded funds to accounts" table
-#         """
-#         return [self.Allocation_row(row, self) for row in self.finds("allocation_row")]
-#      
-#     @property
-#     def subagreements_row(self):
-#         """
-#         List of all rows from the "Subagreements" table
-#         """
-#         return [self.Subagreements_row(row, self) for row in self.finds("subagreements_row")]
-# #     
+    @property
+    def award_identifying(self):
+        """
+        List of all rows from the "Award identifying informations" table
+        """
+        return [self.Award_identifying(row, self) for row in self.finds("Award identifying row")]
+      
+    @property
+    def award_row(self):
+        """
+        List of all rows from the "Award dates and dollars" table
+        """
+        return [self.Awarded_row(row, self) for row in self.finds("awarded_row")]
+      
+    @property
+    def total_row(self):
+        """
+        List of all rows from the "total dates and dollars" table
+        """
+        return [self.Total_row(row, self) for row in self.finds("total_row")]
+ 
+ 
+      
+    @property
+    def alloacation_row(self):
+        """
+        List of all rows from the "Allocation of awarded funds to accounts" table
+        """
+        return [self.Allocation_row(row, self) for row in self.finds("allocation_row")]
+      
+    @property
+    def subagreements_row(self):
+        """
+        List of all rows from the "Subagreements" table
+        """
+        return [self.Subagreements_row(row, self) for row in self.finds("subagreements_row")]
+     
     @property
     def account_row(self):
         """
         List of all rows from the "Subagreementss" table
         """
         return [self.Account_row(row, self) for row in self.finds("account_row")]
+     
+    @property
+    def sponsor_row(self):
+        """
+        List of all rows from the "Sponsors" table
+        """
+        return [self.Sponsor_row(row, self) for row in self.finds("sponsor_row")]
 #     
-#     @property
-#     def sponsor_row(self):
-#         """
-#         List of all rows from the "Sponsors" table
-#         """
-#         return [self.Sponsor_row(row, self) for row in self.finds("sponsor_row")]
-#     
-#     @property
-#     def costsharing_row(self):
-#         """
-#         List of all rows from the "cost sharing" table
-#         """
-#         return [self.Costsharing_row(row, self) for row in self.finds("costsharing_row")]
+    @property
+    def costsharing_row(self):
+        """
+        List of all rows from the "cost sharing" table
+        """
+        return [self.Costsharing_row(row, self) for row in self.finds("costsharing_row")]
     
     
-#     class Award_identifying(Row):
-#         locators = {
-#             "feild or value": Row.cell(2),
-#             "previous value": Row.cell(6),
-#             "new value": Row.cell(10)
-#         }
-#         
-#         _locators = {
-#             "feild or value": Row.cell(1),
-#             "previous value": Row.cell(2),
-#             "new value": Row.cell(3)
-#         }
-#          
-#         feild_value = RText("feild or value", "Feild or value")
-#         previous_value = RText("previous value", "Previous value")
-#         new_value = RText("new value", "New value")
+    class Award_identifying(Row):
+        locators = {
+            "feild or value": Row.cell(2),
+            "previous value": Row.cell(6),
+            "new value": Row.cell(10)
+        }
+         
+        _locators = {
+            "feild or value": Row.cell(1),
+            "previous value": Row.cell(2),
+            "new value": Row.cell(3)
+        }
+          
+        feild_value = RText("feild or value", "Feild or value")
+        previous_value = RText("previous value", "Previous value")
+        new_value = RText("new value", "New value")
 
 
     class Awarded_row(Row):
@@ -315,17 +306,17 @@ class SCR0426(Page):
             "carried forward_total": Row.cell(10)
         }
          
-#         budget = RText("budget", "Budget  period")
-#         obligated_current = RText("obligated_current", "obligated_current")
-#         obligated_change = RText("obligated_total","obligated_total")
-#         obligated_total = RText("obligated_total", "obligated_total")
-#         anticipated_current = RText("anticipated_current", "anticipated_current")
-#         anticipated_change = RText("anticipated_change", "anticipated_change")
-#         anticipated_total = RText("anticipated_total", "anticipated_total")
-#         carriedforward_current = RText("carried forward_current","carried forward_current")
-#         carriedforward_change = RText("carried forward_change", "carried forward_change")
-#         carriedforward_total = RText("carried forward_total", "carried forward_total")
-# 
+        budget = RText("budget", "Budget  period")
+        obligated_current = RText("obligated_current", "obligated_current")
+        obligated_change = RText("obligated_total","obligated_total")
+        obligated_total = RText("obligated_total", "obligated_total")
+        anticipated_current = RText("anticipated_current", "anticipated_current")
+        anticipated_change = RText("anticipated_change", "anticipated_change")
+        anticipated_total = RText("anticipated_total", "anticipated_total")
+        carriedforward_current = RText("carried forward_current","carried forward_current")
+        carriedforward_change = RText("carried forward_change", "carried forward_change")
+        carriedforward_total = RText("carried forward_total", "carried forward_total")
+
 
 
         
@@ -407,7 +398,8 @@ class SCR0426(Page):
             "type of revision": Row.cell(12)
                      
         }
-        grp = RText("grp","grp"),
+        
+        grp = RText("grp", "grp")
         description = RText("description", "description")
         year = RText("year", "year")
         type = RText("type", "type")
@@ -417,8 +409,26 @@ class SCR0426(Page):
         activity = RText("activity", "Activity")
         sub_activity = RText("sub activity", "Sub activity")
         auth_root = RText("auth.root", "Auth.root")
-        at_risk = RText("at risk", "At risk")
+#         at_risk = RText("at risk", "At risk")
         revision_type = RText("type of revision", "Type of revision")
+        
+        @property
+        def at_risk(self):
+            """
+            verify at-risk is checked
+            """
+            element = self.find("at risk")
+            if self.page.mode == "old":
+                # Is there an image in the cell?
+                images = element.find_elements_by_tag_name("img")
+                if len(images) == 0:
+                    return "No"
+                else:
+                    return "Yes"
+                # If yes - return "Yes"
+                # If no - return "No"
+            elif self.page.mode == "convert":
+                return element.text
              
                      
     class Sponsor_row(Row):
@@ -436,34 +446,47 @@ class SCR0426(Page):
         field_value = RText("field or value", "Field or value")
         previous_value = RText("previous value", "Previous value")
         new_value =  RText("new value", "New value") 
-#             
-#     class Costsharing_row(Row):
-#         
-#         locators = {
-#             "description": Row.cell(2),
-#             "mandatory": Row.cell(6),
-#             "voluntary": Row.cell(10),
-#             "total": Row.cell(14)     
-#         }
-#         
-#         description = RText("description", "Description")
-#         mandatory = RText("mandatory", "Mandatory")
-#         voluntary = RText("voluntary", "Voluntary")
-#         total = RText("total", "Total")
-#     
-#     class Approvalattributes_row(Row):
-#         
-#         locators = {
-#             "field or value": Row.cell(2),
-#             "previous value":   Row.cell(6),
-#             "new value":    Row.cell(10)        
-#         }
-#             
-#         feild_value = RText("field or value", "Field or value")
-#         previous_value = RText("previous value", "Previous value")
-#         new_value =  RText("new value", "New value")        
-#         
-#         
+        
+             
+    class Costsharing_row(Row):
+         
+        locators = {
+            "description": Row.cell(2),
+            "mandatory": Row.cell(6),
+            "voluntary": Row.cell(10),
+            "total": Row.cell(14)     
+        }
+        
+        _locators = {
+            "description": Row.cell(1),
+            "mandatory": Row.cell(2),
+            "voluntary": Row.cell(3),
+            "total": Row.cell(4)     
+        }
+         
+        description = RText("description", "Description")
+        mandatory = RText("mandatory", "Mandatory")
+        voluntary = RText("voluntary", "Voluntary")
+        total = RText("total", "Total")
+     
+    class Approvalattributes_row(Row):
+         
+        locators = {
+            "field or value": Row.cell(2),
+            "previous value": Row.cell(6),
+            "new value":    Row.cell(10)        
+        }
+        _locators = {
+            "field or value": Row.cell(1),
+            "previous value": Row.cell(2),
+            "new value":    Row.cell(3)        
+        }
+             
+        feild_value = RText("field or value", "Field or value")
+        previous_value = RText("previous value", "Previous value")
+        new_value =  RText("new value", "New value")        
+         
+         
         
         
         
