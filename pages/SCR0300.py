@@ -12,16 +12,27 @@ class SCR0300(Page):
         "row by person": "xpath=//a[contains(@href,'ProjectAdminTeamPersonProfileEvent')][contains(@href,'personId=REPLACE')]/ancestor::tr[1]",
         "row by role": "xpath=//*[contains(text(),'REPLACE')][not(@class)]/ancestor::tr[1]",
         "row": xpath.parent_row_of_event("ProjectAdminTeamEditRolesEvent"),
-        "add": "ProjectAdminTeamAddRolesEvent"
+        "add": "ProjectAdminTeamAddRolesEvent",
+        "administrative team": "xpath=//*[contains(@href, 'Role')]/ancestor::table[1]//tr[not (@class ='bg3')][position()>2]"
+        
     }
 
+    @classmethod
+    def url(cls, segmentId):
+        """
+        Direct navigation to SCR_0300
+        """
+        url = "{{}}/gmas/dispatch?segmentId={}&formName=SegmentHomeForm&SegmentSummaryAdministrativeTeamLinkEvent="
+        return url.format(segmentId)
+ 
+    
     @property
     def row_count(self):
         """
         Count of rows that can be clicked (not PI)
         """
         return len(self.finds("row"))
-
+ 
     def row(self, n):
         """
         Returns the nth row (that has a clickable row)
@@ -29,14 +40,14 @@ class SCR0300(Page):
         """
         row = self.finds("row")[n - 1]
         return self.role_row(row, self)
-
+ 
     def goto_role(self, role):
         """
         Clicks the first matching role link (exact match)
         Goes to SCR_0301
         """
         return self.go("role", role)
-
+ 
     def role_rows(self, role=None):
         """
         Returns a list of rows matching the role specified. If no role is specified, returns all rows with a clickable row (so not PI)
@@ -50,7 +61,7 @@ class SCR0300(Page):
         for el in elements:
             rows.append(self.role_row(el, self))
         return rows
-
+ 
     def person_rows(self, person_id):
         """
         Returns a list of rows matching the person specified (by person id)
@@ -61,22 +72,29 @@ class SCR0300(Page):
         for el in elements:
             rows.append(self.role_row(el, self))
         return rows
-
+ 
     def add_role(self):
         """
         Click <Add roles>
         Goes to SCR_0416
         """
         return self.go("add")
-
-    class role_row(Row):
+#     
+    @property
+    def row(self):
+        """
+        List of all rows from the "Project administrative team" table
+        """
+        return [self.Row(row, self) for row in self.finds("administrative team")]
+    
+    class Row(Row):
         locators = {
-            "role": "css=td:nth-child(3)",
-            "name": "css=td:nth-child(7)",
+            "role":  Row.cell(3),
+            "name":  Row.cell(7),
             "role link": "css=a[href*=ProjectAdminTeamEditRolesEvent]",
             "name link": "css=a[href*=ProjectAdminTeamPersonProfileEvent]"
         }
-
+        
         role = RText("role", "Role name")
         name = RText("name", "Person name")
 
@@ -86,7 +104,7 @@ class SCR0300(Page):
             Goes to SCR_0301
             """
             return self._go("role link")
-
+ 
         def person_id(self):
             """
             returns the person id for the current row
