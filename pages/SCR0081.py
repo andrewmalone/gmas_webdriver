@@ -46,12 +46,12 @@ class SCR0081(Page):
     comments = RText("comments", "Comments")
     
     @classmethod
-    def url(cls, requestId, segmentId, approvalTypeId, HUID, approval_requirement_id):
+    def url(cls, requestId, segmentId, HUID, approval_requirement_id):
         """
         Direct navigation to SCR_0560
         """
-        url = "{{}}/gmas/dispatch?ApprovalListViewOrEditDetailEvent=&requestTypeId=&requestId={}&segmentId={}&formName=ApprovalListForm&approvalTypeId={}&HUID={}&approvalId={}&generatedBy=&ref=%2Fapproval%2FSCR0080Approvals.jsp&segmentScopeRequestId=&fromSegmentHomePage=true&responsiblePartyDisplayString=Shen%2C+Chia&approvalUserId=&segmentRevisionId"
-        return url.format(requestId, segmentId, approvalTypeId, HUID, approval_requirement_id)
+        url = "{{}}/gmas/dispatch?ApprovalListViewOrEditDetailEvent=&requestTypeId=2003&requestId={}&segmentId={}&formName=ApprovalListForm&approvalTypeId={}&HUID={}&approvalId={}&generatedBy=&ref=%2Fapproval%2FSCR0080Approvals.jsp&segmentScopeRequestId=&fromSegmentHomePage=true&responsiblePartyDisplayString=Shen%2C+Chia&approvalUserId=&segmentRevisionId"
+        return url.format(requestId, segmentId, HUID, approval_requirement_id)
    
         """
         Clicks the "Documents" link
