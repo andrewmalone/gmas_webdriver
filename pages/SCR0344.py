@@ -1,5 +1,7 @@
 from pages.Page import Page
-from pages.elements import Row
+from pages.elements import Row, RText
+import utilities.xpath as xpath
+
 
 
 class SCR0344(Page):
@@ -10,6 +12,14 @@ class SCR0344(Page):
         "request row": "xpath=//a[contains(@href,'LinkEvent')]/ancestor::tr[1]",
         "request row id": "xpath=//a[contains(@href,'requestId=REPLACE')]/ancestor::tr[1]"
     }
+    
+    @classmethod
+    def url(cls, segment_id,):
+        """
+        Direct navigation to SCR_0426
+        """
+        url = "{{}}/gmas/dispatch?ref=%2Ftemplates%2Fcommon%2FsegmentNavigation.xhtml&segmentId={}&RequestListEvent=&formName=SegmentHomeForm"
+        return url.format(segment_id,)
 
     @property
     def request_count(self):
@@ -40,9 +50,22 @@ class SCR0344(Page):
 
     class request_row(Row):
         locators = {
-            "link": "css=a[href*=LinkEvent]"
+            "link": "css=a[href*=LinkEvent]",
+            "request id": Row.cell(3),
+            "title": Row.cell(7),
+            "type": Row.cell(11),
+            "status": Row.cell(15),
+            "due": Row.cell(19),
+            "requested amount": Row.cell(23)
         }
-
+        
+        request_id = RText("request id", "Request ID")
+        title = RText("title", "Title")
+        type = RText("type", "Type")
+        status = RText("status", "Status")
+        due = RText("due", "Due")
+        requested_amount = RText("requested amount", "Requested amount")
+        
         @property
         def request_id(self):
             """
