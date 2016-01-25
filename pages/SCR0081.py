@@ -50,7 +50,7 @@ class SCR0081(Page):
         """
         Direct navigation to SCR_0560
         """
-        url = "{{}}/gmas/dispatch?ApprovalListViewOrEditDetailEvent=&requestTypeId=2003&requestId={}&segmentId={}&formName=ApprovalListForm&approvalTypeId={}&HUID={}&approvalId={}&generatedBy=&ref=%2Fapproval%2FSCR0080Approvals.jsp&segmentScopeRequestId=&fromSegmentHomePage=true&responsiblePartyDisplayString=Shen%2C+Chia&approvalUserId=&segmentRevisionId"
+        url = "{{}}/gmas/dispatch?ApprovalListViewOrEditDetailEvent=&requestTypeId=2003&requestId={}&segmentId={}&formName=ApprovalListForm&approvalTypeId=2012&HUID={}&approvalId={}&generatedBy=&ref=%2Fapproval%2FSCR0080Approvals.jsp&segmentScopeRequestId=&fromSegmentHomePage=true&responsiblePartyDisplayString=Shen%2C+Chia&approvalUserId=&segmentRevisionId"
         return url.format(requestId, segmentId, HUID, approval_requirement_id)
    
         """
