@@ -220,6 +220,7 @@ def rgs(p, f=None, finish="request", stop=None):
     p = p.ok()
 
     # SCR_0090
+    p = p.load_page()
     p.start = f["start"]
     p.calc_end(f["start"], f["periods"])
     p.periods = f["periods"]
@@ -308,6 +309,8 @@ def rgs(p, f=None, finish="request", stop=None):
     # SCR_0098 (and SCR_0365)
     p = p.edit_pi()
     p.human_subjects = f["pi_hs"]
+    if "pi_credential" in f:
+        p.credential = f["pi_credential"]
     p = p.ok()
     if f["project_type"] == "Fellowship":
         p = p.edit_mentor()
@@ -326,6 +329,7 @@ def rgs(p, f=None, finish="request", stop=None):
                 p.tbd = True
             else:
                 p.person = person["huid"]
+                p = p.load_page()
             p.key = person["key"]
             p.human_subjects = person["hs"]
             if p.investigator is not False:
@@ -396,10 +400,16 @@ def rgs(p, f=None, finish="request", stop=None):
                 for attachment in f["ggov_attachments"][form]:
                     # print form, attachment
                     if len(p.locate_buttons(form, attachment)) > 0:
-                        p = p.locate(form, attachment)
-                        p.set_file(os.path.join(base_dir, f["ggov_attachments"][form][attachment]))
-                        # print "%s%s" % (base_dir, f["ggov_attachments"][form][attachment])
-                        p = p.ok()
+                        if type(f["ggov_attachments"][form][attachment]) is list:
+                            for i, a in enumerate(f["ggov_attachments"][form][attachment]):
+                                p = p.locate(form, attachment, i + 1)
+                                p.set_file(os.path.join(base_dir, f["ggov_attachments"][form][attachment][i]))
+                                p = p.ok()
+                        else:
+                            p = p.locate(form, attachment)
+                            p.set_file(os.path.join(base_dir, f["ggov_attachments"][form][attachment]))
+                            # print "%s%s" % (base_dir, f["ggov_attachments"][form][attachment])
+                            p = p.ok()
         if checkstop(p, stop):
             return p
         p = p.ok()

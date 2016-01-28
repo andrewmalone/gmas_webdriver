@@ -18,7 +18,7 @@ def submit(p, data=None):
 def submit_s2s(p, data=None):
     # start from request home
     p = p.prepare_ggov_submission() # to 609
-    if "forms" in data:
+    if data is not None and "forms" in data:
         # change ggov forms here
         pass
     p = p.ok() # to 617
