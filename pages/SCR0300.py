@@ -1,5 +1,5 @@
 from pages.Page import Page
-from pages.elements import Row, RText
+from pages.elements import Row, RText, Text, Select
 import utilities.xpath as xpath
 
 
@@ -25,9 +25,11 @@ class SCR0300(Page):
         "row by role": "xpath=//*[contains(text(),'REPLACE')][not(@class)]/ancestor::tr[1]",
         "row": xpath.parent_row_of_event("ProjectAdminTeamEditRolesEvent"),
         "add": "ProjectAdminTeamAddRolesEvent",
-        "administrative team": "xpath=//*[(@id ='j_idt125:projectAdministrativeTeamDatatable_data')]//tr[not (@class ='bg3')][position()>0]",
+#         "administrative team": "xpath=//*[(@id ='j_idt124:projectAdministrativeTeamDatatable_data')]//tr[not (@class ='bg3')][position()>0]",
         "more details": "link=More details...",
-        "admin team": "link=Administrative team"          
+        "admin team": "link=Administrative team",
+        "edit": "xpath=//button[@id='j_idt107:edit']",
+        "administrative team": "xpath=//tbody[@id='editProjectAdministrativeTeamForm:projectAdministrativeTeamDatatable_data']/tr"        
                  
     }
 
@@ -70,7 +72,22 @@ class SCR0300(Page):
         Goes to SCR_0301
         """
         return self.go("role", role)
- 
+    
+
+#     @property
+#     def edit(self):
+#         if self.mode == "old":
+#             return self.text
+#         if self.mode == "convert":
+#             return self.find("edit").click()
+
+
+    def edit(self):
+        try:
+            return self.go("edit").click()
+        except:
+            return self
+#         
     def role_rows(self, role=None):
         """
         Returns a list of rows matching the role specified. If no role is specified, returns all rows with a clickable row (so not PI)
@@ -130,7 +147,7 @@ class SCR0300(Page):
         _locators = {
             "role":  Row.cell(1),
             "name":  Row.cell(2)
-            }
+        }
         role = RText("role", "Role name")
         name = RText("name", "Person name")
 
@@ -150,3 +167,5 @@ class SCR0300(Page):
             url = urlparse.urlparse(element.get_attribute("href"))
             query = urlparse.parse_qs(url.query)
             return query["personId"][0]
+        
+
