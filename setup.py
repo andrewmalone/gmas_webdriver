@@ -53,8 +53,13 @@ def loginGMAS(driver):
     w.until(lambda e: e.find_element_by_id("username"))
     driver.find_element_by_id("username").send_keys(HUID)
     driver.find_element_by_id("password").send_keys(PIN)
+
 #     driver.find_element_by_css_selector("input.login-button[type=submit][value=Login]").click()
     driver.find_element_by_id("submitLogin").click()
+
+#     driver.find_element_by_id("submitLogin").click()
+
+
 
 def init(browser, env, splitscreen=False, position="full", port=None, download_dir=None):
     # this is so that imports will work (there's probably a better way)

@@ -4,11 +4,17 @@ import utilities.xpath as xpath
 from selenium.webdriver.support.expected_conditions import title_contains
 
 
+_locators = {
+    "document_button": "css=.ui-menubutton.documents button",
+    "segment_repository": "event=RepositoryLinkEvent"
+}
+
 
 class SCR0104b(Page):
     """
     SCR_0104b Segment Home
     """
+
     locators = {
 #     "make revision": 'css=a[href*=SegmentHomeMakeRevisionEvent]',
 #     "continue revision": "css=a[href*='SegmentHomeEditRevisionEvent']",
@@ -38,7 +44,8 @@ class SCR0104b(Page):
     "award number": xpath.text_sibling("td", "Award number", 1),
     "sponsor type": xpath.text_sibling("td", "Sponsor type", 1),
     "prime sponsor type": xpath.text_sibling("td", "Prime sponsor type", 1),
-    "prime PI": xpath.text_sibling("td", "Prime Institute PI", 1)
+    "prime PI": xpath.text_sibling("td", "Prime Institute PI", 1),
+    "admin team": "link=Administrative team"
 #     "dates_dollars": "event=SegmentHomeViewDatesAndDollarsEvent",
 #     "additional info": "event=AdditionalAwardInformationEvent",
 #     "fin award info": "event=FinancialAwardInformationEvent",
@@ -62,6 +69,7 @@ class SCR0104b(Page):
 #     "budget direct": "xpath=//span[contains(normalize-space(text()), 'Total')]/../following-sibling::td[4]",
 #     "budget indirect": "xpath=//span[contains(normalize-space(text()), 'Total')]/../following-sibling::td[8]",
 #     "budget total": "xpath=//span[contains(normalize-space(text()), 'Total')]/../following-sibling::td[12]"
+
        }
 
     _locators = {
@@ -84,7 +92,8 @@ class SCR0104b(Page):
     "CFDA number": "xpath=//span[contains(normalize-space(text()), 'CFDA number')]/../following-sibling::td[1]",
     "discipline": "xpath=//span[contains(normalize-space(text()), 'Discipline')]/../following-sibling::td[1]",
     "payment method": "xpath=//span[contains(normalize-space(text()), 'Payment method')]/../following-sibling::td[1]",
-    "agency LOC number": "xpath=//span[contains(normalize-space(text()), 'Agency LOC number')]/../following-sibling::td[1]"
+    "agency LOC number": "xpath=//span[contains(normalize-space(text()), 'Agency LOC number')]/../following-sibling::td[1]",
+    "admin team": "link=Administrative team"
 #     "obligated dates": "xpath=//table[@id='segmentDatesGrid']/tbody/tr/td[2]",
 #     "anticipated dates": "xpath=//table[@id='segmentDatesGrid']/tbody/tr[2]/td[2]",
 #     "dates_dollars direct": "xpath=//table[@id='segmentDollarsGrid']/tbody/tr[2]",
@@ -122,6 +131,93 @@ class SCR0104b(Page):
 #     budget_direct = RText("budget direct", "Budget direct")
 #     budget_indirect = RText("budget indirect", "Budget indirect")
 #     budget_total = RText("budget total", "Budget total")
+
+
+    @property
+    def document_count(self):
+        """
+        Number of documents showing in the document component
+        """
+        count = self.find("document count").text
+        return int(count[:count.find(" ")])
+
+    @property
+    def status(self):
+        """
+        Segment status
+        """
+        text = self.find("project_info").text
+        return text[text.index("|") + 2:]
+
+    def nav_to(self, segment_id):
+        """
+        Direct navigation to a segment home (based on segment id)
+        """
+        url = "https://%s.harvard.edu/gmas/project/SCR0104SegmentHome.jsp?segmentId=%s" % (self.env, segment_id)
+        self.driver.get(url)
+        return SCR0104b(self.driver)
+
+    def make_revision(self):
+        """
+        Click the <Make revision> button
+        Goes to SCR_0105 (through the wait screen)
+        """
+        #self.driver.find_element_by_css_selector(locators["make revision"]).click()
+        self.find_element(locators["make revision"]).click()
+        self.w.until(lambda d: d.find_element_by_css_selector("input[name=ref][value*=SCR0105]"))
+        from pages.SCR0105 import SCR0105
+        return SCR0105(self.driver)
+
+    def create_request(self):
+        """
+        Clicks the <Create request> button
+        Goes to SCR_0472
+        """
+        return self.go("create request")
+
+    def continue_revision(self):
+        """
+        Clicks the "continue making changes" link for an open revision
+        Goes to SCR_0105
+        """
+        self.find("continue revision").click()
+        return self.load_page()
+
+    def confirm_research_team(self):
+        """
+        Clicks the <Confirm research team> button
+        Goes to SCR_0645
+        """
+        return self.go("confirm research team")
+
+    def goto_documents(self):
+        """
+        Clicks the "Documents" link
+        Goes to SCR_0433
+        """
+        if self.mode == "old":
+            return self.go("documents")
+        elif self.mode == "convert":
+            self.find("document_button").click()
+            return self.go("segment_repository")
+        
+    def admin_team(self):
+        return self.go("admin team")
+
+    def goto_dates_dollars(self):
+        """
+        Clicks the "Dates and Dollars" link
+        Goes to SCR_0070
+        """
+        return self.go("dates_dollars")
+
+    def goto_additional_info(self):
+        """
+        Clicks the "Additional award information" link
+        Goes to SCR_0519
+        """
+        return self.go("additional info")
+
 
     tub = RText("tub", "Tub")
     org = RText("org", "Org")
