@@ -1,5 +1,6 @@
 from pages.Page import Page
 from pages.elements import Row, Checkbox, RText
+from selenium.common.exceptions import NoSuchElementException
 
 
 class SCR0433(Page):
@@ -16,7 +17,7 @@ class SCR0433(Page):
         "get from clipboard": "name=DocumentFolderGetFromMyClipboardEvent",
         "move to clipboard": "name=DocumentFolderMoveSelectedToMyClipboardEvent",
         "folder row": "xpath=//a[contains(@href,'DocumentFolderLinkEvent')]/../..",
-        "folder row by name": "xpath=//a[normalize-space(text())='REPLACE']/../..",
+        "folder row by name": "xpath=//a[normalize-space(text())='REPLACE'][not(@class='bread')]/../..",
     }
 
     @property
@@ -60,7 +61,10 @@ class SCR0433(Page):
             row = self.finds("document row")[identifier - 1]
 
         if type(identifier) is str:
-            row = self.find("document row by name", identifier)
+            try:
+                row = self.find("document row by name", identifier)
+            except NoSuchElementException:
+                return None
 
         return self.Document_row(row, self)
 
@@ -77,7 +81,10 @@ class SCR0433(Page):
             row = self.finds("folder row")[identifier - 1]
 
         if type(identifier) is str:
-            row = self.find("folder row by name", identifier)
+            try:
+                row = self.find("folder row by name", identifier)
+            except NoSuchElementException:
+                return None
 
         return self.Folder_row(row, self)
 
