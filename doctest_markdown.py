@@ -47,9 +47,8 @@ def get_class(meth):
 
 
 def get_method_list(class_name):
-    cls = getattr(importlib.import_module("pages.%s" % (class_name)), class_name)
-    #print cls.__dict__
-    #return
+    page_name = "pages.{}".format(class_name)
+    cls = getattr(importlib.import_module(page_name), class_name)
     global classname
     classname = cls
     print classname
@@ -115,4 +114,3 @@ def replace_subclass(string):
     return re.sub(find, repl, string)
 
 print get_method_list(scr)
-
