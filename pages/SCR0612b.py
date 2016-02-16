@@ -108,6 +108,15 @@ class SCR0612b(Page):
     phs_cover_6 = Q_Radio(3301655, "Change of institution (radio)")
     phs_cover_6a = Q_Text(3301656, "Institution name (text)")
 
+    fellowship_4c = Q_Select(3301530, "Field of study (dropdown)")
+    fellowship_4d = Q_Radio(3301531, "Prior support (radio)")
+    fellowship_4e = Q_Radio(3301542, "concurrent support (radio)")
+    fellowship_4f = Q_Radio(3301545, "Citizenship (radio)")
+    fellowship_5 = Q_Radio(3301553, "Change of institution (radio)")
+    fellowship_6a = Q_Radio(3301559, "Tuition and fees (radio)")
+
+    career_1 = Q_Radio(3301377, "Citizenship (radio)")
+
     def add_ps(self):
         """
         Click the <Add> button for performance site (returns a new page object)

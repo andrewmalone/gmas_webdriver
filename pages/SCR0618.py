@@ -2,6 +2,7 @@ from pages.Page import Page
 from pages.elements import RText
 import utilities.xpath as xpath
 
+
 class SCR0618(Page):
     """
     SCR_0618
@@ -14,3 +15,9 @@ class SCR0618(Page):
 
     tracking = RText("tracking", "Grants.gov tracking number")
     status = RText("status", "Grants.gov status")
+
+    def get_update(self):
+        """
+        Click <Get update>
+        """
+        return self.go("update")
