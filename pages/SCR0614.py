@@ -1,5 +1,6 @@
 # POPUP!
 from pages.Page import Page
+from pages.elements import Radio
 
 
 class SCR0614(Page):
@@ -8,8 +9,10 @@ class SCR0614(Page):
     """
     locators = {
         "ok": "name=OpportunityValidationResultEvent",
-        "competition": "competitionRadio"
+        "competition": "css=[name=competitionRadio]"
     }
+
+    competition = Radio("competition", "competition id selection")
 
     def ok(self):
         """

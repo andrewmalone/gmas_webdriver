@@ -76,11 +76,19 @@ class Lookup_opportunity(Lookup):
     Opportunity lookup (if multiple competition ids, selects the first one)
     """
     def __set__(self, obj, val):
+        comp_id = None
+        # check for string vs tuple
+        if type(val) is tuple:
+            comp_id = val[1]
+            val = val[0]
         self.input.__set__(obj, val)
         obj.find_element(self.lookup_locator).click()
         obj.switch_to_popup()
         popup = obj.load_page()
         if popup.competition_count > 0:
-            popup.select_competition(1)
+            if comp_id is None:
+                popup.select_competition(1)
+            else:
+                popup.competition = comp_id
         popup.ok()
         obj.w.until(lambda e: obj.find_element(self.match_locator))
