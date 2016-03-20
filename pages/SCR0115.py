@@ -34,7 +34,8 @@ class SCR0115(Page):
         "admin team": "event=RequestHomeAdministrativeTeamLinkEvent",
         "approvals": "event=ApprovalsComponentListViewListEvent",
         "accounts": "event=ViewAllAccountsEvent",
-        "delete": "event=DeleteThisRequestEvent"
+        "delete": "event=DeleteThisRequestEvent",
+        "enrollment": "event=ViewInclusionEnrollmentEvent"
     }
 
     status = RText("status", "Request status")
@@ -226,6 +227,13 @@ class SCR0115(Page):
         Goes to SCR_0407
         """
         return self.go("delete")
+
+    def goto_enrollment(self):
+        """
+        Click the "Inclusion Enrollment" link
+        Goes to SCR_0655
+        """
+        return self.go("enrollment")
 
     class Signature(Row):
         locators = {
