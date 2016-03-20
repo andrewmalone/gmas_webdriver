@@ -190,7 +190,7 @@ class Page(GMWebElement):
         self.driver.get(url.format(self.env_url))
         return self.load_page()
 
-    def goto_segment(self, segment_id, new=False):
+    def goto_segment(self, segment_id, new=True):
         url = "%s/gmas/project/SCR0104SegmentHome.jsp?segmentId=%s" % (self.env_url, segment_id)
         if new:
             url = "%s/gmas/project/SCR0104SegmentHome.xhtml?segmentId=%s" % (self.env_url, segment_id)
