@@ -54,7 +54,11 @@ class Element(object):
                 e = WDSelect(self.element)
                 for option in e.options:
                     if option.get_attribute("value") != "":
-                        options.append(option.text)
+                        if self.mode == "old":
+                            text = option.text
+                        if self.mode == "convert":
+                            text = option.get_attribute("innerText")
+                        options.append(text)
                 return options
             if self.element_type == "radio":
                 if self.parent.mapping is not None:
@@ -101,28 +105,52 @@ class Select(Element):
     def __set__(self, obj, val):
         from selenium.webdriver.support.select import Select as WDSelect
         method = "text"
-        elem = WDSelect(obj.find(self.locator))
-        if self.mapping != None:
+        if self.mapping is not None:
             val = self.mapping[val]
             if "_method" in self.mapping:
                 method = self.mapping["_method"]
-        if method == "text":
-            elem.select_by_visible_text(val)
-        elif method == "value":
-            elem.select_by_value(val)
+        if obj.mode == "old":
+            elem = WDSelect(obj.find(self.locator))
+            if method == "text":
+                elem.select_by_visible_text(val)
+            elif method == "value":
+                elem.select_by_value(val)
+        if obj.mode == "convert":
+            # click the select to show the list
+            l = obj.locators[self.locator]
+            elem = obj.find_element("css=label[id$={}_label]".format(l))
+            elem.click()
+            # now click the correct option in the list
+            options = obj.find_elements("css=div[id$={}_panel] li".format(l))
+            for item in options:
+                if item.text == val:
+                    item.click()
+                    break
 
     def __get__(self, obj, type=None):
         from selenium.common.exceptions import NoSuchElementException, UnexpectedTagNameException
         from selenium.webdriver.support.select import Select as WDSelect
-        try:
-            elem = WDSelect(obj.find(self.locator))
-            r = self.returnObj(elem.first_selected_option.text)
-            r.element = obj.find(self.locator)
+        if obj.mode == "old":
+            try:
+                elem = WDSelect(obj.find(self.locator))
+                r = self.returnObj(elem.first_selected_option.text)
+                r.element = obj.find(self.locator)
+                r.parent = self
+                r.mode = obj.mode
+                return r
+            except (NoSuchElementException, UnexpectedTagNameException):
+                return False
+        if obj.mode == "convert":
+            l = obj.locators[self.locator]
+            # print "css=select[name$={}_input]".format(l)
+            elem = obj.find_element("css=select[name$={}_input]".format(l))
+            select = WDSelect(elem)
+            r = self.returnObj(select.first_selected_option.get_attribute("innerText"))
+            r.element = elem
             r.parent = self
+            r.mode = obj.mode
             return r
-        except (NoSuchElementException, UnexpectedTagNameException):
-            return False
- 
+
 
 class Radio(Element):
     """ (Radio button) """
