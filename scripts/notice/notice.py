@@ -14,9 +14,4 @@ def log_notice(p, data=None):
     p.date_received = data["received"]
 
     p = p.ok()
-
-    # new flow doesn't have extra confirmation screen for convert
-    if p.scr != "SCR0309":
-        p = p.ok()
-
     return p
