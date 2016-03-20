@@ -177,8 +177,16 @@ class Page(GMWebElement):
     def action(self, locator):
         element = self.find(locator)
         if not element.is_displayed():
-            self.find_element("css=button[id^=actionbuttonForm]").click()
+            self.find_element("css=#actionbar-actions .buttons button").click()
         element.click()
+        # deal with a confirmation if it exists?
+        dialog = self.find_elements("css=.ui-dialog[style*=block]")
+        if len(dialog) == 1:
+            # find the active submit button and click it.
+            from selenium.webdriver.support import expected_conditions as EC
+            from selenium.webdriver.common.by import By
+            dialog[0].find_element_by_css_selector("button[type=submit]").click()
+            self.w.until(EC.invisibility_of_element_located((By.CSS_SELECTOR, ".ui-dialog[style*=block]")))
         return self.load_page()
 
     # TODO: Figure out how to move all goto methods to a common class
