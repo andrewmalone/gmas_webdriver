@@ -1,4 +1,6 @@
 from pages.Page import Page
+from gmas_webdriver.utilities import xpath
+from pages.elements import RText
 
 
 class SCR0135(Page):
@@ -11,8 +13,11 @@ class SCR0135(Page):
         "rename": "name=DocumentActionRenameEvent",
         "edit_desc": "name=DocumentActionEditDescriptionEvent",
         "checkout": "name=DocumentActionCheckOutEvent",
-        "checkin": "name=DocumentActionCheckInEvent"
+        "checkin": "name=DocumentActionCheckInEvent",
+        "size": xpath.text_sibling("td", "Size (bytes)", 2)
     }
+
+    size = RText("size", "size of file")
 
     def unlock(self):
         """
