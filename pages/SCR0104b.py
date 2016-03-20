@@ -27,7 +27,9 @@ locators = {
 
 _locators = {
     "document_button": "css=.ui-menubutton.documents button",
-    "segment_repository": "event=RepositoryLinkEvent"
+    "segment_repository": "event=RepositoryLinkEvent",
+    "requests": "css=a[href*=RequestListEvent]",
+    "make revision": 'css=a[href*=SegmentHomeMakeRevisionEvent]',
 }
 
 
@@ -67,11 +69,7 @@ class SCR0104b(Page):
         Click the <Make revision> button
         Goes to SCR_0105 (through the wait screen)
         """
-        #self.driver.find_element_by_css_selector(locators["make revision"]).click()
-        self.find_element(locators["make revision"]).click()
-        self.w.until(lambda d: d.find_element_by_css_selector("input[name=ref][value*=SCR0105]"))
-        from pages.SCR0105 import SCR0105
-        return SCR0105(self.driver)
+        return self.action("make revision")
 
     def create_request(self):
         """
