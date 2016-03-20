@@ -1,8 +1,44 @@
-import copy, datetime
+import copy
+import datetime
+import ggov_forms as forms
+
 
 def add_ts(string):
     # adds a timestamp to the end of a string
     return "%s %s" % (string, datetime.datetime.now().strftime("%Y%m%d%I%M%S"))
+
+
+def collect_questions(formlist):
+    questions = {}
+    for form, level in formlist:
+        form_data = getattr(forms, form)
+        if "questions" in form_data:
+            if level not in form_data["questions"]:
+                level = "minimal"
+            if level in form_data["questions"]:
+                questions.update(form_data["questions"][level])
+    return questions
+
+
+def collect_attachments(formlist):
+    attachments = {}
+    for form, level in formlist:
+        form_data = getattr(forms, form)
+        if "attachments" in form_data:
+            if level not in form_data["attachments"]:
+                level = "minimal"
+            if level in form_data["attachments"]:
+                attachments.update({
+                    form_data["name"]: form_data["attachments"][level]
+                })
+    return attachments
+
+
+def add_form(r, form):
+    r["ggov_questions"].update(collect_questions([form]))
+    r["ggov_attachments"].update(collect_attachments([form]))
+    # return r
+
 
 minimal = {
     # SCR_0088
@@ -103,6 +139,39 @@ standard_s2s["ggov_questions"].update({
     "phs_cover_6": 2,
 })
 
+s2s = {
+    "empty": copy.deepcopy(minimal)
+}
+s2s["empty"].update({
+    "title": add_ts("Minimal S2S submission (no data)"),
+    "opportunity": "NIH-UBER-4-1-2013",
+    "s2s": "true",
+    "sponsor": "nih"
+})
+s2s["minimal"] = copy.deepcopy(s2s["empty"])
+s2s["minimal"].update({
+    "title": add_ts("Minimal S2S submission (424 only)"),
+    "ggov_questions": collect_questions(forms.formlist["minimal"]),
+    "ggov_attachments": collect_attachments(forms.formlist["minimal"])
+})
+s2s["r01_d_minimal"] = copy.deepcopy(s2s["minimal"])
+s2s["r01_d_minimal"].update({
+    "title": add_ts("Minimal FORMS-D R01 submission"),
+    "opportunity": ("PA-DD-R01", "FORMS-D"),
+    "pi": "20092297",
+    "pi_credential": "eRACommons, asharpe",
+    "org": "45317",
+    "start": "7/1/16",
+    "ggov_questions": collect_questions(forms.formlist["r01_d_minimal"]),
+    "ggov_attachments": collect_attachments(forms.formlist["r01_d_minimal"])
+})
+s2s["r01_d_validate"] = copy.deepcopy(s2s["r01_d_minimal"])
+s2s["r01_d_validate"].update({
+    "title": add_ts("FORMS-D R01 NIH validated submission"),
+    "ggov_questions": collect_questions(forms.formlist["r01_d_validate"]),
+    "ggov_attachments": collect_attachments(forms.formlist["r01_d_validate"])
+})
+
 all_approvals = copy.deepcopy(minimal)
 all_approvals.update({
     "title": add_ts("RGS All approvals"),
@@ -132,3 +201,4 @@ all_approvals.update({
         }
     ],
 })
+

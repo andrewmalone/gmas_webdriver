@@ -382,6 +382,8 @@ def rgs(p, f=None, finish="request", stop=None):
         if "ggov_questions" in f:
             # @todo - add support for multiple performance sites
             for question in sorted(f["ggov_questions"].keys()):
+                # print "try setting {} to {}".format(question, f["ggov_questions"][question])
+                # @todo - fail gracefully if trying to set a question that isn't on the page
                 setattr(p, question, f["ggov_questions"][question])
         if checkstop(p, stop):
             return p
