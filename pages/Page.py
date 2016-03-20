@@ -49,6 +49,9 @@ class Page(GMWebElement):
             elems = self.find_elements("css=footer li")
         for elem in elems:
             if "The screen you are on is" in elem.text:
+                # this is a hack for now
+                if "is: cms" in elem.text:
+                    return "cms"
                 return re.search('SCR.*', elem.text).group(0)
 
     def get_page_load_time(self):
