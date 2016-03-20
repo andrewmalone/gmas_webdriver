@@ -138,8 +138,10 @@ class Radio(Element):
             l = obj.locators[self.locator]
             if self.mapping is not None:
                 val = self.mapping[val]
-            val = "".join([s.capitalize() if i > 0 else s for i, s in enumerate(val.split("-"))])
-            elem = obj.find_element("css=[id$={name}Panel] [id$={val}]".format(name=l, val=val))
+            # val = "".join([s.capitalize() if i > 0 else s for i, s in enumerate(val.split("-"))])
+            # print l, val
+            elem = obj.find_element("xpath=//input[contains(@name,'{name}')][@value='{val}']/../following-sibling::div[1]".format(name=l, val=val))
+            # elem = obj.find_element("css=input[type=radio][name$='{name}'][value='{val}']".format(name=l, val=val))
             elem.click()
 
     def __get__(self, obj, cls=None):
