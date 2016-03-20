@@ -26,7 +26,8 @@ class SCR0328(Page):
         "mentor text": "fellow",
         "title": "title",
         "award number": "css=input[name$=awardNumber]",
-        "discipline": "disciplineId"
+        "discipline": "disciplineId",
+        "ug": "css=input[name='uniformGuidanceFlag']"
     }
 
     funding_instrument = Select("funding instrument", "Funding instrument", docextra="""
@@ -44,6 +45,7 @@ class SCR0328(Page):
         """)
     loc_number = Text("loc", "Agency LOC number")
     cfda = Text("cfda", "CFDA number")
+    ug = Radio("ug", "Uniform Guidance")
     arra = Radio("arra", "ARRA funding?")
     ia = Radio("ia", "Institutional authorities")
     snap = Radio("snap", "SNAP")

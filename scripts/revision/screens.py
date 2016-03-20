@@ -23,7 +23,8 @@ def SCR0328(p, data, button):
         "foreign",
         "title",
         "pi",
-        "award number"
+        "award number",
+        "ug"
     ]
     for field in fields:
         set(p, field, data)

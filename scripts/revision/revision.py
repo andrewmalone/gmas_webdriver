@@ -106,7 +106,7 @@ def awarding_revision(p, data={}, minimal=False, commit=True, notification=False
     #global default_data
     #default_data.update(data)
     #data = default_data
-    p = p.revise_project()
+    p = p.make_revision()
 
     # 328
     # TODO: add potential of changing optional fields
@@ -332,10 +332,9 @@ def admin_revision(p, data, commit=True, notification=False, edit_all=True):
 
 
 def empty_revision(p, data={}):
-    p = p.revise_project()
+    p = p.make_revision()
     if "comment" in data:
         p.comment = data["comment"]
-
     p = p.commit_changes()
     p.check_all = False
     p = p.ok()

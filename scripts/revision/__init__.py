@@ -1,1 +1,1 @@
-from revision import awarding_revision
+from revision import awarding_revision, empty_revision
