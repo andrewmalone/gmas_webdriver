@@ -28,4 +28,7 @@ class SCR0083(Page):
         Click <Ok>
         Goes to SCR_0377
         """
-        return self.go("next")
+        # return self.go("next")
+        self.find("next").click()
+        self.w.until(lambda d: len(d.find_elements_by_css_selector("[id$=Done]")) == 0)
+        return self.load_page()
