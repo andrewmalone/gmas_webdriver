@@ -21,9 +21,13 @@ class SCR0020(Page):
     def ok(self):
         """
         Click <Ok>
-        Goes to SCR_0018
+        Goes to SCR_0018 or SCR_0437
         """
         return self.go("ok")
+
+    @property
+    def rates(self):
+        return [self.Rate(row, self) for row in self.finds("rate_row")]
 
     @property
     def rate_count(self):

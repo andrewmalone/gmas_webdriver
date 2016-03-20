@@ -18,7 +18,8 @@ class SCR0006(Page):
         "periods": "xpath=//td[@class='strong'][contains(text(),'Period')]",
         "level": "css=input[name=recordByBudgetLevel]",
         "category_row": "xpath=//input[@type='text'][contains(@name,'segmentCategoryBudgetEntryAmount')]/ancestor::tr[1]",
-        "person_salary_row": "xpath=//a[contains(@href,'setSCR252fields')]/ancestor::tr[1]"
+        "person_salary_row": "xpath=//a[contains(@onclick,'setSCR252fields')]/ancestor::tr[1]",
+        "edit modular": "EditModularBudgetEvent"
     }
 
     total_direct = Text("total_direct", "Total direct cost")
@@ -66,6 +67,13 @@ class SCR0006(Page):
         Goes to SCR_0018
         """
         return self.go("edit indirect")
+
+    def edit_modular(self):
+        """
+        Click <Edit modular budget>
+        Goes to SCR_0437
+        """
+        return self.go("edit modular")
 
     def ok(self):
         """
