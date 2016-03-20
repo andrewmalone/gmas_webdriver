@@ -51,12 +51,25 @@ def loginGMAS(driver):
     driver.get("%s/gmas" % driver.env_url)
     w = WebDriverWait(driver, 60)
     w.until(lambda e: e.find_element_by_id("username"))
+    driver.find_element_by_id("HarvardKey").click()
     driver.find_element_by_id("username").send_keys(HUID)
     driver.find_element_by_id("password").send_keys(PIN)
     driver.find_element_by_id("submitLogin").click()
 
 
-def init(browser, env, splitscreen=False, position="full", port=None, download_dir=None):
+def maximize(d):
+    """
+    Maximize a browser window - since the maximize_window function doesn't
+    seem to work in Chrome
+    """
+    width = d.execute_script("return screen.availWidth")
+    height = d.execute_script("return screen.availHeight")
+    d.set_window_position(0, 0)
+    d.set_window_size(width, height)
+
+
+def init(browser, env, splitscreen=False, position="full",
+         port=None, download_dir=None):
     # this is so that imports will work (there's probably a better way)
     # sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -66,9 +79,10 @@ def init(browser, env, splitscreen=False, position="full", port=None, download_d
     if splitscreen is True:
         d.set_window_position(1500, 0)
     if position == "full":
-        d.maximize_window()
+        maximize(d)
     if position == "left" or position == "right":
         d.maximize_window()
+        # maximize(d)
         size = d.get_window_size()
         pos = d.get_window_position()
         d.set_window_size(size["width"]/2, size["height"])
@@ -90,7 +104,8 @@ def highlight(element):
     driver.execute_script("""
         element = arguments[0];
         original_style = element.getAttribute('style');
-        element.setAttribute('style', original_style + "; background: yellow !important; border: 2px solid red !important;");
+        element.setAttribute('style', original_style +
+        "; background: yellow !important; border: 2px solid red !important;");
         setTimeout(function(){
             element.setAttribute('style', original_style);
         }, 500);
