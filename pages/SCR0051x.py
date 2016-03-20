@@ -6,7 +6,7 @@ class SCR0051x(Page):
     SCR_0051x Person search (popup)
     """
     locators = {
-        "first non-huid": "xpath=(//input[@name='personHUID'][@value=''])[1]/preceding-sibling::input[@type='radio']",
+        "first non-huid": "xpath=(//input[@name='personHUID'][@value='' or @value='null'])[1]/preceding-sibling::input[@type='radio']",
         "ok": "css=img[title='OK']"
     }
 
