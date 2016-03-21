@@ -8,7 +8,8 @@ class SCR0344(Page):
     """
     locators = {
         "request row": "xpath=//a[contains(@href,'LinkEvent')]/ancestor::tr[1]",
-        "request row id": "xpath=//a[contains(@href,'requestId=REPLACE')]/ancestor::tr[1]"
+        "request row id": "xpath=//a[contains(@href,'requestId=REPLACE')]/ancestor::tr[1]",
+        "log_notice": "event=RequestListLogNoticeEvent"
     }
 
     @property
@@ -37,6 +38,9 @@ class SCR0344(Page):
         List of request rows
         """
         return [self.request_row(row, self) for row in self.finds("request row")]
+
+    def log_notice(self):
+        return self.action("log_notice")
 
     class request_row(Row):
         locators = {
