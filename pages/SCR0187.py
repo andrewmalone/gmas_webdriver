@@ -154,6 +154,9 @@ class SCR0187(Page):
 
     @property
     def income(self):
+        """
+        Income amount
+        """
         if self.mode == "old":
             return self.find("income").text
         if self.mode == "convert":
@@ -161,6 +164,9 @@ class SCR0187(Page):
 
     @property
     def interest(self):
+        """
+        Amount from interest
+        """
         if self.mode == "old":
             return self.find("interest").text.replace("includes ", "").replace(" from interest", "")
         if self.mode == "convert":
@@ -168,6 +174,9 @@ class SCR0187(Page):
 
     @property
     def final_figure(self):
+        """
+        Final figure amount
+        """
         text = self.find("final figure").text
         if "Edit" in text:
             text = text[:-5]
@@ -175,6 +184,9 @@ class SCR0187(Page):
 
     @property
     def comment_count(self):
+        """
+        Number of comments for this account
+        """
         if self.mode == "old":
             return self.find("comment_count").text.split(" ")[0]
         if self.mode == "convert":
@@ -182,6 +194,9 @@ class SCR0187(Page):
 
     @property
     def restricted(self):
+        """
+        Is this a restricted account (Boolean)
+        """
         if len(self.finds("restricted")) == 0:
             return False
         else:
@@ -288,7 +303,7 @@ class SCR0187(Page):
     def idc_rates(self):
         """
         Returns a list of IDC rate rows
-        //IDC rate
+        //IDC_Rates
         """
         return [self.IDC_Rates(row, self) for row in self.finds("IDC_Rates")]
 
@@ -308,6 +323,7 @@ class SCR0187(Page):
 
         @property
         def location(self):
+            """Account location"""
             if self.page.mode == "old":
                 return self.find("location").text
             if self.page.mode == "convert":
@@ -315,6 +331,7 @@ class SCR0187(Page):
 
         @property
         def percent(self):
+            """Location percent"""
             if self.page.mode == "old":
                 return self.find("percent").text
             if self.page.mode == "convert":

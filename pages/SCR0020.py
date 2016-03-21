@@ -27,18 +27,24 @@ class SCR0020(Page):
 
     @property
     def rates(self):
+        """
+        List of rate rows on the screen
+        //Rate
+        """
         return [self.Rate(row, self) for row in self.finds("rate_row")]
 
     @property
     def rate_count(self):
         """
         Number of rates
+        !! Deprecated !! use the rates property instead
         """
         return len(self.finds("rate_row"))
 
     def rate(self, n):
         """
         Returns the nth rate row from the page
+        !! Deprecated !! use the rates property instead
         //Rate
         """
         row = self.finds("rate_row")[n - 1]
