@@ -184,6 +184,13 @@ research_plan = {
         "minimal": {
             "Research Strategy": "Research_Strategy.pdf",
         },
+        "minimal_hs": {
+            "Research Strategy": "Research_Strategy.pdf",
+            "Specific Aims": "Specific_Aims.pdf",
+            "Inclusion of Children": "Inclusion_of_Children.pdf",
+            "Inclusion of Women and Minorities": "Inclusion_of_Women_and_Minorities.pdf",
+            "Protection of Human Subjects": "Protection_of_Human_Subjects.pdf",
+        },
         "full": {
             "Research Strategy": "Research_Strategy.pdf",
             "Introduction to Application": "Introduction_to_Application.pdf",
