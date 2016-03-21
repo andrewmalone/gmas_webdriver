@@ -261,3 +261,12 @@ assignment_request = {
 inclusion_enrollment = {
     "name": "PHS Inclusion Enrollment Report"
 }
+
+sub_budget = {
+    "name": "Research & Related Subaward Budget Attachment(s) Form",
+    "attachments": {
+        "validate": {
+            "Subaward Budget": "sub_budget.pdf"
+        }
+    }
+}
