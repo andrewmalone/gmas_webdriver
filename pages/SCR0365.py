@@ -15,7 +15,8 @@ class SCR0365(Page):
         "key": "css=[name='KeyPersonnel']",
         "investigator": "css=[name='phsInvestigationFlag']",
         "tbd": "toBeDeterminedChecked",
-        "ok": "name=ResearchTeamMemberOKEvent"
+        "ok": "name=ResearchTeamMemberOKEvent",
+        "credential": "name=contactPersonCredential"
     }
 
     role = Select("role", "Role dropdown")
@@ -26,6 +27,7 @@ class SCR0365(Page):
     person = Lookup_person(person_text, "researchTeamMemberImage", "Research team member lookup")
     investigator = Radio("investigator", "Investigator radio button (true/false)")
     tbd = Checkbox("tbd", "TBD Checkbox")
+    credential = Select("credential", "Credential for S2S submission")
 
     def ok(self):
         """
