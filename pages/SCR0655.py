@@ -36,14 +36,14 @@ class SCR0655(Page):
         Click the <Add study> button
         """
         self.find("add").click()
-        self.w.until(EC.element_to_be_clickable(self.get_locator(self.locators["title"])))
+        self.w.until(EC.element_to_be_clickable(self.locator("title")))
 
     def ok(self):
         """
         Click the <Done> button after editing a study
         """
         self.find("done").click()
-        self.w.until(EC.invisibility_of_element_located(self.get_locator("css=[id='studyForm:editStudyPanel']")))
+        self.w.until(EC.invisibility_of_element_located(self.locator_from_string("css=[id='studyForm:editStudyPanel']")))
 
     @property
     def delayed_onset(self):
@@ -56,7 +56,7 @@ class SCR0655(Page):
     def delayed_onset(self, val):
         self._delayed_onset = val
         if val == "false":
-            self.w.until(EC.element_to_be_clickable(self.get_locator("id=studyForm:studyComments0")))
+            self.w.until(EC.element_to_be_clickable(self.locator_from_string("id=studyForm:studyComments0")))
 
     @property
     def enrollment_type(self):
@@ -69,7 +69,7 @@ class SCR0655(Page):
     def enrollment_type(self, val):
         self._type = val
         # do the wait here
-        self.w.until(EC.element_to_be_clickable(self.get_locator("css=[id$=studyTable0] input[type=text]")))
+        self.w.until(EC.element_to_be_clickable(self.locator_from_string("css=[id$=studyTable0] input[type=text]")))
 
     def set_text(self, val):
         """

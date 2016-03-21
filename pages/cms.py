@@ -41,13 +41,13 @@ class cms(Page):
         return url
 
     def enter_screen(self, scr):
-        e = self.w.until(EC.element_to_be_clickable(self.get_locator("screen button")))
+        e = self.w.until(EC.element_to_be_clickable(self.locator("screen button")))
         e.click()
-        e = self.w.until(EC.element_to_be_clickable(self.get_locator("screen input")))
+        e = self.w.until(EC.element_to_be_clickable(self.locator("screen input")))
         e.send_keys(scr)
-        e = self.w.until(EC.element_to_be_clickable(self.get_locator("screen dropdown", scr)))
+        e = self.w.until(EC.element_to_be_clickable(self.locator("screen dropdown", scr)))
         e.click()
-        self.w.until(EC.element_to_be_clickable(self.get_locator("IC header")))
+        self.w.until(EC.element_to_be_clickable(self.locator("IC header")))
 
     def edit_IC(self):
         e = self.find("IC content")
@@ -72,12 +72,12 @@ class cms(Page):
 
     def add_IC(self, id, content):
         self.find("IC add").click()
-        self.w.until(EC.element_to_be_clickable(self.get_locator("dialog")))
+        self.w.until(EC.element_to_be_clickable(self.locator("dialog")))
         self.add_dynamic(id, content)
 
     def add_FC(self, id, content):
         self.find("FC add").click()
-        self.w.until(EC.element_to_be_clickable(self.get_locator("dialog")))
+        self.w.until(EC.element_to_be_clickable(self.locator("dialog")))
         self.add_dynamic(id, content)
 
     def add_dynamic(self, id, content):
@@ -85,15 +85,15 @@ class cms(Page):
         self.find("show source").click()
         self.find("editor").send_keys(content)
         self.find("save").click()
-        self.w.until(EC.invisibility_of_element_located(self.get_locator("save")))
+        self.w.until(EC.invisibility_of_element_located(self.locator("save")))
 
     def add_GL(self, id, content):
         self.find("GL add").click()
-        self.w.until(EC.element_to_be_clickable(self.get_locator("dialog")))
+        self.w.until(EC.element_to_be_clickable(self.locator("dialog")))
         self.find("GL title").send_keys(content)
         self.find("GL url").send_keys(id)
         self.find("GL save").click()
-        self.w.until(EC.invisibility_of_element_located(self.get_locator("GL save")))
+        self.w.until(EC.invisibility_of_element_located(self.locator("GL save")))
 
     @property
     def IC_rows(self):
