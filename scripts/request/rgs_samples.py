@@ -35,6 +35,10 @@ def collect_attachments(formlist):
 
 
 def add_form(r, form):
+    if "ggov_questions" not in r:
+        r["ggov_questions"] = {}
+    if "ggov_attachments" not in r:
+        r["ggov_attachments"] = {}
     r["ggov_questions"].update(collect_questions([form]))
     r["ggov_attachments"].update(collect_attachments([form]))
     # return r
