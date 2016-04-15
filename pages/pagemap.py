@@ -21,8 +21,18 @@ def pagemap(page):
         "SCR0625B": "SCR0625b",
         # segment home isn't standard
         "SCR0104P": "SCR0104a",
-        "SCR0104S": "SCR0104b"
+        "SCR0104S": "SCR0104b",
+        "SCR0449a": "SCR0449",
+        "SCR0449b": "SCR0449",
+        "SCR0449c": "SCR0449",
+        "SCR0449d": "SCR0449",
+        "SCR0081": "SCR0449"
+        
     }
+    # handle cms differently (maybe need to do this for other admin pages also)
+    if page == "cms":
+        return "cms"
+
     screen = re.search("SCR[0-9]{4}[a-z]?", page).group(0)
     exceptions = ["SCR0104", "SCR0602"]
     if screen in exceptions:

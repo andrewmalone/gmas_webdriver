@@ -18,7 +18,18 @@ class SCR0433(Page):
         "move to clipboard": "name=DocumentFolderMoveSelectedToMyClipboardEvent",
         "folder row": "xpath=//a[contains(@href,'DocumentFolderLinkEvent')]/../..",
         "folder row by name": "xpath=//a[normalize-space(text())='REPLACE'][not(@class='bread')]/../..",
+#         "file name": "css=a[href*='DocumentFilesLinkEvent']",
+        "file name": "xpath=//a[contains(@href,'DocumentFolderFilesLinkEvent')]"
+#         "folder name": "xpath=//a[contains(text(),'Folder Name')]/ancestor::table[1]//tr[not (@class ='bg3')][position()>2]"
     }
+    
+    @classmethod
+    def url(cls, segment_id,):
+        """
+        Direct navigation to segmenthome
+        """
+        url = "{{}}/gmas/dispatch?ref=%2Fproject%2FCOM0500ProjectSnapshot.jsp&formName=COM0500ProjectSnapshotForm&segmentId={}&ProjectSnapShotSegmentHomeEvent=&submitTime=1460395801417"
+        return url.format(segment_id,)
 
     @property
     def document_count(self):
@@ -47,7 +58,22 @@ class SCR0433(Page):
         Goes to SCR_0434
         """
         return self.go("add folder")
+    
+    def files_go(self):
+        """
+        Click the <File name> link
+        Goes to SCR_0135
+        """
+        return self.go("file name")
 
+
+    def folder_go(self):
+        """
+        Click the <Folder name> link
+        Goes to SCR_0135
+        """
+        return self.go("folder name")
+    
     def document(self, identifier):
         """
         returns a document row object from the page based on an identifier, which can be a number or a string.
@@ -118,6 +144,13 @@ class SCR0433(Page):
         Moves doc or email to user's clipboard
         """
         return self.go("move to clipboard")
+    
+    @property
+    def document_row(self):
+        """
+        List of all rows from the "Approval" table
+        """
+        return [self.Document_row(row, self) for row in self.finds("document row")]
 
     class Document_row(Row):
         locators = {
@@ -127,10 +160,10 @@ class SCR0433(Page):
             "status": "css=td:nth-of-type(25)"
         }
 
-        checkbox = Checkbox("checkbox", "Checkbox for delete or move")
+#         checkbox = Checkbox("checkbox", "Checkbox for delete or move")
         name = RText("link", "File name")
-        type = RText("type", "Document type ('Document' or 'Email')")
-        status = RText("status", "Document status ('Checked in', 'Locked', 'Read only', etc,)")
+#         type = RText("type", "Document type ('Document' or 'Email')")
+#         status = RText("status", "Document status ('Checked in', 'Locked', 'Read only', etc,)")
 
         def go(self):
             """

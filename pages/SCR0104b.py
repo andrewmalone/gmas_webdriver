@@ -4,10 +4,7 @@ import utilities.xpath as xpath
 from selenium.webdriver.support.expected_conditions import title_contains
 
 
-_locators = {
-    "document_button": "css=.ui-menubutton.documents button",
-    "segment_repository": "event=RepositoryLinkEvent"
-}
+
 
 
 class SCR0104b(Page):
@@ -93,7 +90,9 @@ class SCR0104b(Page):
     "discipline": "xpath=//span[contains(normalize-space(text()), 'Discipline')]/../following-sibling::td[1]",
     "payment method": "xpath=//span[contains(normalize-space(text()), 'Payment method')]/../following-sibling::td[1]",
     "agency LOC number": "xpath=//span[contains(normalize-space(text()), 'Agency LOC number')]/../following-sibling::td[1]",
-    "admin team": "link=Administrative team"
+    "admin team": "link=Administrative team",
+    "document_button": "css=.ui-menubutton.documents button",
+    "segment_repository": "event=RepositoryLinkEvent"
 #     "obligated dates": "xpath=//table[@id='segmentDatesGrid']/tbody/tr/td[2]",
 #     "anticipated dates": "xpath=//table[@id='segmentDatesGrid']/tbody/tr[2]/td[2]",
 #     "dates_dollars direct": "xpath=//table[@id='segmentDollarsGrid']/tbody/tr[2]",
